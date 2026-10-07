@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="弹弹球.html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>弹弹球 · 玻璃珠</title>
+  <link rel="stylesheet" href="hub-nav.css?v=5">
+  <link rel="stylesheet" href="marble-game/style.css?v=3">
+  <script src="anti-ad-shield.js"></script>
+</head>
+<body>
+  <nav class="hub-nav" aria-label="应用导航">
+    <span class="hub-label">去 →</span>
+    <a href="游戏大厅.html">大厅</a>
+    <a href="造语坊.html" class="hub-lang">造语坊</a>
+    <a href="慢净.html">慢净</a>
+    <a href="花鱼小院.html">花鱼小院</a>
+    <a href="bubble-game.html">解压气泡</a>
+    <a href="静沙.html">静沙</a>
+    <a href="白噪音台.html">白噪音</a>
+    <a href="白菜对我笑.html">白菜</a>
+    <a href="小小实验室.html">实验室</a>
+    <a href="找不同.html">找不同</a>
+    <a href="妙脆角猫山谷.html">猫山谷</a>
+    <a href="脆果厨房.html">脆果厨房</a>
+    <a href="妙脆小猫按钮关.html">按钮关</a>
+    <a href="弹弹球.html">弹弹球</a>
+    <a href="星座.html">星座</a>
+  </nav>
+  <script src="hub-nav.js?v=5"></script>
+
+  <div id="app">
+    <header id="marble-hud">
+      <h1>弹弹球</h1>
+      <p class="hint" id="marble-hint">台面撞彩珠得合成币 · 点「合成台」在格子里合成</p>
+      <div id="marble-stats">
+        <span>合成币 <b id="stat-coins">0</b><small id="coin-progress">/100</small></span>
+        <span>碰撞 <b id="stat-hits">0</b></span>
+        <span>紫球 <b id="stat-purples">0</b></span>
+      </div>
+      <button type="button" id="btn-craft">合成台</button>
+      <button type="button" id="btn-reset">重摆</button>
+    </header>
+    <div id="marble-stage">
+      <canvas id="marble-canvas" aria-label="弹弹球台面"></canvas>
+      <p id="merge-toast" hidden aria-live="polite"></p>
+    </div>
+  </div>
+
+  <div id="craft-overlay" class="craft-overlay" hidden>
+    <div class="craft-panel" role="dialog" aria-labelledby="craft-title" aria-modal="true">
+      <header class="craft-head">
+        <h2 id="craft-title">合成台</h2>
+        <p class="craft-sub">6 行 × 16 格 · 满 100 合成币自动放入粉球 · 粉+粉→蓝 · 蓝+蓝→紫</p>
+        <div class="craft-meta">
+          <span>合成币 <b id="craft-coins">0</b>/100</span>
+          <button type="button" id="btn-claim-pink">领一颗粉球 (−100)</button>
+          <button type="button" id="btn-craft-close">收起</button>
+        </div>
+      </header>
+      <div id="craft-grid" class="craft-grid" aria-label="合成格子"></div>
+    </div>
+  </div>
+
+  <script src="marble-game/game.js?v=12"></script>
+  <script src="marble-game/craft-grid.js?v=12"></script>
+</body>
+</html>

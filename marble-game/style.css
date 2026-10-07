@@ -1,0 +1,257 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --hub-nav-h: 48px;
+  --text: #3e2723;
+  --muted: #795548;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  font-family: "PingFang SC", system-ui, sans-serif;
+  background: #5d4037;
+  color: var(--text);
+  touch-action: none;
+  user-select: none;
+}
+
+#app {
+  height: calc(100dvh - var(--hub-nav-h, 48px));
+  display: flex;
+  flex-direction: column;
+}
+
+#marble-hud {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(255, 248, 240, 0.95);
+  border-bottom: 2px solid rgba(141, 110, 99, 0.35);
+}
+
+#marble-hud h1 {
+  font-size: 16px;
+  font-weight: 800;
+  color: #bf360c;
+}
+
+#marble-hud .hint {
+  font-size: 12px;
+  color: var(--muted);
+  flex: 1;
+  text-align: center;
+}
+
+#marble-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+#marble-stats small {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+#btn-craft {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 2px solid #7e57c2;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  color: #5e35b1;
+  cursor: pointer;
+}
+
+#btn-craft.on {
+  background: #7e57c2;
+  color: #fff;
+  border-color: #4527a0;
+}
+
+#btn-reset {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 2px solid #8d6e63;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  color: #5d4037;
+  cursor: pointer;
+}
+
+#marble-stage {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+}
+
+#marble-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#merge-toast {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  padding: 10px 18px;
+  border-radius: 14px;
+  background: rgba(230, 81, 0, 0.92);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  pointer-events: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+#merge-toast[hidden] {
+  display: none !important;
+}
+
+.craft-overlay {
+  position: fixed;
+  inset: var(--hub-nav-h, 48px) 0 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background: rgba(62, 39, 35, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+.craft-overlay[hidden] {
+  display: none !important;
+}
+
+.craft-panel {
+  width: min(100%, 720px);
+  max-height: calc(100dvh - var(--hub-nav-h, 48px) - 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 14px 14px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #fff8f0 0%, #ffe0b2 100%);
+  border: 3px solid #8d6e63;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.craft-head h2 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #bf360c;
+}
+
+.craft-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+  line-height: 1.35;
+}
+
+.craft-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.craft-meta button {
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 2px solid #7e57c2;
+  background: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  color: #5e35b1;
+  cursor: pointer;
+}
+
+.craft-meta button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+#btn-craft-close {
+  border-color: #8d6e63 !important;
+  color: #5d4037 !important;
+  margin-left: auto;
+}
+
+.craft-grid {
+  display: grid;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  grid-template-rows: repeat(6, minmax(0, 1fr));
+  gap: 3px;
+  flex: 1;
+  min-height: 140px;
+  max-height: min(52vh, 320px);
+  padding: 6px;
+  border-radius: 12px;
+  background: rgba(141, 110, 99, 0.25);
+  touch-action: none;
+}
+
+.craft-cell {
+  aspect-ratio: 1;
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid rgba(93, 64, 55, 0.35);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.craft-cell.has-marble {
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+.cell-marble {
+  width: 78%;
+  height: 78%;
+  border-radius: 50%;
+  box-shadow:
+    inset -2px -3px 6px rgba(0, 0, 0, 0.2),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.7),
+    0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.cell-marble.pink {
+  background: radial-gradient(circle at 32% 28%, #fff 0%, #ffc1e3 35%, #ff6b9d 100%);
+}
+
+.cell-marble.blue {
+  background: radial-gradient(circle at 32% 28%, #e3f2fd 0%, #42a5f5 45%, #1565c0 100%);
+}
+
+.cell-marble.purple {
+  background: radial-gradient(circle at 32% 28%, #f3e5f5 0%, #ab47bc 45%, #6a1b9a 100%);
+}
