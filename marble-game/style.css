@@ -234,6 +234,26 @@ body {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
 }
 
+.craft-cell.selected {
+  outline: 2px solid #e65100;
+  outline-offset: 1px;
+  z-index: 1;
+}
+
+.craft-selected {
+  font-size: 11px;
+  font-weight: 700;
+  color: #5d4037;
+  flex: 1;
+  min-width: 120px;
+}
+
+#btn-craft-use {
+  border-color: #e65100 !important;
+  color: #bf360c !important;
+  background: #fff3e0 !important;
+}
+
 .cell-marble {
   width: 78%;
   height: 78%;
@@ -254,4 +274,16 @@ body {
 
 .cell-marble.purple {
   background: radial-gradient(circle at 32% 28%, #f3e5f5 0%, #ab47bc 45%, #6a1b9a 100%);
+}
+
+.cell-marble.green {
+  background: radial-gradient(circle at 32% 28%, #e8f5e9 0%, #66bb6a 45%, #2e7d32 100%);
+}
+
+.cell-marble.white {
+  background: radial-gradient(circle at 32% 28%, #fff 0%, #eeeeee 40%, #bdbdbd 100%);
+}
+
+.cell-marble.black {
+  background: radial-gradient(circle at 32% 28%, #757575 0%, #424242 50%, #212121 100%);
 }

@@ -13,6 +13,7 @@ const MarbleGame = {
   hits: 0,
   shots: 0,
   craftCoins: 0,
+  equippedPlayerTier: 'pink',
   playerSpawn: { x: 400, y: 442 },
   _pairCooldown: new Map(),
   _pointerId: null,
@@ -21,6 +22,10 @@ const MarbleGame = {
     player: ['#ff6b9d', '#ffc1e3', '#ffffff'],
     pink: ['#ff6b9d', '#ffc1e3', '#ffffff'],
     blue: ['#42a5f5', '#1565c0', '#e3f2fd'],
+    purple: ['#ab47bc', '#6a1b9a', '#f3e5f5'],
+    green: ['#66bb6a', '#2e7d32', '#e8f5e9'],
+    white: ['#fafafa', '#bdbdbd', '#ffffff'],
+    black: ['#424242', '#212121', '#9e9e9e'],
     targets: [
       ['#4fc3f7', '#0288d1', '#e1f5fe'],
       ['#aed581', '#689f38', '#f1f8e9'],
@@ -83,7 +88,7 @@ const MarbleGame = {
       }));
     });
     this.separateOverlaps(8);
-    this.spawnPlayer();
+    this.equipPlayerTier(this.equippedPlayerTier || 'pink', false);
     this.separateOverlaps(6);
     this.updateHud();
     this.syncCraftUi();
@@ -93,22 +98,61 @@ const MarbleGame = {
     return m.mass ?? m.r * m.r;
   },
 
+  CRAFT_USE_TIERS: {
+    blue: { r: 22, powerMult: 1.05, powerCap: 500, label: '蓝球' },
+    purple: { r: 26, powerMult: 1.22, powerCap: 540, label: '紫球' },
+    green: { r: 30, powerMult: 1.42, powerCap: 600, label: '绿球' },
+    white: { r: 34, powerMult: 1.65, powerCap: 660, label: '白球' },
+    black: { r: 38, powerMult: 1.92, powerCap: 720, label: '黑球' },
+  },
+
   spawnPlayer() {
-    const p = this.player();
-    if (p) {
-      p.x = this.playerSpawn.x;
-      p.y = this.playerSpawn.y;
-      p.vx = 0;
-      p.vy = 0;
-      return p;
+    return this.equipPlayerTier('pink', true);
+  },
+
+  equipPlayerTier(tier, atSpawnOnly) {
+    const isDefaultPink = tier === 'pink' || !tier;
+    const spec = isDefaultPink
+      ? { r: 20, powerMult: 0.78, powerCap: 380, label: '粉球', palette: this.colors.player }
+      : { ...this.CRAFT_USE_TIERS[tier], palette: this.colors[tier] };
+
+    if (!spec.palette && !isDefaultPink) return this.spawnPlayer();
+
+    const existing = this.player();
+    if (atSpawnOnly && existing && existing.tier === 'pink' && isDefaultPink) {
+      existing.x = this.playerSpawn.x;
+      existing.y = this.playerSpawn.y;
+      existing.vx = 0;
+      existing.vy = 0;
+      return existing;
     }
-    const pl = this.makeMarble(this.playerSpawn.x, this.playerSpawn.y, 20, this.colors.player, {
+
+    if (existing) {
+      this.marbles = this.marbles.filter(m => m.id !== existing.id);
+    }
+
+    const pl = this.makeMarble(this.playerSpawn.x, this.playerSpawn.y, spec.r, spec.palette, {
       kind: 'player',
       isPlayer: true,
+      tier: isDefaultPink ? 'pink' : tier,
+      shotPowerMult: spec.powerMult,
+      shotPowerCap: spec.powerCap,
+      mass: spec.r * spec.r * 1.1,
     });
     this.playerId = pl.id;
     this.marbles.push(pl);
+    this.equippedPlayerTier = isDefaultPink ? 'pink' : tier;
+    this.separateOverlaps(4);
+    if (typeof this.saveCraftGrid === 'function') this.saveCraftGrid();
     return pl;
+  },
+
+  equipPlayerFromCraft(tier) {
+    if (!this.CRAFT_USE_TIERS[tier]) return;
+    this.equipPlayerTier(tier, false);
+    this.updateHud();
+    const label = this.CRAFT_USE_TIERS[tier].label;
+    this.toast(`已使用${label} · 比粉球更大更有劲`);
   },
 
   makeMarble(x, y, r, palette, opts) {
@@ -122,6 +166,9 @@ const MarbleGame = {
       palette,
       kind: opts.kind || 'target',
       isPlayer: !!opts.isPlayer,
+      tier: opts.tier || null,
+      shotPowerMult: opts.shotPowerMult ?? 1,
+      shotPowerCap: opts.shotPowerCap ?? 480,
       mass: opts.mass,
     };
   },
@@ -226,7 +273,9 @@ const MarbleGame = {
       const end = p ? this.screenToWorld(p.x, p.y) : this.screenToWorld(this.aiming.sx, this.aiming.sy);
       const dx = this.aiming.wx - end.x;
       const dy = this.aiming.wy - end.y;
-      const power = Math.min(480, Math.hypot(dx, dy) * 4);
+      const mult = shot.shotPowerMult ?? 1;
+      const cap = shot.shotPowerCap ?? 480;
+      const power = Math.min(cap, Math.hypot(dx, dy) * 4 * mult);
       if (power > 14 && shot) {
         const len = Math.hypot(dx, dy) || 1;
         shot.vx = (dx / len) * power;
@@ -280,8 +329,14 @@ const MarbleGame = {
       if (el) el.textContent = String(val);
     };
     set('stat-hits', this.hits);
-    const purples = (this.craftCells || []).filter(c => c === 'purple').length;
-    set('stat-purples', purples);
+    const blacks = (this.craftCells || []).filter(c => c === 'black').length;
+    set('stat-blacks', blacks);
+    const pl = this.player();
+    const tierEl = document.getElementById('stat-player-tier');
+    if (tierEl && pl) {
+      const names = { pink: '粉', blue: '蓝', purple: '紫', green: '绿', white: '白', black: '黑' };
+      tierEl.textContent = names[pl.tier] || '粉';
+    }
     const c = document.getElementById('stat-coins');
     if (c) c.textContent = String(this.craftCoins);
     const prog = document.getElementById('coin-progress');

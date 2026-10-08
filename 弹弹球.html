@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>弹弹球 · 玻璃珠</title>
   <link rel="stylesheet" href="hub-nav.css?v=5">
-  <link rel="stylesheet" href="marble-game/style.css?v=3">
+  <link rel="stylesheet" href="marble-game/style.css?v=4">
   <script src="anti-ad-shield.js"></script>
 </head>
 <body>
@@ -36,7 +36,8 @@
       <div id="marble-stats">
         <span>合成币 <b id="stat-coins">0</b><small id="coin-progress">/100</small></span>
         <span>碰撞 <b id="stat-hits">0</b></span>
-        <span>紫球 <b id="stat-purples">0</b></span>
+        <span>黑球 <b id="stat-blacks">0</b></span>
+        <span>弹珠 <b id="stat-player-tier">粉</b></span>
       </div>
       <button type="button" id="btn-craft">合成台</button>
       <button type="button" id="btn-reset">重摆</button>
@@ -51,10 +52,12 @@
     <div class="craft-panel" role="dialog" aria-labelledby="craft-title" aria-modal="true">
       <header class="craft-head">
         <h2 id="craft-title">合成台</h2>
-        <p class="craft-sub">6 行 × 16 格 · 满 100 合成币自动放入粉球 · 粉+粉→蓝 · 蓝+蓝→紫</p>
+        <p class="craft-sub">粉+粉→蓝 · 蓝+蓝→紫 · 紫+紫→绿 · 绿+绿→白 · 白+白→黑（紫=红橙黄绿青蓝紫里的紫）</p>
         <div class="craft-meta">
           <span>合成币 <b id="craft-coins">0</b>/100</span>
           <button type="button" id="btn-claim-pink">领一颗粉球 (−100)</button>
+          <span id="craft-selected-label" class="craft-selected">已选：无（点格子选中）</span>
+          <button type="button" id="btn-craft-use">使用到台面</button>
           <button type="button" id="btn-craft-close">收起</button>
         </div>
       </header>
@@ -62,7 +65,7 @@
     </div>
   </div>
 
-  <script src="marble-game/game.js?v=12"></script>
-  <script src="marble-game/craft-grid.js?v=12"></script>
+  <script src="marble-game/game.js?v=16"></script>
+  <script src="marble-game/craft-grid.js?v=16"></script>
 </body>
 </html>
