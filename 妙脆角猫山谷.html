@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="妙脆角猫山谷.html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>妙脆角猫山谷</title>
+  <link rel="stylesheet" href="hub-nav.css?v=5">
+  <link rel="stylesheet" href="cat-valley/style.css?v=39">
+  <script src="anti-ad-shield.js"></script>
+</head>
+<body class="is-cat-valley">
+  <nav class="hub-nav" aria-label="应用导航">
+    <span class="hub-label">去 →</span>
+    <a href="游戏大厅.html">🏠 大厅</a>
+    <a href="造语坊.html" class="hub-lang">🗣️ 造语坊</a>
+    <a href="慢净.html">🪟 慢净</a>
+    <a href="花鱼小院.html">🌸 花鱼小院</a>
+    <a href="bubble-game.html">🫧 解压气泡</a>
+    <a href="静沙.html">🏜 静沙</a>
+    <a href="白噪音台.html">🎧 白噪音</a>
+    <a href="白菜对我笑.html">🥬 白菜</a>
+    <a href="小小实验室.html">🧪 实验室</a>
+    <a href="找不同.html">🔍 找不同</a>
+    <a href="妙脆角猫山谷.html">🐱 猫山谷</a>
+    <a href="脆果厨房.html">脆果厨房</a>
+    <a href="妙脆小猫按钮关.html">按钮关</a>
+  </nav>
+  <script src="hub-nav.js?v=5"></script>
+  <div id="app">
+    <div id="game-stage">
+      <canvas id="valley-canvas" aria-label="雪山谷里的妙脆角猫"></canvas>
+
+      <button type="button" id="valley-season-badge" aria-label="打开背包皮肤栏">
+        <div class="valley-season-row">
+          <span id="valley-season-icon">❄️</span>
+          <span id="valley-season-rank" class="valley-season-rank">S1</span>
+        </div>
+        <span id="valley-season-name">雪绒季</span>
+        <span id="valley-season-skin" class="valley-season-skin">本季 · 银角</span>
+      </button>
+
+      <div id="hud-top">
+        <div id="hud-tools" class="hud-tools">
+          <button type="button" class="tool-btn" id="btn-bag" title="背包">🎒</button>
+          <button type="button" class="tool-btn" id="btn-skins" title="猫皮肤">👗</button>
+          <button type="button" class="tool-btn" id="btn-gacha" title="扭蛋抽皮肤">🎰</button>
+          <button type="button" class="tool-btn" id="btn-berry" title="喂野果">🍇</button>
+          <button type="button" class="tool-btn" id="btn-cuicui" title="喂脆脆果">🔺</button>
+          <button type="button" class="tool-btn" id="btn-hold" title="喂面包">🥐</button>
+          <button type="button" class="tool-btn" id="btn-refill" title="买面包">🛍️</button>
+          <button type="button" class="tool-btn" id="btn-photo" title="拍照">📷</button>
+          <button type="button" class="tool-btn" id="btn-reset" title="回起点">↺</button>
+        </div>
+        <div class="hud-head">
+          <div class="hud-title">🐱 猫山谷</div>
+          <div class="hud-stats">
+            <span>饿 <strong id="stat-hungry">2</strong></span>
+            <span>🥐 <strong id="stat-snacks">6</strong></span>
+            <span>🍇 <strong id="stat-berries">0</strong></span>
+            <span>脆 <strong id="stat-cuicui">0</strong></span>
+            <span>💰 <strong id="stat-coins">50</strong></span>
+            <span>喂 <strong id="stat-fed">0</strong></span>
+            <span>皮 <strong id="stat-skins">1</strong></span>
+            <span id="stat-weather" title="天气">❄️</span>
+          </div>
+        </div>
+      </div>
+
+      <p id="caption-bar">饥饿让幼崽停下脚步</p>
+      <p id="photo-hint" hidden>📷 拍照模式 · 轻触屏幕退出</p>
+
+      <div id="float-control" aria-label="切换控制幼崽">
+        <button type="button" id="btn-paradise" class="paradise-entry-btn" title="进入游乐园">🎡 妙脆角猫游乐园</button>
+        <button type="button" id="btn-treasure" class="treasure-entry-btn" title="进入寻宝屋">📦 妙脆角猫寻宝屋</button>
+        <div class="mode-btn-row">
+          <button type="button" id="btn-chill" class="mode-btn" title="慢游模式">🐾 慢游</button>
+          <button type="button" id="btn-codex" class="mode-btn mode-btn-codex" title="图鉴">📖 图鉴</button>
+        </div>
+        <div id="control-info">
+          <span id="selected-label">控制：大幼崽</span>
+          <div class="control-btns">
+            <button type="button" id="btn-rename" class="mini-btn">改名</button>
+            <button type="button" id="btn-switch" class="mini-btn">换一只</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="float-dpad" aria-label="方向控制">
+        <div id="joystick" aria-label="虚拟摇杆">
+          <div id="joystick-base">
+            <div id="joystick-knob" aria-hidden="true"></div>
+          </div>
+          <span class="joystick-hint">W A S D · 拖动摇杆</span>
+        </div>
+        <div id="immerse-controls" class="immerse-controls">
+          <button type="button" id="btn-immerse" class="immerse-entry-btn" title="隐藏游戏界面，顶栏导航保留">沉浸模式</button>
+          <button type="button" id="btn-immerse-full" class="immerse-full-btn" title="全部隐藏，只剩方向键">全屏消失</button>
+          <button type="button" id="btn-immerse-exit" class="immerse-exit-btn" hidden title="退出沉浸">← 返回</button>
+        </div>
+      </div>
+
+      <div id="float-cat-act" class="float-cat-act" aria-label="猫咪动作">
+        <button type="button" id="btn-act-jump" class="cat-act-btn cat-act-btn-jump" title="空格键">蹦跳</button>
+        <button type="button" id="btn-act-stretch" class="cat-act-btn" title="伸懒腰">伸懒腰</button>
+      </div>
+
+      <div id="gacha-layer" hidden aria-hidden="true">
+        <canvas id="gacha-canvas" aria-label="扭蛋机动画"></canvas>
+      </div>
+
+      <div id="codex-panel" hidden aria-hidden="true">
+        <div class="codex-inner">
+          <h3>📖 图鉴</h3>
+          <div id="codex-list" class="codex-list"></div>
+          <button type="button" id="codex-close" class="bp-close">收起</button>
+        </div>
+      </div>
+
+      <div id="backpack-panel" hidden aria-hidden="true">
+        <div class="bp-inner">
+          <h3>🎒 背包</h3>
+          <div class="bp-stash">
+            <div class="bp-stash-row">
+              <span class="bp-stash-label">🍇 野果</span>
+              <strong id="bp-berry-count" class="bp-stash-num">0</strong>
+              <span class="bp-stash-tip">一丛全算</span>
+            </div>
+            <div class="bp-stash-row">
+              <span class="bp-stash-label">🔺 脆脆果</span>
+              <strong id="bp-cuicui-count" class="bp-stash-num">0</strong>
+              <span class="bp-stash-tip">一颗一个</span>
+            </div>
+            <div class="bp-stash-row">
+              <span class="bp-stash-label">🌴 干枣</span>
+              <strong id="bp-date-count" class="bp-stash-num">0</strong>
+              <button type="button" id="btn-feed-date" class="bp-feed-mini">喂</button>
+            </div>
+            <div class="bp-stash-row">
+              <span class="bp-stash-label">🌲 松果</span>
+              <strong id="bp-cone-count" class="bp-stash-num">0</strong>
+              <button type="button" id="btn-feed-cone" class="bp-feed-mini">喂</button>
+            </div>
+            <div class="bp-stash-row">
+              <span class="bp-stash-label">🍀 三叶草</span>
+              <strong id="bp-clover-count" class="bp-stash-num">0</strong>
+              <button type="button" id="btn-feed-clover" class="bp-feed-mini">喂</button>
+            </div>
+            <div class="bp-stash-row">
+              <span class="bp-stash-label">🌼 桂花</span>
+              <strong id="bp-guihua-count" class="bp-stash-num">0</strong>
+              <button type="button" id="btn-feed-guihua" class="bp-feed-mini">喂</button>
+            </div>
+          </div>
+          <div class="bp-forage">
+            <button type="button" id="btn-pick-berry" class="bp-pick-btn">摘野果</button>
+            <button type="button" id="btn-pick-specialty" class="bp-pick-btn">摘特产</button>
+            <p id="bp-pick-hint" class="bp-pick-hint">野果在这摘 · 脆脆果点树上的黄果子</p>
+          </div>
+          <div id="bp-season-block" class="bp-season-block" hidden>
+            <div class="bp-season-head">
+              <canvas id="bp-season-preview" width="88" height="88" aria-hidden="true"></canvas>
+              <div class="bp-season-text">
+                <strong id="bp-season-title">本季 S 皮肤</strong>
+                <p id="bp-season-desc">—</p>
+                <button type="button" id="btn-equip-season-skin" class="bp-season-wear" hidden tabindex="-1" aria-hidden="true"></button>
+              </div>
+            </div>
+          </div>
+          <p id="bp-cat-hint">🎰 扭蛋可抽 6 款专属皮肤 · 点击下方卡片给幼崽穿戴</p>
+          <div id="bp-grid" class="bp-grid"></div>
+          <button type="button" id="bp-close" class="bp-close">收起</button>
+        </div>
+      </div>
+
+      <div id="intro-card">
+        <div class="intro-inner">
+          <img src="cat-valley/assets/hero.png" alt="妙脆角猫幼崽站在雪地里">
+          <h2>饥饿让幼崽停下脚步</h2>
+          <p>妙脆角猫的耳朵天生是脆角，但肚子饿要吃小面包 🥐。超大世界四片连通：雪谷、深林、暖沙、草原。点左上角<strong>妙脆角猫游乐园</strong>，随时进去蹦床、滑梯、拍照。</p>
+          <button type="button" id="btn-start">走进山谷</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="cat-valley/crispy-palette.js?v=39"></script>
+  <script src="cat-valley/world.js?v=44"></script>
+  <script src="cat-valley/camera.js?v=39"></script>
+  <script src="cat-valley/skins.js?v=39"></script>
+  <script src="cat-valley/art.js?v=43"></script>
+  <script src="cat-valley/weather.js?v=40"></script>
+  <script src="cat-valley/season.js?v=39"></script>
+  <script src="cat-valley/gachapon.js?v=39"></script>
+  <script src="cat-valley/treasure.js?v=39"></script>
+  <script src="cat-valley/secret.js?v=39"></script>
+  <script src="cat-valley/codex.js?v=40"></script>
+  <script src="cat-valley/backpack.js?v=39"></script>
+  <script src="cat-valley/paradise.js?v=39"></script>
+  <script src="cat-valley/game.js?v=48"></script>
+</body>
+</html>

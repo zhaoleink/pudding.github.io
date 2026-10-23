@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="星座.html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>星座连线</title>
+  <link rel="stylesheet" href="hub-nav.css?v=5">
+  <link rel="stylesheet" href="constellation-game/style.css?v=1">
+  <script src="anti-ad-shield.js"></script>
+</head>
+<body>
+  <nav class="hub-nav" aria-label="应用导航">
+    <span class="hub-label">去 →</span>
+    <a href="游戏大厅.html">大厅</a>
+    <a href="造语坊.html" class="hub-lang">造语坊</a>
+    <a href="慢净.html">慢净</a>
+    <a href="花鱼小院.html">花鱼小院</a>
+    <a href="bubble-game.html">解压气泡</a>
+    <a href="静沙.html">静沙</a>
+    <a href="白噪音台.html">白噪音</a>
+    <a href="白菜对我笑.html">白菜</a>
+    <a href="小小实验室.html">实验室</a>
+    <a href="找不同.html">找不同</a>
+    <a href="妙脆角猫山谷.html">猫山谷</a>
+    <a href="脆果厨房.html">脆果厨房</a>
+    <a href="妙脆小猫按钮关.html">按钮关</a>
+    <a href="弹弹球.html">弹弹球</a>
+    <a href="星座.html">星座</a>
+  </nav>
+  <script src="hub-nav.js?v=5"></script>
+
+  <div id="app">
+    <header id="star-hud">
+      <h1 id="level-title">北斗七星</h1>
+      <p class="hint" id="level-hint">按顺序点星连线</p>
+      <span id="level-progress">0 / 7</span>
+      <div class="actions">
+        <button type="button" id="btn-hint">提示</button>
+        <button type="button" id="btn-skip">换一个</button>
+      </div>
+    </header>
+    <div id="star-stage">
+      <canvas id="star-canvas" aria-label="星空连线"></canvas>
+      <p id="star-toast" role="status"></p>
+      <div id="star-win">
+        <div class="win-card">
+          <h2 id="win-title">连好了</h2>
+          <p id="win-msg"></p>
+          <button type="button" id="btn-next">下一幅星座</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="constellation-game/game.js?v=3"></script>
+</body>
+</html>

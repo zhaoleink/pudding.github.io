@@ -254,6 +254,12 @@ body {
   background: #fff3e0 !important;
 }
 
+#btn-craft-store {
+  border-color: #1565c0 !important;
+  color: #0d47a1 !important;
+  background: #e3f2fd !important;
+}
+
 .cell-marble {
   width: 78%;
   height: 78%;
@@ -286,4 +292,84 @@ body {
 
 .cell-marble.black {
   background: radial-gradient(circle at 32% 28%, #757575 0%, #424242 50%, #212121 100%);
+}
+
+.marble-mini-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 12;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 8px;
+  border: 2px solid #1565c0;
+  background: linear-gradient(180deg, #e3f2fd 0%, #90caf9 100%);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  color: #0d47a1;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(13, 71, 161, 0.3);
+  touch-action: manipulation;
+}
+
+.marble-mini-btn.on {
+  background: #1565c0;
+  color: #fff;
+  border-color: #0d47a1;
+}
+
+.marble-mini-btn:active {
+  transform: scale(0.94);
+}
+
+.bc-mini-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 52px 8px 8px;
+  background: rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+}
+
+.bc-mini-overlay:not([hidden]) {
+  pointer-events: auto;
+}
+
+.bc-mini-overlay[hidden] {
+  display: none !important;
+}
+
+.bc-mini-shell {
+  display: flex;
+  flex-direction: column;
+  width: min(92vw, 320px);
+  height: min(48vh, 360px);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #263238;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+}
+
+.bc-mini-close {
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  border: none;
+  border-bottom: 1px solid #37474f;
+  background: #37474f;
+  font-size: 13px;
+  font-weight: 800;
+  color: #eceff1;
+  cursor: pointer;
+}
+
+.bc-mini-shell iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: #1a237e;
 }

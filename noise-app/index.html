@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="白噪音台.html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>白噪音台</title>
+  <link rel="stylesheet" href="../hub-nav.css?v=5">
+  <link rel="stylesheet" href="style.css">
+  <script src="../anti-ad-shield.js"></script>
+</head>
+<body>
+  <nav class="hub-nav hub-nav-dark" aria-label="应用导航">
+    <span class="hub-label">去 →</span>
+    <a href="../游戏大厅.html">🏠 大厅</a>
+    <a href="../白菜对我笑.html">🥬 白菜</a>
+    <a href="../造语坊.html" class="hub-lang">🗣️ 造语坊</a>
+    <a href="../慢净.html">🪟 慢净</a>
+    <a href="../花鱼小院.html">🌸 花鱼小院</a>
+    <a href="../bubble-game.html">🫧 解压气泡</a>
+    <a href="../静沙.html">🏜 静沙</a>
+    <a href="../白噪音台.html">🎧 白噪音</a>
+    <a href="../小小实验室.html">🧪 实验室</a>
+    <a href="../找不同.html">🔍 找不同</a>
+    <a href="../妙脆角猫山谷.html">🐱 猫山谷</a>
+      <a href="../脆果厨房.html">脆果厨房</a>
+    <a href="../妙脆小猫按钮关.html">按钮关</a>
+</nav>
+  <script src="../hub-nav.js?v=5"></script>
+
+  <div id="ambient-bg" aria-hidden="true"></div>
+
+  <div id="app">
+    <header id="topbar">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">🎧</span>
+        <div>
+          <h1>白噪音台</h1>
+          <p>几种声音 · 慢慢叠</p>
+        </div>
+      </div>
+      <button type="button" id="play-btn">▶ 播放</button>
+    </header>
+
+    <main id="main">
+      <p class="hint">先点场景一键混音 · 或自己勾选单轨叠在一起</p>
+      <div id="status-line"></div>
+      <p class="section-label">🎬 场景（一键混好几种）</p>
+      <div id="scene-row" class="scene-row"></div>
+      <p class="section-label">🎚 单轨（共 15 种）</p>
+      <div id="cat-row" class="cat-row"></div>
+      <div id="sound-grid" class="sound-grid"></div>
+
+      <div class="panel">
+        <h2>🔊 总音量</h2>
+        <div class="row">
+          <label for="master-vol">主音量</label>
+          <input type="range" id="master-vol" min="0" max="100" value="70">
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>⏱ 定时关闭</h2>
+        <div class="timer-chips">
+          <button type="button" class="timer-chip active" data-min="0">不限</button>
+          <button type="button" class="timer-chip" data-min="15">15 分</button>
+          <button type="button" class="timer-chip" data-min="30">30 分</button>
+          <button type="button" class="timer-chip" data-min="45">45 分</button>
+          <button type="button" class="timer-chip" data-min="60">60 分</button>
+        </div>
+        <div id="timer-left"></div>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js?v=4"></script>
+</body>
+</html>

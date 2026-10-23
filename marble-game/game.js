@@ -49,6 +49,7 @@ const MarbleGame = {
       this.resize();
       this.resetBoard(false);
       this.syncCraftUi();
+      this.bindMiniBallCapture();
       requestAnimationFrame(t => this.loop(t));
     } catch (err) {
       console.error(err);
@@ -147,12 +148,22 @@ const MarbleGame = {
     return pl;
   },
 
-  equipPlayerFromCraft(tier) {
+  equipPlayerFromCraft(tier, replacedTier) {
     if (!this.CRAFT_USE_TIERS[tier]) return;
     this.equipPlayerTier(tier, false);
     this.updateHud();
     const label = this.CRAFT_USE_TIERS[tier].label;
-    this.toast(`已使用${label} · 比粉球更大更有劲`);
+    if (
+      replacedTier &&
+      replacedTier !== 'pink' &&
+      replacedTier !== tier &&
+      this.CRAFT_USE_TIERS[replacedTier]
+    ) {
+      const back = this.CRAFT_USE_TIERS[replacedTier].label;
+      this.toast(`已换上${label}，${back}回到合成台`);
+    } else {
+      this.toast(`已使用${label} · 比粉球更大更有劲`);
+    }
   },
 
   makeMarble(x, y, r, palette, opts) {
@@ -278,6 +289,7 @@ const MarbleGame = {
       const power = Math.min(cap, Math.hypot(dx, dy) * 4 * mult);
       if (power > 14 && shot) {
         const len = Math.hypot(dx, dy) || 1;
+        this.resetChainMarks();
         shot.vx = (dx / len) * power;
         shot.vy = (dy / len) * power;
         this.shots += 1;
@@ -347,18 +359,45 @@ const MarbleGame = {
     return a.id < b.id ? `${a.id}:${b.id}` : `${b.id}:${a.id}`;
   },
 
+  resetChainMarks() {
+    for (const m of this.marbles) {
+      if (m.kind === 'target') m._inChain = false;
+    }
+  },
+
+  awardHit() {
+    this.hits += 1;
+    this.addCraftCoins(this.COIN_PER_HIT);
+  },
+
   registerHit(a, b, impulse) {
     if (impulse < 0.8) return;
     const key = this.pairKey(a, b);
     const now = performance.now();
     if (this._pairCooldown.get(key) > now) return;
     this._pairCooldown.set(key, now + 280);
-    const playerHit = a.isPlayer || b.isPlayer;
-    const other = a.isPlayer ? b : a;
-    if (playerHit && other.kind === 'target') {
-      this.hits += 1;
-      this.addCraftCoins(this.COIN_PER_HIT);
+
+    let scored = null;
+    if (a.isPlayer && b.kind === 'target') {
+      b._inChain = true;
+      scored = b;
+    } else if (b.isPlayer && a.kind === 'target') {
+      a._inChain = true;
+      scored = a;
+    } else if (a.kind === 'target' && b.kind === 'target') {
+      if (a._inChain && !b._inChain) {
+        b._inChain = true;
+        scored = b;
+      } else if (b._inChain && !a._inChain) {
+        a._inChain = true;
+        scored = a;
+      } else if (a._inChain && b._inChain) {
+        const pa = Math.hypot(a.vx, a.vy);
+        const pb = Math.hypot(b.vx, b.vy);
+        scored = pa <= pb ? a : b;
+      }
     }
+    if (scored) this.awardHit();
   },
 
   step(dt) {
@@ -527,6 +566,44 @@ const MarbleGame = {
       console.error(err);
     }
     requestAnimationFrame(t => this.loop(t));
+  },
+
+  bindMiniBallCapture() {
+    const btn = document.getElementById('btn-mini-ball-capture');
+    const overlay = document.getElementById('bc-mini-overlay');
+    const closeBtn = document.getElementById('bc-mini-close');
+    const frame = document.getElementById('bc-mini-frame');
+    if (!btn || !overlay || !closeBtn || !frame) return;
+
+    const open = () => {
+      if (!frame.src || frame.src === 'about:blank') {
+        frame.src = '小球棋.html?embed=1';
+      }
+      overlay.hidden = false;
+      overlay.setAttribute('aria-hidden', 'false');
+      btn.classList.add('on');
+    };
+    const close = () => {
+      overlay.hidden = true;
+      overlay.setAttribute('aria-hidden', 'true');
+      btn.classList.remove('on');
+    };
+
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      if (!overlay.hidden) close();
+      else open();
+    });
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) close();
+    });
+
+    window.addEventListener('message', e => {
+      if (e.data?.type !== 'bc-win') return;
+      close();
+      frame.src = 'about:blank';
+    });
   },
 };
 

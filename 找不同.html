@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="找不同.html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>找不同 · 慢慢对</title>
+  <link rel="stylesheet" href="hub-nav.css?v=5">
+  <link rel="stylesheet" href="diff-game/style.css">
+  <script src="anti-ad-shield.js"></script>
+</head>
+<body>
+  <nav class="hub-nav" aria-label="应用导航">
+    <span class="hub-label">去 →</span>
+    <a href="游戏大厅.html">🏠 大厅</a>
+    <a href="造语坊.html" class="hub-lang">🗣️ 造语坊</a>
+    <a href="慢净.html">🪟 慢净</a>
+    <a href="花鱼小院.html">🌸 花鱼小院</a>
+    <a href="bubble-game.html">🫧 解压气泡</a>
+    <a href="静沙.html">🏜 静沙</a>
+    <a href="白噪音台.html">🎧 白噪音</a>
+    <a href="白菜对我笑.html">🥬 白菜</a>
+    <a href="小小实验室.html">🧪 实验室</a>
+    <a href="找不同.html">🔍 找不同</a>
+      <a href="妙脆角猫山谷.html">🐱 猫山谷</a>
+    <a href="脆果厨房.html">脆果厨房</a>
+    <a href="妙脆小猫按钮关.html">按钮关</a>
+</nav>
+
+  <script src="hub-nav.js?v=5"></script>
+  <div id="app">
+    <header id="topbar">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">🔍</span>
+        <div>
+          <h1>找不同</h1>
+          <p>慢慢对 · 无计时</p>
+        </div>
+      </div>
+      <div id="topbar-actions">
+        找齐<br><strong id="stat-done">0</strong> 组
+      </div>
+    </header>
+
+    <div id="tip-banner">
+      <p id="tip-speech">上下两图 almost 一样……找出不一样的地方，点一下。</p>
+    </div>
+
+    <section id="level-picker">
+      <div class="picker-head">
+        <h2>📍 选一组图</h2>
+        <button type="button" id="btn-toggle-picker">收起 / 展开</button>
+      </div>
+      <div id="level-chips"></div>
+    </section>
+
+    <section id="play-area">
+      <div id="scene-head">
+        <span id="scene-title">花鱼小院</span>
+        <span id="scene-progress">0 / 5</span>
+      </div>
+      <div id="panels-wrap">
+        <div id="panels">
+          <div class="panel-row">
+            <span class="panel-label">上图</span>
+            <canvas id="canvas-left" class="diff-canvas" aria-label="上图"></canvas>
+          </div>
+          <div class="panel-row">
+            <span class="panel-label">下图</span>
+            <canvas id="canvas-right" class="diff-canvas" aria-label="下图"></canvas>
+          </div>
+        </div>
+        <div id="marker-layer" aria-hidden="true"></div>
+        <div id="complete-overlay">
+          <span class="big">🎉</span>
+          <p>这一组全部找齐啦！</p>
+          <button type="button" id="btn-next">继续</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="toolbar">
+      <button type="button" class="tool-btn" id="btn-hint">
+        <span class="ico">👀</span>
+        提示 (<span id="stat-hints">3</span>)
+      </button>
+      <button type="button" class="tool-btn" id="btn-reset">
+        <span class="ico">↺</span>
+        重找这一组
+      </button>
+    </div>
+
+    <p class="foot-note">
+      累计找到 <strong id="stat-found">0</strong> 处不同 · 点任意一张图里<strong>不一样</strong>的位置 · 没有倒计时
+    </p>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="diff-game/art.js"></script>
+  <script src="diff-game/game.js?v=2"></script>
+</body>
+</html>

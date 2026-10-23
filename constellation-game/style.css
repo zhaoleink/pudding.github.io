@@ -1,0 +1,149 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --hub-nav-h: 48px;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  font-family: "PingFang SC", system-ui, sans-serif;
+  background: #0a0e1a;
+  color: #e8eaf6;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+#app {
+  height: calc(100dvh - var(--hub-nav-h, 48px));
+  display: flex;
+  flex-direction: column;
+}
+
+#star-hud {
+  flex: 0 0 auto;
+  padding: 10px 14px;
+  background: rgba(15, 20, 40, 0.92);
+  border-bottom: 1px solid rgba(129, 212, 250, 0.2);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+#star-hud h1 {
+  font-size: 17px;
+  font-weight: 800;
+  color: #81d4fa;
+}
+
+#star-hud .hint {
+  flex: 1;
+  min-width: 140px;
+  font-size: 12px;
+  color: rgba(200, 220, 255, 0.75);
+}
+
+#star-hud .actions {
+  display: flex;
+  gap: 8px;
+}
+
+#star-hud button {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(129, 212, 250, 0.45);
+  background: rgba(255, 255, 255, 0.06);
+  color: #b3e5fc;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#star-stage {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+#star-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#star-toast {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  transform: translateX(-50%);
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+#star-toast.show {
+  opacity: 1;
+}
+
+#star-win {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 8, 20, 0.55);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+
+#star-win.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.win-card {
+  text-align: center;
+  padding: 24px 28px;
+  border-radius: 20px;
+  background: linear-gradient(160deg, #1a237e, #0d1642);
+  border: 2px solid rgba(129, 212, 250, 0.35);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+.win-card h2 {
+  font-size: 22px;
+  color: #fff59d;
+  margin-bottom: 8px;
+}
+
+.win-card p {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 16px;
+}
+
+.win-card button {
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: none;
+  background: #29b6f6;
+  color: #01579b;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}

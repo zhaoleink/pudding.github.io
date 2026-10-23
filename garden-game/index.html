@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="花鱼小院.html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>花鱼小院</title>
+  <link rel="stylesheet" href="../hub-nav.css?v=5">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="hub-nav" aria-label="应用导航">
+    <span class="hub-label">去 →</span>
+    <a href="../游戏大厅.html">🏠 大厅</a>
+    <a href="../造语坊.html" class="hub-lang">🗣️ 造语坊</a>
+    <a href="../慢净.html">🪟 慢净</a>
+    <a href="index.html">🌸 花鱼小院</a>
+    <a href="../bubble-game.html">🫧 解压气泡</a>
+    <a href="../静沙.html">🏜 静沙</a>
+    <a href="../白噪音台.html">🎧 白噪音</a>
+    <a href="../白菜对我笑.html">🥬 白菜</a>
+    <a href="../小小实验室.html">🧪 实验室</a>
+      <a href="../找不同.html">🔍 找不同</a>
+    <a href="../妙脆角猫山谷.html">🐱 猫山谷</a>
+    <a href="../脆果厨房.html">脆果厨房</a>
+    <a href="../妙脆小猫按钮关.html">按钮关</a>
+</nav>
+  <script src="../hub-nav.js?v=5"></script>
+  <div id="boot-error" hidden></div>
+  <div id="app">
+    <header id="topbar">
+      <div class="topbar-row">
+        <div class="topbar-left">
+          <button type="button" id="topbar-manor-btn" class="topbar-manor-btn" data-tab="manor" aria-label="庄园总览">
+            <span id="topbar-manor-preview" class="topbar-manor-preview" aria-hidden="true"></span>
+            <span class="topbar-manor-label">庄园</span>
+          </button>
+          <div class="brand">
+            <span class="brand-icon" id="brand-icon"></span>
+            <div>
+              <h1>花鱼小院</h1>
+              <p id="subtitle">从一粒种子，到一池清波</p>
+            </div>
+          </div>
+        </div>
+        <div class="wallet">
+          <span id="coin-val" class="wallet-line"><span id="coin-icon"></span><span id="coin-num">0</span></span>
+          <span id="dew-val" class="wallet-line"><span id="dew-icon"></span><span id="dew-num">0</span></span>
+        </div>
+      </div>
+      <div class="sound-bar" aria-label="声音设置">
+        <button type="button" id="btn-music-toggle" class="sound-toggle on" title="流水背景声" aria-pressed="true">💧 流水声 · 开</button>
+        <button type="button" id="btn-sfx-toggle" class="sound-toggle on" title="游戏音效" aria-pressed="true">🔊 游戏音效 · 开</button>
+        <button type="button" id="btn-layout-mode" class="sound-toggle" title="暂停时间，专注布置庄园">🪑 布置模式</button>
+      </div>
+    </header>
+
+    <section id="daily-commission" class="daily-commission" hidden aria-label="今日委托"></section>
+
+    <section id="seed-quest" class="seed-quest" hidden aria-label="开种子铺任务">
+      <div class="seed-quest-head">
+        <span class="seed-quest-emoji" aria-hidden="true">🌰</span>
+        <div class="seed-quest-head-text">
+          <h2 class="seed-quest-title">开种子铺 · 买稀有种子</h2>
+          <p id="seed-quest-now" class="seed-quest-now">现在就做：种花、浇水，成熟后点一下收获</p>
+        </div>
+        <button type="button" id="seed-quest-go" class="seed-quest-go" hidden>去花房卖货 →</button>
+      </div>
+      <div class="seed-quest-track">
+        <div class="seed-quest-step" id="seed-quest-step1">
+          <span class="seed-quest-step-label">① 花园收获 3 次</span>
+          <div class="seed-quest-bar" aria-hidden="true"><div id="seed-quest-bar1" class="seed-quest-fill"></div></div>
+          <span id="seed-quest-num1" class="seed-quest-num">0/3</span>
+        </div>
+        <span class="seed-quest-arrow" aria-hidden="true">→</span>
+        <div class="seed-quest-step" id="seed-quest-step2">
+          <span class="seed-quest-step-label">② 花房卖给客人 10 次</span>
+          <div class="seed-quest-bar" aria-hidden="true"><div id="seed-quest-bar2" class="seed-quest-fill"></div></div>
+          <span id="seed-quest-num2" class="seed-quest-num">0/10</span>
+        </div>
+        <span class="seed-quest-arrow" aria-hidden="true">→</span>
+        <div class="seed-quest-step seed-quest-step-target" id="seed-quest-step3">
+          <span class="seed-quest-step-label">③ 点上方「种子铺」</span>
+          <span class="seed-quest-tab-hint">第二排黄色按钮</span>
+        </div>
+      </div>
+    </section>
+
+    <nav id="tabs-wrap">
+      <div id="tabs" class="tabs-row">
+        <button type="button" class="tab active" data-tab="garden">花园</button>
+        <button type="button" class="tab" data-tab="pond" id="tab-pond" disabled>鱼池</button>
+        <button type="button" class="tab tab-insect" data-tab="insect" id="tab-insect">
+          <span class="tab-icon" id="tab-insect-icon"></span>
+          <span class="tab-label">昆虫</span>
+        </button>
+        <button type="button" class="tab tab-dew" data-tab="dew" id="tab-dew" disabled>
+          <span class="tab-icon" id="tab-dew-icon"></span>
+          <span class="tab-label">露水</span>
+        </button>
+        <button type="button" class="tab tab-shop" data-tab="shop" id="tab-shop" disabled>
+          <span class="tab-icon" id="tab-shop-icon"></span>
+          <span class="tab-label">花房</span>
+        </button>
+      </div>
+      <div id="tabs-sub" class="tabs-row">
+        <button type="button" class="tab tab-bugcatch" data-tab="bugcatch" id="tab-bugcatch" disabled>
+          <span class="tab-icon" id="tab-bugcatch-icon"></span>
+          <span class="tab-label">捉虫</span>
+        </button>
+        <button type="button" class="tab tab-seedshop" data-tab="seedshop" id="tab-seedshop" disabled>
+          <span class="tab-icon" id="tab-seedshop-icon"></span>
+          <span class="tab-label">种子铺</span>
+        </button>
+        <button type="button" class="tab tab-bird" data-tab="bird" id="tab-bird" disabled>
+          <span class="tab-icon" id="tab-bird-icon"></span>
+          <span class="tab-label">鸟架</span>
+        </button>
+        <button type="button" class="tab tab-rain" data-tab="rain" id="tab-rain" disabled>
+          <span class="tab-icon" id="tab-rain-icon"></span>
+          <span class="tab-label">雨棚</span>
+        </button>
+        <button type="button" class="tab tab-fruitshop" data-tab="fruitshop" id="tab-fruitshop" disabled>
+          <span class="tab-icon" id="tab-fruitshop-icon"></span>
+          <span class="tab-label">水果铺</span>
+        </button>
+      </div>
+      <div id="tabs-extra" class="tabs-row">
+        <button type="button" class="tab tab-compost" data-tab="compost" id="tab-compost" disabled>
+          <span class="tab-icon" id="tab-compost-icon"></span>
+          <span class="tab-label">堆肥</span>
+        </button>
+        <button type="button" class="tab tab-mushroom" data-tab="mushroom" id="tab-mushroom" disabled>
+          <span class="tab-icon" id="tab-mushroom-icon"></span>
+          <span class="tab-label">蘑菇</span>
+        </button>
+        <button type="button" class="tab tab-well" data-tab="well" id="tab-well" disabled>
+          <span class="tab-icon" id="tab-well-icon"></span>
+          <span class="tab-label">小井</span>
+        </button>
+      </div>
+    </nav>
+
+    <main id="panel-garden" class="panel open">
+      <p id="eco-banner" class="eco-banner">🌿 生态：养虫授粉 · 堆肥加速 · 喂饱鱼减饿 · 撒鸟食加成</p>
+      <p id="garden-hint">种花<strong>不花金币</strong> · 先选种子，再点绿色格子</p>
+      <div id="seed-bar"></div>
+      <div id="garden-grid"></div>
+      <button type="button" id="garden-reset-btn" class="garden-reset-btn hidden">花园格子不见了？点这里恢复6块空地</button>
+      <div id="garden-stats">
+        <span id="harvest-count">累计收获 0 次（和能不能种花无关）</span>
+        <span id="pond-unlock-hint">先在花园种花 · 收获赚金币</span>
+      </div>
+      <button type="button" id="garden-help-btn" class="garden-help-btn">需要帮忙？点这里看新手引导</button>
+    </main>
+
+    <main id="panel-pond" class="panel">
+      <p id="pond-hint">买鱼苗放进池里 · 定时喂食 · 鱼会越长越欢</p>
+      <div id="pond-wrap">
+        <div id="pond-water">
+          <div id="pond-plants"></div>
+          <div id="pond-fish-layer"></div>
+          <div id="pond-pellet-layer" aria-hidden="true"></div>
+          <div class="pond-bubble" style="left:12%;animation-delay:0s"></div>
+          <div class="pond-bubble" style="left:38%;animation-delay:-1.4s"></div>
+          <div class="pond-bubble" style="left:72%;animation-delay:-2.2s"></div>
+        </div>
+        <div id="pond-edge"></div>
+      </div>
+      <div id="pond-shop">
+        <button type="button" class="pond-buy" data-fish="goldfish">金鱼 · 30 金币</button>
+        <button type="button" class="pond-buy" data-fish="koi">锦鲤 · 80 金币</button>
+        <button type="button" id="pond-feed-btn">喂食全体 · 5 金币</button>
+      </div>
+      <div id="pond-fish-list"></div>
+    </main>
+
+    <main id="panel-insect" class="panel">
+      <p id="insect-hint">叶丛一开始送 3 枝免费阔叶 · 再买枝从边缘插进来 · 点枝头买小虫</p>
+      <div id="insect-habitat-bar">
+        <button type="button" class="insect-pick selected" data-habitat="leaf">
+          <span class="insect-pick-icon" data-habitat-icon="leaf"></span>
+          <span>阔叶</span>
+          <em>15 金币</em>
+        </button>
+        <button type="button" class="insect-pick" data-habitat="branch">
+          <span class="insect-pick-icon" data-habitat-icon="branch"></span>
+          <span>细枝</span>
+          <em>22 金币</em>
+        </button>
+        <button type="button" id="insect-add-leaf-btn" class="insect-add-btn">从边缘插一枝</button>
+      </div>
+      <div id="insect-buy-bar">
+        <button type="button" class="insect-buy selected" data-insect="ladybug">
+          <span class="insect-buy-icon" data-insect-icon="ladybug"></span>
+          <span>瓢虫</span>
+          <em>25</em>
+        </button>
+        <button type="button" class="insect-buy" data-insect="butterfly">
+          <span class="insect-buy-icon" data-insect-icon="butterfly"></span>
+          <span>蝴蝶</span>
+          <em>48</em>
+        </button>
+        <button type="button" class="insect-buy" data-insect="caterpillar">
+          <span class="insect-buy-icon" data-insect-icon="caterpillar"></span>
+          <span>毛毛虫</span>
+          <em>18</em>
+        </button>
+        <button type="button" class="insect-buy" data-insect="bee">
+          <span class="insect-buy-icon" data-insect-icon="bee"></span>
+          <span>蜜蜂</span>
+          <em>38</em>
+        </button>
+      </div>
+      <div id="insect-patch-wrap">
+        <div id="insect-patch" aria-label="叶丛">
+          <div id="insect-patch-bg"></div>
+          <div id="insect-leaf-layer"></div>
+          <div id="insect-crumb-layer" aria-hidden="true"></div>
+        </div>
+        <div id="insect-patch-edge"></div>
+      </div>
+      <div id="insect-stats">
+        <span id="insect-habitat-count">叶丛里 0 片叶/枝</span>
+        <span id="insect-bug-count">小虫 0 只</span>
+      </div>
+      <button type="button" id="insect-feed-btn">喂食全体 · 4 金币</button>
+      <div id="insect-list"></div>
+    </main>
+
+    <main id="panel-dew" class="panel">
+      <p id="dew-hint">露水从花园收获来 · 在这里凝露、消耗 · 滋养全院</p>
+      <div id="dew-pool-wrap">
+        <div id="dew-pool-scene" aria-label="露水池"></div>
+        <div id="dew-pool-rim"></div>
+      </div>
+      <div id="dew-pool-stats">
+        <span id="dew-pool-level">水池 Lv.0</span>
+        <span id="dew-total-earned">累计获得露水 0</span>
+      </div>
+      <div id="dew-condense-bar">
+        <div id="dew-condense-fill"></div>
+        <span id="dew-condense-label">扩建水池后可自动凝露</span>
+      </div>
+      <div id="dew-actions">
+        <button type="button" id="dew-harvest-all-btn" class="dew-action">收获全场 · 6 露水</button>
+        <button type="button" id="dew-plant-all-btn" class="dew-action">灵露种小花 · 4 露水</button>
+        <button type="button" id="dew-water-all-btn" class="dew-action">灵露浇全场 · 5 露水</button>
+        <button type="button" id="dew-boost-btn" class="dew-action">催露生长 · 8 露水</button>
+        <button type="button" id="dew-nourish-btn" class="dew-action">滋养鱼虫 · 4 露水</button>
+        <button type="button" id="dew-upgrade-btn" class="dew-action dew-action-upgrade">扩建水池 · 12 露水</button>
+      </div>
+      <p id="dew-actions-desc">收获全场=一次收完成熟 · 灵露种全场=按花园所选种子 · 灵露浇全场=花园全浇</p>
+    </main>
+
+    <main id="panel-shop" class="panel">
+      <p id="shop-hint">花园收获会入库 · 客人上门 · 有货点「卖给客人」· 累计卖 10 次开种子铺</p>
+      <div id="shop-wrap">
+        <div id="shop-scene" aria-label="花房"></div>
+        <div id="shop-guest-layer" aria-hidden="true"></div>
+        <div id="shop-counter"></div>
+      </div>
+      <div id="shop-stock-bar">
+        <span id="shop-flower-stock-wrap">小花 <strong id="shop-flower-stock">0</strong> 朵</span>
+        <span id="shop-tree-stock-wrap">小树 <strong id="shop-tree-stock">0</strong> 棵</span>
+      </div>
+      <div id="shop-visitor-card">
+        <div id="shop-visitor-status">等待客人上门…</div>
+        <div id="shop-visitor-order">有花材时客人才会买</div>
+        <button type="button" id="shop-serve-btn" class="shop-serve-btn" disabled>卖给客人</button>
+      </div>
+      <p id="shop-sold-total">累计售出 0 次 · 距种子铺还差 10 次</p>
+    </main>
+
+    <main id="panel-bugcatch" class="panel">
+      <p id="bugcatch-hint">30 秒限时 · 虫会在草里飞、爬、跳 · 点一只 +3 金币</p>
+      <div id="bugcatch-stats">
+        <span id="bugcatch-score">得分 0</span>
+        <span id="bugcatch-time">30s</span>
+        <span id="bugcatch-best">最佳 0</span>
+      </div>
+      <div id="bugcatch-field-wrap">
+        <div id="bugcatch-field" aria-label="捉虫场"></div>
+      </div>
+      <button type="button" id="bugcatch-start-btn" class="mode-action">开始捉虫大赛</button>
+    </main>
+
+    <main id="panel-seedshop" class="panel">
+      <p id="seedshop-hint">花房累计卖出 10 次后开张 · 买稀有种子回花园种</p>
+      <div id="seedshop-scene" aria-label="种子铺"></div>
+      <div id="seedshop-list"></div>
+    </main>
+
+    <main id="panel-bird" class="panel">
+      <p id="bird-hint">撒鸟食引小鸟来 · 有时会留下金币或种子</p>
+      <div id="bird-wrap">
+        <div id="bird-scene" aria-label="鸟架"></div>
+        <div id="bird-guest-layer" aria-hidden="true"></div>
+      </div>
+      <div id="bird-status">鸟食 0s · 等待小鸟</div>
+      <button type="button" id="bird-feed-btn" class="mode-action">撒鸟食 · 6 金币</button>
+      <button type="button" id="bird-collect-btn" class="mode-action mode-action-alt" disabled>收下礼物</button>
+    </main>
+
+    <main id="panel-rain" class="panel">
+      <p id="rain-hint">露水池解锁后可用 · 雨棚共 6 级 · 越高下雨浇水越勤 · 满级雨停得露水</p>
+      <div id="rain-scene-wrap">
+        <div id="rain-scene" aria-label="雨棚"></div>
+        <div id="rain-overlay" aria-hidden="true"></div>
+      </div>
+      <div id="rain-status">天气：晴 · 下次雨 60s</div>
+      <button type="button" id="rain-upgrade-btn" class="mode-action">搭雨棚 · 35 金币</button>
+    </main>
+
+    <main id="panel-fruitshop" class="panel">
+      <p id="fruitshop-hint">采摘 3 个果实解锁 · 果株采一次就空，可换种别的</p>
+      <div id="fruitshop-scene" aria-label="水果铺"></div>
+      <p id="fruit-stock-summary">篮子里还没有果实</p>
+      <div id="fruitshop-list"></div>
+      <p id="fruit-sold-total">累计卖出 0 个果实</p>
+    </main>
+
+    <main id="panel-compost" class="panel">
+      <p id="compost-hint">花房卖剩的花材堆肥 · 肥力越高花园长得越快</p>
+      <div id="compost-scene" aria-label="堆肥角"></div>
+      <div id="compost-meter"><div id="compost-meter-fill"></div></div>
+      <p id="compost-meter-label">空堆 0/100</p>
+      <button type="button" id="compost-flower-btn" class="mode-action">堆小花库存</button>
+      <button type="button" id="compost-tree-btn" class="mode-action mode-action-alt">堆小树库存</button>
+    </main>
+
+    <main id="panel-mushroom" class="panel">
+      <p id="mushroom-hint">阴凉角种蘑菇 · 慢但价高 · 也吃生态加速</p>
+      <div id="mushroom-scene" aria-label="蘑菇角"></div>
+      <div id="mushroom-pick-bar">
+        <button type="button" class="mushroom-pick selected" data-mushroom="oyster">平菇 · 14 金币</button>
+        <button type="button" class="mushroom-pick" data-mushroom="shiitake">香菇 · 20 金币</button>
+      </div>
+      <div id="mushroom-grid"></div>
+    </main>
+
+    <main id="panel-well" class="panel">
+      <p id="well-hint">鱼池解锁后可用 · 打水浇花园干地 · 升级更便宜</p>
+      <div id="well-scene" aria-label="小井"></div>
+      <p id="well-status">小井 Lv.1</p>
+      <button type="button" id="well-draw-btn" class="mode-action">打水浇花园 · 8 金币</button>
+      <button type="button" id="well-draw-dew-btn" class="mode-action mode-action-alt">灵露打水 · 3 露水</button>
+      <button type="button" id="well-upgrade-btn" class="mode-action">升级小井 · 30 金币</button>
+    </main>
+
+    <main id="panel-manor" class="panel">
+      <div id="manor-scene-wrap">
+        <div id="manor-scene" aria-label="庄园全景"></div>
+      </div>
+      <div id="manor-ui-card" class="manor-ui-card">
+        <h2 id="manor-title" class="manor-title">花间小筑</h2>
+        <p id="manor-summary" class="manor-summary">已点亮 0/13 处</p>
+        <p class="manor-panel-tip">右上角可升级庄园 · 左下角 🎨 可装修</p>
+        <button type="button" id="manor-exit-btn" class="manor-exit-btn">返回小院</button>
+      </div>
+    </main>
+
+    <div id="manor-float-layer" class="manor-float-layer" hidden aria-hidden="true">
+      <button type="button" id="manor-back-float" class="manor-back-float">← 返回</button>
+      <button type="button" id="manor-upgrade-tip" class="manor-upgrade-tip">
+        <span id="manor-upgrade-tip-title" class="manor-upgrade-tip-title">庄园升级</span>
+        <span id="manor-upgrade-tip-text" class="manor-upgrade-tip-text">点我升级</span>
+      </button>
+      <button type="button" id="manor-decorate-btn" class="manor-decorate-btn" aria-label="装修">
+        <span class="manor-decorate-btn-label">装修</span>
+      </button>
+    </div>
+
+    <div id="manor-dock-root" class="manor-dock-root">
+      <nav id="manor-dock" class="manor-dock" hidden aria-label="庄园快捷跳转">
+        <div class="manor-dock-panel">
+          <p class="manor-dock-title">庄园 · 去各处</p>
+          <button type="button" id="manor-dock-map-btn" class="manor-dock-map-btn">
+            <span>🗺 庄园地图</span>
+            <span id="manor-dock-summary" class="manor-dock-summary">0/13 处</span>
+          </button>
+          <div id="manor-dock-chips" class="manor-dock-chips"></div>
+        </div>
+      </nav>
+      <button type="button" id="manor-dock-toggle" class="manor-dock-toggle" aria-expanded="false" aria-controls="manor-dock" title="庄园快捷">
+        <span class="manor-dock-toggle-icon" aria-hidden="true">🗺</span>
+        <span id="manor-dock-toggle-label" class="manor-dock-toggle-label">庄园</span>
+      </button>
+    </div>
+
+    <footer id="toast" aria-live="polite"></footer>
+
+    <div id="manor-decorate-overlay" class="manor-decorate-overlay hidden" aria-hidden="true" hidden>
+      <div class="manor-decorate-panel" role="dialog" aria-labelledby="manor-decorate-title">
+        <div class="manor-decorate-head">
+          <h3 id="manor-decorate-title">庄园装修</h3>
+          <button type="button" id="manor-decorate-close" class="manor-decorate-close" aria-label="关闭">×</button>
+        </div>
+        <p class="manor-decorate-hint">花金币买装饰 · 关闭后点庄园画面摆放 · 屋内下次再做</p>
+        <div id="manor-decorate-tabs" class="manor-decorate-tabs"></div>
+        <div id="manor-decorate-grid" class="manor-decorate-grid"></div>
+      </div>
+    </div>
+
+    <div id="tutorial-overlay" class="ux-overlay hidden" aria-hidden="true">
+      <div id="tutorial-spot" class="tutorial-spot hidden"></div>
+      <div id="tutorial-card" class="ux-card tutorial-card">
+        <p id="tutorial-text"></p>
+        <div class="ux-card-actions">
+          <button type="button" id="tutorial-next-btn" class="ux-btn-primary">知道了</button>
+          <button type="button" id="tutorial-skip-btn" class="ux-btn-ghost">跳过引导</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="offline-overlay" class="ux-overlay hidden" aria-hidden="true" hidden></div>
+  </div>
+  <script src="../anti-ad-shield.js"></script>
+  <script src="art.js"></script>
+  <script src="game.js?v=2"></script>
+</body>
+</html>

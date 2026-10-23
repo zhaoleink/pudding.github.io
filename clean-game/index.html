@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="慢净.html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>慢净 · 擦净看见</title>
+  <link rel="stylesheet" href="../hub-nav.css?v=5">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="hub-nav" aria-label="应用导航">
+    <span class="hub-label">去 →</span>
+    <a href="../游戏大厅.html">🏠 大厅</a>
+    <a href="../造语坊.html" class="hub-lang">🗣️ 造语坊</a>
+    <a href="../慢净.html">🪟 慢净</a>
+    <a href="../花鱼小院.html">🌸 花鱼小院</a>
+    <a href="../bubble-game.html">🫧 解压气泡</a>
+    <a href="../静沙.html">🏜 静沙</a>
+    <a href="../白噪音台.html">🎧 白噪音</a>
+    <a href="../白菜对我笑.html">🥬 白菜</a>
+    <a href="../小小实验室.html">🧪 实验室</a>
+      <a href="../找不同.html">🔍 找不同</a>
+    <a href="../妙脆角猫山谷.html">🐱 猫山谷</a>
+    <a href="../脆果厨房.html">脆果厨房</a>
+    <a href="../妙脆小猫按钮关.html">按钮关</a>
+</nav>
+  <script src="../hub-nav.js?v=5"></script>
+  <div id="app">
+    <header id="topbar">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">🪟</span>
+        <div>
+          <h1>慢净</h1>
+          <p id="subtitle">擦去雾气，慢慢看见</p>
+        </div>
+      </div>
+      <div class="stats">
+        <span id="stat-level">第 1 关</span>
+        <span id="stat-done">已完成 0 关</span>
+      </div>
+    </header>
+
+    <div id="start-screen">
+      <div class="start-card">
+        <div class="start-icon" aria-hidden="true">✨</div>
+        <h2>慢净 · 擦净看见</h2>
+        <p>按住拖动，像擦玻璃一样抹去雾气。<br>不用赶时间，但要擦到约 99% 才算净。</p>
+        <button type="button" id="start-btn">开始慢净</button>
+        <p class="start-tip">📱 手机 / 平板 → 手指擦<br>💻 笔记本 / Mac → 触控板单指拖，或鼠标左键拖<br>🖥 台式电脑 → 鼠标左键按住拖动擦</p>
+      </div>
+    </div>
+
+    <main id="game-wrap" hidden>
+      <div id="level-bar">
+        <span id="level-title">湖面晨雾</span>
+        <div class="progress-wrap">
+          <div id="progress-fill"></div>
+        </div>
+        <span id="progress-text">0%</span>
+      </div>
+
+      <div id="canvas-frame">
+        <canvas id="scene-canvas" aria-hidden="true"></canvas>
+        <canvas id="fog-canvas" aria-label="擦去雾气"></canvas>
+        <div id="sparkle-layer" aria-hidden="true"></div>
+        <div id="corner-markers" hidden aria-hidden="true">
+          <span class="corner-mark tl"></span>
+          <span class="corner-mark tr"></span>
+          <span class="corner-mark bl"></span>
+          <span class="corner-mark br"></span>
+        </div>
+        <div id="complete-badge" hidden>
+          <span>✨ 净了</span>
+          <button type="button" id="next-btn">下一景 →</button>
+        </div>
+      </div>
+
+      <div id="tool-bar">
+        <button type="button" class="tool-btn active" data-tool="cloth" title="软布 · 大面积">🧽 软布</button>
+        <button type="button" class="tool-btn" data-tool="finger" title="指尖 · 精细">👆 指尖</button>
+        <button type="button" class="tool-btn" data-tool="squeegee" title="刮板 · 一条线">🪟 刮板</button>
+        <button type="button" id="reset-btn" class="tool-btn ghost" title="重擦这一关">↺ 重擦</button>
+      </div>
+      <p id="game-hint">手指 / 鼠标 / 触控板按住拖动擦 · 擦到 99% 过关</p>
+    </main>
+
+    <footer id="footer" hidden>
+      <button type="button" id="btn-levels" class="footer-btn">🗺 选关</button>
+      <button type="button" id="btn-free-play" class="footer-btn" title="已解锁的景随便擦，不计过关">🌿 自由擦</button>
+      <button type="button" id="btn-sfx" class="footer-btn on" aria-pressed="true">🔊 音效开</button>
+      <button type="button" id="btn-ambient" class="footer-btn on" aria-pressed="true">🌧 雨声开</button>
+    </footer>
+  </div>
+
+  <nav id="level-picker" hidden aria-label="选择关卡">
+    <div id="level-picker-card">
+      <div class="level-picker-head">
+        <h3>已解锁风景</h3>
+        <button type="button" id="level-picker-close" aria-label="关闭选关">✕</button>
+      </div>
+      <p id="level-picker-tip">先选风景 · 彩蛋解锁后可点 🫧 等进入</p>
+      <div id="egg-section" hidden>
+        <h4 id="egg-section-title" class="picker-section-title">已解锁彩蛋 · 点一下就能玩</h4>
+        <div id="egg-list"></div>
+      </div>
+      <div id="egg-clues" class="egg-clues-fold">
+        <h4 id="egg-clues-title">彩蛋谜面（还没解锁也能看）</h4>
+        <ul id="egg-clue-list"></ul>
+      </div>
+      <h4 class="picker-section-title">普通风景</h4>
+      <div id="level-list"></div>
+      <button type="button" id="level-picker-back" class="level-picker-back">返回擦雾</button>
+    </div>
+  </nav>
+
+  <div id="toast" hidden aria-live="polite"></div>
+
+  <script src="../anti-ad-shield.js"></script>
+  <script src="art.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

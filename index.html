@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="index.html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>解压大厅 · 入口</title>
+  <link rel="stylesheet" href="hub-nav.css?v=5">
+  <style>
+    :root {
+      --card: #fff;
+      --text: #2a3a42;
+      --muted: #6a8490;
+      --shadow: 0 8px 28px rgba(40, 70, 80, 0.12);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, "PingFang SC", sans-serif;
+      background: linear-gradient(165deg, #e8f2f5 0%, #f3f0ff 45%, #eef0f8 100%);
+      color: var(--text);
+    }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; }
+    h1 { text-align: center; font-size: 26px; margin-bottom: 6px; }
+    .sub { text-align: center; color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+    .big-lang {
+      display: block;
+      text-decoration: none;
+      color: #fff;
+      background: linear-gradient(135deg, #7c6cf0, #5cb8a8);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      text-align: center;
+      box-shadow: 0 12px 36px rgba(124, 108, 240, 0.35);
+      margin-bottom: 18px;
+    }
+    .big-lang .emoji { font-size: 48px; margin-bottom: 8px; }
+    .big-lang h2 { font-size: 24px; margin-bottom: 6px; }
+    .big-lang p { font-size: 14px; opacity: 0.92; }
+    .games {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .game-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .game-card .emoji { font-size: 28px; margin-bottom: 6px; }
+    .game-card h3 { font-size: 15px; }
+  </style>
+</head>
+<body>
+  <nav class="hub-nav" aria-label="应用导航">
+    <span class="hub-label">去 →</span>
+    <a href="游戏大厅.html">🏠 大厅</a>
+    <a href="造语坊.html" class="hub-lang">🗣️ 造语坊</a>
+    <a href="慢净.html">🪟 慢净</a>
+    <a href="花鱼小院.html">🌸 花鱼小院</a>
+    <a href="森林拾叶.html">🍁 森林拾叶</a>
+    <a href="bubble-game.html">🫧 解压气泡</a>
+    <a href="静沙.html">🏜 静沙</a>
+    <a href="白噪音台.html">🎧 白噪音</a>
+    <a href="白菜对我笑.html">🥬 白菜</a>
+    <a href="小小实验室.html">🧪 实验室</a>
+      <a href="找不同.html">🔍 找不同</a>
+    <a href="妙脆角猫山谷.html">🐱 猫山谷</a>
+    <a href="脆果厨房.html">脆果厨房</a>
+    <a href="妙脆小猫按钮关.html">按钮关</a>
+</nav>
+  <script src="hub-nav.js?v=5"></script>
+  <div class="wrap">
+    <h1>解压大厅</h1>
+    <p class="sub">点下面紫色大按钮进造语坊</p>
+
+    <a class="big-lang" href="造语坊.html">
+      <div class="emoji">🗣️</div>
+      <h2>造语坊</h2>
+      <p>创造自己的语言 · 手绘画板 · 词库 · 语法</p>
+    </a>
+
+    <div class="games">
+      <a class="game-card" href="森林拾叶.html"><div class="emoji">🍁</div><h3>森林拾叶</h3></a>
+      <a class="game-card" href="慢净.html"><div class="emoji">🪟</div><h3>慢净</h3></a>
+      <a class="game-card" href="花鱼小院.html"><div class="emoji">🌸</div><h3>花鱼小院</h3></a>
+      <a class="game-card" href="bubble-game.html"><div class="emoji">🫧</div><h3>解压气泡</h3></a>
+      <a class="game-card" href="静沙.html"><div class="emoji">🏜</div><h3>静沙</h3></a>
+      <a class="game-card" href="白菜对我笑.html"><div class="emoji">🥬</div><h3>白菜对我笑</h3></a>
+      <a class="game-card" href="小小实验室.html"><div class="emoji">🧪</div><h3>小小实验室</h3></a>
+      <a class="game-card" href="白噪音台.html"><div class="emoji">🎧</div><h3>白噪音台</h3></a>
+    </div>
+  </div>
+</body>
+</html>

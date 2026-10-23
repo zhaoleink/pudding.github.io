@@ -49,6 +49,7 @@ Object.assign(MarbleGame, {
     document.getElementById('btn-craft-close')?.addEventListener('click', () => this.closeCraftPanel());
     document.getElementById('btn-claim-pink')?.addEventListener('click', () => this.claimPinkOnGrid());
     document.getElementById('btn-craft-use')?.addEventListener('click', () => this.useSelectedCraftBall());
+    document.getElementById('btn-craft-store')?.addEventListener('click', () => this.storeTableBallToGrid());
     this.updateHud();
     this.updateCraftHud();
   },
@@ -256,14 +257,47 @@ Object.assign(MarbleGame, {
     }
     if (!this.CRAFT_USE_TIERS[kind]) return;
 
+    const outgoing =
+      this.player()?.tier || this.equippedPlayerTier || 'pink';
     this.craftCells[i] = null;
+    if (
+      outgoing !== 'pink' &&
+      outgoing !== kind &&
+      this.CRAFT_USE_TIERS[outgoing]
+    ) {
+      this.craftCells[i] = outgoing;
+    }
     this.craftSelectedIndex = null;
     this.renderCraftGrid();
     this.saveCraftGrid();
     this.updateHud();
     this.updateCraftHud();
-    this.equipPlayerFromCraft(kind);
+    this.equipPlayerFromCraft(kind, outgoing);
     this.closeCraftPanel();
+  },
+
+  storeTableBallToGrid() {
+    const tier = this.player()?.tier || this.equippedPlayerTier || 'pink';
+    if (!tier || tier === 'pink' || !this.CRAFT_USE_TIERS[tier]) {
+      this.toast('台面上是粉球，不用收回（合成球才能放进格子）');
+      return;
+    }
+    let idx = this.craftSelectedIndex;
+    if (idx != null && this.craftCells[idx] != null) idx = -1;
+    if (idx == null || idx < 0) idx = this.firstEmptyCell();
+    if (idx < 0) {
+      this.toast('格子满了，先腾一格或选中一个空格子');
+      return;
+    }
+    this.craftCells[idx] = tier;
+    this.craftSelectedIndex = idx;
+    this.equipPlayerTier('pink', false);
+    this.renderCraftGrid();
+    this.saveCraftGrid();
+    this.updateHud();
+    this.updateCraftHud();
+    const name = this.CRAFT_USE_TIERS[tier].label;
+    this.toast(`${name}已放进合成台，台面换回粉球`);
   },
 
   updateCraftHud() {
@@ -272,10 +306,18 @@ Object.assign(MarbleGame, {
     const btn = document.getElementById('btn-claim-pink');
     if (btn) btn.disabled = this.craftCoins < this.COIN_GOAL || this.firstEmptyCell() < 0;
     const useBtn = document.getElementById('btn-craft-use');
+    const storeBtn = document.getElementById('btn-craft-store');
     const sel = document.getElementById('craft-selected-label');
     const kind = this.craftSelectedIndex != null ? this.craftCells[this.craftSelectedIndex] : null;
     const canUse = kind && kind !== 'pink' && !!this.CRAFT_USE_TIERS[kind];
     if (useBtn) useBtn.disabled = !canUse;
+    const tableTier = this.player()?.tier || this.equippedPlayerTier || 'pink';
+    const canStore =
+      tableTier !== 'pink' &&
+      !!this.CRAFT_USE_TIERS[tableTier] &&
+      (this.firstEmptyCell() >= 0 ||
+        (this.craftSelectedIndex != null && !this.craftCells[this.craftSelectedIndex]));
+    if (storeBtn) storeBtn.disabled = !canStore;
     if (sel) {
       const names = { pink: '粉球', blue: '蓝球', purple: '紫球', green: '绿球', white: '白球', black: '黑球' };
       sel.textContent = kind ? `已选：${names[kind] || kind}` : '已选：无（点格子选中）';

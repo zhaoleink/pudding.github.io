@@ -1,0 +1,29 @@
+# 解压大厅 · pudding games
+
+静态 HTML 小游戏合集。入口：[index.html](./index.html)（GitHub Pages 部署后打开站点根路径即可）。
+
+## 本地预览
+
+```bash
+python3 -m http.server 8080
+```
+
+浏览器打开 `http://127.0.0.1:8080/`。
+
+## GitHub Pages
+
+仓库：[zhaoleink/pudding.github.io](https://github.com/zhaoleink/pudding.github.io)
+
+1. 将本仓库推送到 GitHub 的 **main** 分支（根目录含 `index.html`）。
+2. 仓库 **Settings → Pages → Build and deployment**：
+   - **Source**：Deploy from a branch
+   - **Branch**：`main`，文件夹 **`/ (root)`**
+3. 保存后等 1～3 分钟，Actions / Pages 里出现绿色勾即生效。
+
+**访问地址**（项目站，路径带仓库名）：
+
+`https://zhaoleink.github.io/pudding.github.io/`
+
+若希望根域名 `https://zhaoleink.github.io/`（不带子路径），需把仓库改名为 **`zhaoleink.github.io`**（与用户账号同名的 Pages 仓库）。
+
+根目录的 `.nojekyll` 用于让 GitHub 正常发布含下划线路径的静态资源。

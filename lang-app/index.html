@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="造语坊.html">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Language" content="zh-CN">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>造语坊 · 创造自己的语言</title>
+  <link rel="stylesheet" href="../hub-nav.css?v=5">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="hub-nav" aria-label="应用导航">
+    <span class="hub-label">去 →</span>
+    <a href="../游戏大厅.html">🏠 大厅</a>
+    <a href="../造语坊.html" class="hub-lang">🗣️ 造语坊</a>
+    <a href="../慢净.html">🪟 慢净</a>
+    <a href="../花鱼小院.html">🌸 花鱼小院</a>
+    <a href="../bubble-game.html">🫧 解压气泡</a>
+    <a href="../静沙.html">🏜 静沙</a>
+    <a href="../白噪音台.html">🎧 白噪音</a>
+    <a href="../白菜对我笑.html">🥬 白菜</a>
+    <a href="../小小实验室.html">🧪 实验室</a>
+      <a href="../找不同.html">🔍 找不同</a>
+    <a href="../妙脆角猫山谷.html">🐱 猫山谷</a>
+    <a href="../脆果厨房.html">脆果厨房</a>
+    <a href="../妙脆小猫按钮关.html">按钮关</a>
+</nav>
+  <script src="../hub-nav.js?v=5"></script>
+  <div id="app">
+    <header id="topbar">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">🗣️</span>
+        <div>
+          <h1>造语坊</h1>
+          <p>创造属于你自己的语言 · 含手绘画板 · <span id="app-version">v34</span></p>
+        </div>
+      </div>
+      <div class="top-actions" id="top-actions"></div>
+    </header>
+
+    <!-- 语言列表 -->
+    <main id="home-screen" class="screen">
+      <div class="card">
+        <div class="card-head-row">
+          <h2>📚 我的语言</h2>
+          <label class="lang-search-wrap">
+            <span class="lang-search-label">搜索</span>
+            <input type="text" id="lang-search" lang="zh-CN" placeholder="搜索我的语言…" aria-label="搜索我的语言">
+          </label>
+        </div>
+        <p class="hint">每一种语言都是一颗星球。起名字、造字母、写词库、定语法——全在你手里。</p>
+        <div class="home-zh-guide">
+          <p><strong>中文说明</strong></p>
+          <ul>
+            <li>点下面紫色按钮，可<strong>不用键盘</strong>直接创建一门语言。</li>
+            <li>右侧<strong>搜索</strong>框：输入语言名字，可搜你已创建的语言。</li>
+            <li>要自己起中文名：点「新建语言」→ 点名称框 → 菜单栏选「<strong>简体拼音</strong>」→ 打拼音 → 按<strong>空格</strong>选字；也可点下面的<strong>选字</strong>按钮。</li>
+          </ul>
+        </div>
+        <div class="quick-lang-block">
+          <p class="char-picker-label">快速创建（不用打字）：</p>
+          <div class="quick-lang-row">
+            <button type="button" class="btn primary" data-quick-lang="我的语言" data-quick-emoji="🌐">🌐 我的语言</button>
+            <button type="button" class="btn" data-quick-lang="星球语" data-quick-emoji="🪐">🪐 星球语</button>
+            <button type="button" class="btn" data-quick-lang="测试" data-quick-emoji="✨">✨ 测试</button>
+          </div>
+        </div>
+        <div id="lang-grid" class="lang-grid"></div>
+        <div id="home-empty" class="empty-state" hidden>
+          <div class="big">✨</div>
+          <p>还没有语言<br>点右上角「新建语言」开始造语</p>
+        </div>
+        <div id="home-search-empty" class="empty-state" hidden>
+          <div class="big">🔍</div>
+          <p>没搜到这种语言<br>换个名字试试</p>
+        </div>
+      </div>
+
+      <div id="home-mini-dock">
+        <div class="mini-popover" id="mini-popover" hidden>
+          <div class="mini-popover-head">
+            <span id="mini-popover-title">小游戏</span>
+            <button type="button" class="mini-popover-close" id="mini-popover-close" aria-label="收起">×</button>
+          </div>
+          <div class="mini-panel" data-mini-panel="fish">
+            <div class="mini-canvas-wrap fish-wrap">
+              <canvas id="fish-pond-canvas" aria-label="造鱼池"></canvas>
+            </div>
+            <p class="mini-meta" id="fish-pond-meta">碰到了 0 条小鱼</p>
+          </div>
+          <div class="mini-panel" data-mini-panel="bubble" hidden>
+            <div class="mini-canvas-wrap bubble-wrap">
+              <canvas id="bubble-mini-canvas" aria-label="吹泡泡"></canvas>
+            </div>
+            <p class="mini-meta" id="bubble-mini-meta">点哪里，哪里冒泡 · 戳破了 0 个</p>
+          </div>
+          <div class="mini-panel" data-mini-panel="rain" hidden>
+            <div class="mini-canvas-wrap rain-wrap">
+              <canvas id="rain-mini-canvas" aria-label="字母雨"></canvas>
+            </div>
+            <p class="mini-meta" id="rain-mini-meta">接到了 0 个字母</p>
+          </div>
+          <div class="mini-panel" data-mini-panel="star" hidden>
+            <div class="mini-canvas-wrap star-wrap">
+              <canvas id="star-mini-canvas" aria-label="点星星"></canvas>
+            </div>
+            <p class="mini-meta" id="star-mini-meta">点亮了 0 颗星</p>
+          </div>
+        </div>
+        <div class="mini-fabs" role="toolbar" aria-label="轻松小游戏">
+          <button type="button" class="mini-fab" data-mini="fish" title="造鱼池">🐟</button>
+          <button type="button" class="mini-fab" data-mini="bubble" title="吹泡泡">🫧</button>
+          <button type="button" class="mini-fab" data-mini="rain" title="字母雨">🌧️</button>
+          <button type="button" class="mini-fab" data-mini="star" title="点星星">✨</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- 语言编辑器 -->
+    <main id="editor-screen" class="screen" hidden>
+      <div class="editor-head">
+        <button type="button" class="btn ghost" id="btn-back">← 返回</button>
+        <div class="lang-title" id="editor-title">语言名</div>
+        <button type="button" class="btn" id="btn-export">导出</button>
+      </div>
+
+      <nav class="tabs" id="editor-tabs">
+        <button type="button" class="tab active" data-tab="overview">概览</button>
+        <button type="button" class="tab" data-tab="alphabet">字母</button>
+        <button type="button" class="tab" data-tab="board">画板</button>
+        <button type="button" class="tab" data-tab="dict">词库</button>
+        <button type="button" class="tab" data-tab="grammar">语法</button>
+        <button type="button" class="tab" data-tab="play">书写台</button>
+        <button type="button" class="tab" data-tab="quiz">练一练</button>
+      </nav>
+
+      <!-- 概览 -->
+      <section class="panel card" id="panel-overview">
+        <h2>🌍 语言概览</h2>
+        <div class="form-row">
+          <div>
+            <label for="lang-name">语言名称</label>
+            <input id="lang-name" placeholder="例：星语、木言、Lunari">
+          </div>
+          <div>
+            <label for="lang-emoji">代表符号</label>
+            <input id="lang-emoji" maxlength="4" placeholder="🌙">
+          </div>
+        </div>
+        <div class="form-row full">
+          <div>
+            <label for="lang-desc">简介 / 世界设定</label>
+            <textarea id="lang-desc" placeholder="这门语言谁在说？听起来像什么？"></textarea>
+          </div>
+        </div>
+        <div class="stats-row" id="overview-stats"></div>
+      </section>
+
+      <!-- 字母 -->
+      <section class="panel card" id="panel-alphabet" hidden>
+        <h2>🔤 字母与发音</h2>
+        <p class="hint">定义字符、罗马音或读音说明。可以是全新文字，也可以是拼音方案。</p>
+        <div class="form-row">
+          <div>
+            <label for="alpha-glyph">字符</label>
+            <input id="alpha-glyph" placeholder="例：á / 星 / ɣ">
+          </div>
+          <div>
+            <label for="alpha-roman">读法 / 罗马音</label>
+            <input id="alpha-roman" placeholder="例：a / shing / gh">
+          </div>
+        </div>
+        <div class="form-row full">
+          <div>
+            <label for="alpha-note">说明（可选）</label>
+            <input id="alpha-note" placeholder="例：开口音、齿音…">
+          </div>
+        </div>
+        <div class="toolbar">
+          <button type="button" class="btn primary" id="btn-add-alpha">添加字符</button>
+        </div>
+        <div id="alpha-grid" class="alpha-grid"></div>
+      </section>
+
+      <!-- 画板 -->
+      <section class="panel card" id="panel-board" hidden>
+        <h2>🎨 文字画板</h2>
+        <p class="hint">用手指或鼠标画出你的语言。支持书写长句，也可以把单字存进字符库。</p>
+        <div class="board-tools" id="board-tools">
+          <button type="button" class="board-tool active" data-tool="pen" title="画笔">✏️ 画笔</button>
+          <button type="button" class="board-tool" data-tool="eraser" title="橡皮">🧽 橡皮</button>
+          <input type="color" id="board-color" value="#1a1830" title="颜色" aria-label="画笔颜色">
+          <label class="board-size-label">粗细<input type="range" id="board-size" min="1" max="20" value="4"></label>
+          <button type="button" class="board-tool" id="board-undo" title="撤销">↩ 撤销</button>
+          <button type="button" class="board-tool" id="board-clear" title="清空">🗑 清空</button>
+        </div>
+        <div class="board-frame" id="board-frame">
+          <canvas id="draw-canvas" aria-label="手绘画板"></canvas>
+        </div>
+        <p class="board-save-hint">画板会自动保存到这门语言</p>
+        <div class="board-glyph-save">
+          <div class="form-row">
+            <div>
+              <label for="glyph-label">字符名称</label>
+              <input id="glyph-label" placeholder="例：月 / a / 星">
+            </div>
+            <div>
+              <label for="glyph-roman">读法 / 释义</label>
+              <input id="glyph-roman" placeholder="例：yuè / 月亮">
+            </div>
+          </div>
+          <button type="button" class="btn primary" id="btn-save-glyph">📌 把画板存为字符</button>
+        </div>
+        <h3 class="sub-heading">已保存的手写字符</h3>
+        <div id="glyph-gallery" class="glyph-gallery"></div>
+      </section>
+
+      <!-- 词库 -->
+      <section class="panel card" id="panel-dict" hidden>
+        <h2>📖 词库</h2>
+        <div class="toolbar">
+          <input type="text" class="search-box" id="dict-search" lang="zh-CN" placeholder="搜索词语或释义…">
+        </div>
+        <div class="form-row">
+          <div>
+            <label for="word-text">词语（你的语言）</label>
+            <input id="word-text" placeholder="例：luna">
+          </div>
+          <div>
+            <label for="word-meaning">释义</label>
+            <input id="word-meaning" lang="zh-CN" placeholder="例：月亮">
+            <div class="char-picker" data-char-picker-for="word-meaning"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label for="word-pos">词性</label>
+            <select id="word-pos">
+              <option value="noun">名词</option>
+              <option value="verb">动词</option>
+              <option value="adj">形容词</option>
+              <option value="adv">副词</option>
+              <option value="pron">代词</option>
+              <option value="part">助词 / 虚词</option>
+              <option value="other">其他</option>
+            </select>
+          </div>
+          <div>
+            <label for="word-note">备注（可选）</label>
+            <input id="word-note" placeholder="例：诗歌里常用">
+          </div>
+        </div>
+        <div class="toolbar">
+          <button type="button" class="btn primary" id="btn-add-word">添加词语</button>
+        </div>
+        <div id="dict-list" class="item-list"></div>
+      </section>
+
+      <!-- 语法 -->
+      <section class="panel card" id="panel-grammar" hidden>
+        <h2>📐 语法规则</h2>
+        <p class="hint">写下语序、变位、时态、敬语……随便怎么写，这是你的语言。</p>
+        <div class="form-row full">
+          <div>
+            <label for="grammar-wordorder">基本语序</label>
+            <input id="grammar-wordorder" placeholder="例：SOV / 主-宾-谓">
+          </div>
+        </div>
+        <div class="form-row full">
+          <div>
+            <label for="grammar-rules">语法笔记</label>
+            <textarea id="grammar-rules" placeholder="例：&#10;- 名词后加 -a 表示复数&#10;- 动词以 -i 结尾表示过去式&#10;- 形容词放在名词后面"></textarea>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div>
+            <label for="grammar-phrases">常用句型 / 例句</label>
+            <textarea id="grammar-phrases" placeholder="例：&#10;mi luna = 我是月亮&#10;ka sol mi = 太阳看见我"></textarea>
+          </div>
+        </div>
+        <button type="button" class="btn primary" id="btn-save-grammar">保存语法</button>
+      </section>
+
+      <!-- 书写台 -->
+      <section class="panel card" id="panel-play" hidden>
+        <h2>✍️ 书写台</h2>
+        <p class="hint">输入你的语言文本，已收录的词会高亮并显示释义（按空格分词）。</p>
+        <textarea id="play-input" lang="zh-CN" placeholder="在这里写你的语言…"></textarea>
+        <div id="play-output" class="play-output"></div>
+      </section>
+
+      <!-- 练一练 -->
+      <section class="panel card" id="panel-quiz" hidden>
+        <h2>🎯 练一练</h2>
+        <p class="hint">随机抽词，看释义写词语，或看词语写释义。</p>
+        <div class="toolbar" style="justify-content:center;margin-bottom:16px">
+          <button type="button" class="btn" id="quiz-mode-meaning" data-mode="toWord">看释义 → 写词语</button>
+          <button type="button" class="btn primary" id="quiz-mode-word" data-mode="toMeaning">看词语 → 写释义</button>
+        </div>
+        <div class="quiz-card">
+          <div class="quiz-prompt" id="quiz-prompt">释义</div>
+          <div class="quiz-word" id="quiz-display">—</div>
+          <input type="text" class="quiz-input" id="quiz-answer" placeholder="输入答案…" autocomplete="off">
+          <div class="quiz-feedback" id="quiz-feedback"></div>
+          <div class="toolbar" style="justify-content:center">
+            <button type="button" class="btn primary" id="btn-quiz-check">检查</button>
+            <button type="button" class="btn" id="btn-quiz-next">下一题</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 新建语言弹窗 -->
+  <div id="modal-backdrop" class="modal-backdrop" hidden>
+    <div class="modal" role="dialog" aria-labelledby="modal-title">
+      <h3 id="modal-title">新建语言</h3>
+      <div class="quick-lang-row modal-quick">
+        <button type="button" class="btn primary" data-quick-lang="我的语言" data-quick-emoji="🌐">直接创建：我的语言</button>
+        <button type="button" class="btn" data-quick-lang="测试" data-quick-emoji="✨">直接创建：测试</button>
+      </div>
+      <div class="form-row full">
+        <div>
+          <label for="new-lang-name">语言名称</label>
+          <input id="new-lang-name" lang="zh-CN" placeholder="给语言起个名字（可先点下面选字）">
+          <button type="button" class="btn ghost" id="btn-clear-lang-name" style="margin-top:8px">清空名称框</button>
+          <div class="char-picker" data-char-picker-for="new-lang-name"></div>
+          <p class="caps-hint" id="caps-hint-modal" hidden>大写锁定（Caps Lock）开着，请按键盘 Caps Lock 关掉</p>
+        </div>
+      </div>
+      <div class="form-row full">
+        <div>
+          <label for="new-lang-emoji">代表符号</label>
+          <input id="new-lang-emoji" maxlength="4" value="🌐" placeholder="🌐">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn ghost" id="modal-cancel">取消</button>
+        <button type="button" class="btn primary" id="modal-create">创建</button>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="import-file" accept="application/json,.json" hidden>
+
+  <div id="toast" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

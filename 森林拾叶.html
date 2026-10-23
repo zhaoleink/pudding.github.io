@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="森林拾叶.html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>森林拾叶</title>
+  <link rel="stylesheet" href="hub-nav.css?v=5">
+  <link rel="stylesheet" href="forest-leaves/style.css?v=1">
+  <script src="anti-ad-shield.js"></script>
+</head>
+<body>
+  <nav class="hub-nav" aria-label="应用导航">
+    <span class="hub-label">去 →</span>
+    <a href="游戏大厅.html">大厅</a>
+    <a href="造语坊.html" class="hub-lang">造语坊</a>
+    <a href="慢净.html">慢净</a>
+    <a href="花鱼小院.html">花鱼小院</a>
+    <a href="bubble-game.html">解压气泡</a>
+    <a href="森林拾叶.html">森林拾叶</a>
+    <a href="小蛇吃豆.html">小蛇吃豆</a>
+  </nav>
+  <script src="hub-nav.js?v=5"></script>
+
+  <div id="app">
+    <header id="fl-hud">
+      <h1>森林拾叶</h1>
+      <p class="hint">在林子里慢慢走 · 捡起地上真实的叶形 · 枫林、梧桐道、银杏谷…</p>
+      <div id="fl-stats">叶子 <b id="fl-total">0</b> · 种类 <b id="fl-kinds">0</b></div>
+      <button type="button" id="btn-fl-season">🍂 秋色</button>
+      <button type="button" id="btn-fl-album">📖 叶谱</button>
+    </header>
+    <div id="fl-stage">
+      <p id="fl-zone">森林入口 · 松涛与落叶小径</p>
+      <canvas id="fl-canvas" aria-label="森林地图"></canvas>
+      <div id="fl-joystick" aria-label="走动摇杆">
+        <div class="joy-base">
+          <div class="joy-knob"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="fl-album" aria-hidden="true">
+    <div id="fl-album-panel">
+      <h2>叶谱</h2>
+      <p class="sub">叶形按真实树种手绘 · 捡到的会亮起来</p>
+      <div id="fl-album-grid"></div>
+      <button type="button" id="btn-fl-close-album">返回森林</button>
+    </div>
+  </div>
+  <p id="fl-toast" aria-live="polite"></p>
+
+  <script src="hub-keyboard.js?v=1"></script>
+  <script src="forest-leaves/leaves.js?v=1"></script>
+  <script src="forest-leaves/world.js?v=1"></script>
+  <script src="forest-leaves/game.js?v=2"></script>
+</body>
+</html>

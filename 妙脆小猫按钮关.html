@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="妙脆小猫按钮关.html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>妙脆小猫 · 蹦跳教程</title>
+  <link rel="stylesheet" href="hub-nav.css?v=5">
+  <link rel="stylesheet" href="miaocui-quest/style.css?v=29">
+  <script src="anti-ad-shield.js"></script>
+</head>
+<body>
+  <nav class="hub-nav" aria-label="应用导航">
+    <span class="hub-label">去 →</span>
+    <a href="游戏大厅.html">大厅</a>
+    <a href="造语坊.html" class="hub-lang">造语坊</a>
+    <a href="慢净.html">慢净</a>
+    <a href="花鱼小院.html">花鱼小院</a>
+    <a href="bubble-game.html">解压气泡</a>
+    <a href="静沙.html">静沙</a>
+    <a href="白噪音台.html">白噪音</a>
+    <a href="白菜对我笑.html">白菜</a>
+    <a href="小小实验室.html">实验室</a>
+    <a href="找不同.html">找不同</a>
+    <a href="妙脆角猫山谷.html">猫山谷</a>
+    <a href="脆果厨房.html">脆果厨房</a>
+    <a href="妙脆小猫按钮关.html">按钮关</a>
+  </nav>
+  <script src="hub-nav.js?v=5"></script>
+
+  <div id="app">
+    <div id="game-stage">
+      <canvas id="quest-canvas" aria-label="妙脆小猫闯关"></canvas>
+      <div id="hud">
+        <span class="pill" id="level-pill">第一关</span>
+        <div id="mode-tabs" class="mode-tabs" hidden>
+          <button type="button" id="tab-tutorial" class="mode-tab">教程</button>
+          <button type="button" id="tab-formal" class="mode-tab">正式</button>
+        </div>
+        <div id="level-chips" class="level-chips" aria-label="选关"></div>
+      </div>
+      <p id="hint-toast" hidden aria-live="polite"></p>
+      <div id="joystick" aria-label="移动">
+        <div id="joystick-base"><div id="joystick-knob"></div></div>
+      </div>
+      <div id="quest-act" aria-label="动作">
+        <button type="button" id="btn-jump" class="quest-act-btn quest-act-jump" title="空格键">蹦跳</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="win-overlay" hidden>
+    <div class="win-card">
+      <h2 id="win-title">过关</h2>
+      <p id="win-msg"></p>
+      <button type="button" id="btn-replay">再玩一次</button>
+      <button type="button" id="btn-next" class="secondary">知道了</button>
+    </div>
+  </div>
+
+  <script src="miaocui-quest/world-stub.js?v=29"></script>
+  <script src="cat-valley/camera.js?v=29"></script>
+  <script src="cat-valley/crispy-palette.js?v=29"></script>
+  <script src="cat-valley/skins.js?v=29"></script>
+  <script src="cat-valley/art.js?v=29"></script>
+  <script src="miaocui-quest/game.js?v=29"></script>
+</body>
+</html>

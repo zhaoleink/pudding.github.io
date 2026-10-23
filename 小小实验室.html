@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="小小实验室.html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>小小实验室 · 自由实验台</title>
+  <link rel="stylesheet" href="hub-nav.css?v=5">
+  <link rel="stylesheet" href="lab-game/style.css">
+  <script src="anti-ad-shield.js"></script>
+</head>
+<body>
+  <nav class="hub-nav" aria-label="应用导航">
+    <span class="hub-label">去 →</span>
+    <a href="游戏大厅.html">🏠 大厅</a>
+    <a href="造语坊.html" class="hub-lang">🗣️ 造语坊</a>
+    <a href="慢净.html">🪟 慢净</a>
+    <a href="garden-game/index.html">🌸 花鱼小院</a>
+    <a href="bubble-game.html">🫧 解压气泡</a>
+    <a href="静沙.html">🏜 静沙</a>
+    <a href="白噪音台.html">🎧 白噪音</a>
+    <a href="白菜对我笑.html">🥬 白菜</a>
+    <a href="小小实验室.html">🧪 实验室</a>
+      <a href="找不同.html">🔍 找不同</a>
+    <a href="妙脆角猫山谷.html">🐱 猫山谷</a>
+    <a href="脆果厨房.html">脆果厨房</a>
+    <a href="妙脆小猫按钮关.html">按钮关</a>
+</nav>
+
+  <script src="hub-nav.js?v=5"></script>
+  <div id="app">
+    <header id="topbar">
+      <h1 id="lab-title">🧪 小小实验室</h1>
+      <p id="lab-subtitle">自由实验台 · 专业器材 · 家庭安全级</p>
+    </header>
+
+    <p id="safety-tip">⚠️ 虚拟实验仅供学习。真实操作需大人陪同，勿尝化学品，勿把真实试剂混玩。</p>
+    <p id="save-status" class="save-status">💾 实验自动存档</p>
+
+    <p class="section-tag">🧫 试剂材料 · 酸碱盐指示剂 · ⚛️ 氢氧氮钠镁铝铜铁等</p>
+    <div id="reagent-bar" aria-label="试剂架"></div>
+
+    <p class="section-tag">🔧 专业器材 · 石棉网/洗瓶/滴定管/研钵/滤纸等</p>
+    <div id="equipment-bar" aria-label="实验器材"></div>
+
+    <section id="bench" aria-label="实验台">
+      <div id="lab-props" aria-hidden="true">
+        <div id="prop-goggles" class="lab-prop" title="护目镜">🥽</div>
+        <div id="prop-rack" class="lab-prop show" title="试管架"></div>
+        <div id="prop-funnel" class="lab-prop" title="漏斗">🔻</div>
+        <div id="prop-dropper" class="lab-prop" title="滴管">💧</div>
+        <div id="prop-condenser" class="lab-prop condenser-prop" title="冷凝管"></div>
+        <div id="prop-sep-funnel" class="lab-prop" title="分液漏斗">🫗</div>
+        <div id="prop-distill" class="lab-prop" title="蒸馏装置">⚗️</div>
+      </div>
+
+      <p class="bench-label">— 点一下加试剂 · 连点两下全倒 · 连点三下倒液 · 连点四下倒一小口 —</p>
+      <div id="containers">
+        <div class="container-wrap" data-id="beaker1">
+          <div class="vessel beaker">
+            <div class="liquid"></div>
+            <div class="foam-layer"></div>
+          </div>
+          <span class="label">烧杯 A</span>
+        </div>
+        <div class="container-wrap" data-id="cylinder">
+          <div class="vessel cylinder">
+            <div class="grad-marks"></div>
+            <div class="liquid"></div>
+            <div class="foam-layer"></div>
+          </div>
+          <span class="label">量筒</span>
+        </div>
+        <div class="container-wrap" data-id="flask">
+          <div class="vessel flask">
+            <div class="balloon"></div>
+            <div class="tube-connector"></div>
+            <div class="liquid"></div>
+            <div class="foam-layer"></div>
+          </div>
+          <span class="label">锥形瓶</span>
+        </div>
+        <div class="container-wrap" data-id="tube">
+          <div class="vessel tube">
+            <div class="liquid"></div>
+            <div class="foam-layer"></div>
+          </div>
+          <span class="label">试管</span>
+        </div>
+        <div class="container-wrap" data-id="beaker2">
+          <div class="vessel beaker">
+            <div class="liquid"></div>
+            <div class="foam-layer"></div>
+          </div>
+          <span class="label">烧杯 B</span>
+        </div>
+        <div class="container-wrap" data-id="dish">
+          <div class="vessel dish">
+            <div class="liquid"></div>
+            <div class="foam-layer"></div>
+          </div>
+          <span class="label">蒸发皿</span>
+        </div>
+      </div>
+      <div id="prop-burner" class="lab-prop" title="按住拖动到器皿旁 · 点一下点火/关火">
+        <div class="tripod"></div>
+        <div class="burner-body"></div>
+        <div class="burner-flame"></div>
+      </div>
+      <div id="tools-row">
+        <button type="button" class="tool-btn primary" id="btn-hint">💡 实验提示</button>
+        <button type="button" class="tool-btn" id="btn-distill">⚗️ 蒸馏套装</button>
+        <button type="button" class="tool-btn" id="btn-tube">🔬 连接导管</button>
+        <button type="button" class="tool-btn ghost" id="btn-clear">↺ 清空实验台</button>
+      </div>
+    </section>
+
+    <aside id="log-panel" aria-live="polite">
+      <h2>📝 实验现象记录</h2>
+      <ul id="log-list"></ul>
+    </aside>
+
+    <div id="guide-card">
+      <strong>⚛️ 常见元素试一次：</strong><br>
+      硫酸铜(Cu)+铁(Fe)变浅色 · 镁(Mg)+醋猛冒泡<br>
+      氢(H)+氧(O)可混合 · 氮(N)很稳定 · 碳(C)粉遇酸几乎不反应<br>
+      📋 pH试纸：只测溶液！固体先加水（食盐/小苏打能溶；铁钉/碳粉不能溶就不能测）<br><br>
+      <strong>🔥 酒精灯怎么用：</strong><br>
+      ① 先往烧杯里加东西（比如牛奶）<br>
+      ② 点器材栏「酒精灯」或左下角灯 → 点燃<br>
+      ③ 再点一下那个烧杯 → 放上灯加热，看「🔥加热中」和温度<br>
+      ④ 液体升到 65°C 以上才慢慢蒸发，要耐心等一会儿（固体/金属会留下）<br>
+      ⑤ 蒸发皿上蒸发更快 · 再点酒精灯可熄灭<br><br>
+      <strong>💎 蒸馏水：</strong>点「⚗️ 蒸馏套装」→ 锥形瓶加水 → 加热沸腾 → 试管收蒸馏水<br>
+      <strong>✨ 提精华：</strong>分液漏斗 + 茶/果汁 + 酒精 → 点「提取器」
+    </div>
+  </div>
+
+  <div id="lab-toast" class="toast" aria-live="polite"></div>
+  <script src="lab-game/game.js"></script>
+</body>
+</html>

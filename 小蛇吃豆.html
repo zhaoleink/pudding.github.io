@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="小蛇吃豆.html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>小蛇吃豆</title>
+  <link rel="stylesheet" href="hub-nav.css?v=5">
+  <link rel="stylesheet" href="snake-game/style.css?v=11">
+  <script src="anti-ad-shield.js"></script>
+</head>
+<body>
+  <nav class="hub-nav" aria-label="应用导航">
+    <span class="hub-label">去 →</span>
+    <a href="游戏大厅.html">大厅</a>
+    <a href="造语坊.html" class="hub-lang">造语坊</a>
+    <a href="慢净.html">慢净</a>
+    <a href="花鱼小院.html">花鱼小院</a>
+    <a href="bubble-game.html">解压气泡</a>
+    <a href="静沙.html">静沙</a>
+    <a href="白噪音台.html">白噪音</a>
+    <a href="白菜对我笑.html">白菜</a>
+    <a href="小小实验室.html">实验室</a>
+    <a href="找不同.html">找不同</a>
+    <a href="妙脆角猫山谷.html">猫山谷</a>
+    <a href="脆果厨房.html">脆果厨房</a>
+    <a href="妙脆小猫按钮关.html">按钮关</a>
+    <a href="弹弹球.html">弹弹球</a>
+    <a href="星座.html">星座</a>
+    <a href="小球棋.html">小球棋</a>
+    <a href="小蛇吃豆.html">小蛇吃豆</a>
+  </nav>
+  <script src="hub-nav.js?v=5"></script>
+
+  <div id="app">
+    <header id="snake-hud">
+      <h1>小蛇吃豆</h1>
+      <p class="hint">鼠标或手指指哪小蛇跟哪 · 方向键也行 · 大地图里偶尔有<strong>大水果</strong>（榴莲、大苹果等）+5 长度</p>
+      <div id="snake-stats">
+        已吃 <b id="stat-snake-score">0</b> · 长度 <b id="stat-snake-len">3</b> · 果子 <b id="stat-snake-wallet-hud">0</b>
+      </div>
+      <p id="snake-boost-hud" hidden>⚡ 加速 <b id="stat-boost-sec">0</b> 秒</p>
+      <div id="snake-hud-actions">
+        <button type="button" id="btn-snake-shop">商城</button>
+        <button type="button" id="btn-snake-start-hud" class="snake-btn-primary">开始</button>
+        <button type="button" id="btn-snake-restart">重开</button>
+      </div>
+    </header>
+    <div id="snake-stage">
+      <canvas id="snake-canvas" aria-label="小蛇吃豆"></canvas>
+    </div>
+    <div id="snake-shop" hidden aria-hidden="true">
+      <div id="snake-shop-panel">
+        <h2>果子商城</h2>
+        <p class="shop-wallet">可用果子：<b id="stat-snake-wallet">0</b> <span class="shop-note">吃一颗长一节、果子+1；商城买东西只扣果子，蛇长度不会变短</span></p>
+        <button type="button" id="btn-buy-boost" class="shop-item">⚡ 加速 20 秒 · 12 颗果子</button>
+        <button type="button" id="btn-buy-bomb" class="shop-item shop-item-bomb">💣 果子全图吸入 · 28 颗果子</button>
+        <p class="shop-bomb-note">炸弹：超大范围吸果（最多约一千颗）· 之后 <b>120 秒</b> 大地很稀 · <b>90 秒</b> 才能再买</p>
+        <button type="button" id="btn-shop-close">关闭</button>
+      </div>
+    </div>
+  </div>
+  <p id="snake-toast" aria-live="polite"></p>
+
+  <script src="hub-keyboard.js?v=1"></script>
+  <script src="snake-game/game.js?v=30"></script>
+</body>
+</html>

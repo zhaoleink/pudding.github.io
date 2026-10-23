@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>弹弹球 · 玻璃珠</title>
   <link rel="stylesheet" href="hub-nav.css?v=5">
-  <link rel="stylesheet" href="marble-game/style.css?v=4">
+  <link rel="stylesheet" href="marble-game/style.css?v=8">
   <script src="anti-ad-shield.js"></script>
 </head>
 <body>
@@ -32,7 +32,7 @@
   <div id="app">
     <header id="marble-hud">
       <h1>弹弹球</h1>
-      <p class="hint" id="marble-hint">台面撞彩珠得合成币 · 点「合成台」在格子里合成</p>
+      <p class="hint" id="marble-hint">撞彩珠得合成币 · 连锁（珠撞珠再撞珠）也算分 · 右上角「棋」小球棋</p>
       <div id="marble-stats">
         <span>合成币 <b id="stat-coins">0</b><small id="coin-progress">/100</small></span>
         <span>碰撞 <b id="stat-hits">0</b></span>
@@ -44,6 +44,13 @@
     </header>
     <div id="marble-stage">
       <canvas id="marble-canvas" aria-label="弹弹球台面"></canvas>
+      <button type="button" id="btn-mini-ball-capture" class="marble-mini-btn" title="小球棋">棋</button>
+      <div id="bc-mini-overlay" class="bc-mini-overlay" hidden aria-hidden="true">
+        <div class="bc-mini-shell">
+          <button type="button" id="bc-mini-close" class="bc-mini-close">收起</button>
+          <iframe id="bc-mini-frame" title="小球棋" src="about:blank"></iframe>
+        </div>
+      </div>
       <p id="merge-toast" hidden aria-live="polite"></p>
     </div>
   </div>
@@ -58,6 +65,7 @@
           <button type="button" id="btn-claim-pink">领一颗粉球 (−100)</button>
           <span id="craft-selected-label" class="craft-selected">已选：无（点格子选中）</span>
           <button type="button" id="btn-craft-use">使用到台面</button>
+          <button type="button" id="btn-craft-store">台面收回格子</button>
           <button type="button" id="btn-craft-close">收起</button>
         </div>
       </header>
@@ -65,7 +73,7 @@
     </div>
   </div>
 
-  <script src="marble-game/game.js?v=16"></script>
-  <script src="marble-game/craft-grid.js?v=16"></script>
+  <script src="marble-game/game.js?v=22"></script>
+  <script src="marble-game/craft-grid.js?v=18"></script>
 </body>
 </html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="游戏大厅.html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>解压游戏大厅 · 防广告护盾</title>
+  <link rel="stylesheet" href="hub-nav.css?v=5">
+  <script src="anti-ad-shield.js"></script>
+  <style>
+    :root {
+      --bg: #eef4f6;
+      --card: #fff;
+      --text: #2a3a42;
+      --muted: #6a8490;
+      --accent: #5c9ead;
+      --accent-dark: #3a7280;
+      --shadow: 0 8px 28px rgba(40, 70, 80, 0.12);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, "PingFang SC", sans-serif;
+      background: linear-gradient(165deg, #e8f2f5 0%, #f5efe8 45%, #eef0f8 100%);
+      color: var(--text);
+      padding: 24px 16px 80px;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 28px; }
+    header h1 { font-size: 28px; font-weight: 800; letter-spacing: 0.02em; }
+    header p { margin-top: 8px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .section-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin: 0 0 10px 2px;
+    }
+    .app-feature {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+      color: inherit;
+      background: linear-gradient(135deg, #f3f0ff 0%, #eef8f5 100%);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+      border: 2px solid rgba(124, 108, 240, 0.35);
+      margin-bottom: 22px;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .app-feature:hover {
+      transform: translateY(-2px);
+      border-color: rgba(124, 108, 240, 0.65);
+    }
+    .app-feature .emoji { font-size: 40px; flex-shrink: 0; }
+    .app-feature h2 { font-size: 18px; margin-bottom: 4px; }
+    .app-feature p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .app-badge {
+      margin-left: auto;
+      flex-shrink: 0;
+      background: #7c6cf0;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+    .shield-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(92, 158, 173, 0.2);
+      margin-bottom: 22px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    .shield-card .icon { font-size: 36px; }
+    .shield-card h2 { font-size: 16px; margin-bottom: 4px; }
+    .shield-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .shield-status {
+      margin-left: auto;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-dark);
+      white-space: nowrap;
+    }
+    .games {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .game-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 22px 18px;
+      box-shadow: var(--shadow);
+      border: 2px solid transparent;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .game-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(92, 158, 173, 0.45);
+    }
+    .game-card .emoji { font-size: 32px; margin-bottom: 10px; }
+    .game-card h3 { font-size: 17px; margin-bottom: 6px; }
+    .game-card p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    footer {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+  <nav class="hub-nav" aria-label="应用导航">
+    <span class="hub-label">去 →</span>
+    <a href="游戏大厅.html">🏠 大厅</a>
+    <a href="造语坊.html" class="hub-lang">🗣️ 造语坊</a>
+    <a href="慢净.html">🪟 慢净</a>
+    <a href="花鱼小院.html">🌸 花鱼小院</a>
+    <a href="森林拾叶.html">🍁 森林拾叶</a>
+    <a href="bubble-game.html">🫧 解压气泡</a>
+    <a href="静沙.html">🏜 静沙</a>
+    <a href="白噪音台.html">🎧 白噪音</a>
+    <a href="白菜对我笑.html">🥬 白菜</a>
+    <a href="小小实验室.html">🧪 实验室</a>
+      <a href="找不同.html">🔍 找不同</a>
+    <a href="妙脆角猫山谷.html">🐱 猫山谷</a>
+    <a href="脆果厨房.html">脆果厨房</a>
+</nav>
+  <script src="hub-nav.js?v=5"></script>
+  <div class="wrap">
+    <header>
+      <h1>🛡️ 解压大厅</h1>
+      <p>游戏 + App 合集 · 右下角 🛡️ 防广告护盾常开</p>
+    </header>
+
+    <div class="shield-card">
+      <div class="icon" aria-hidden="true">📡</div>
+      <div>
+        <h2>防广告装置</h2>
+        <p>已随页面加载。进入任意页面后，右下角 🛡️ 可开关护盾；拦截数会累计显示。</p>
+      </div>
+      <div class="shield-status" id="shield-status">护盾：开</div>
+    </div>
+
+    <p class="section-title">📱 APP · 工具</p>
+    <a class="app-feature" href="造语坊.html">
+      <div class="emoji">🗣️</div>
+      <div>
+        <h2>造语坊</h2>
+        <p>创造自己的语言：字母、词库、语法、书写台、练一练。不是游戏，是造语 App。</p>
+      </div>
+      <span class="app-badge">新 App</span>
+    </a>
+    <a class="app-feature" href="白噪音台.html" style="border-color: rgba(126, 184, 212, 0.35); background: linear-gradient(135deg, #eef6fa 0%, #e8f0f5 100%);">
+      <div class="emoji">🎧</div>
+      <div>
+        <h2>白噪音台</h2>
+        <p>雨声、沙声、炉火、海浪……可混音，可定时渐弱关闭。不是游戏，是背景音 App。</p>
+      </div>
+      <span class="app-badge" style="background:#5090b0;">新 App</span>
+    </a>
+    <a class="app-feature" href="全球矿石地图.html" style="border-color: rgba(255, 183, 77, 0.35); background: linear-gradient(135deg, #1a2332 0%, #243447 100%); color: #eef3ff;">
+      <div class="emoji">🌍</div>
+      <div>
+        <h2 style="color:#ffe0b2;">全球矿石地图</h2>
+        <p style="color:#b8c9e6;">全球矿带示意 · 不追求精确坐标 · 长按拖动旋转地球。</p>
+      </div>
+      <span class="app-badge" style="background:#ef6c00;">新 App</span>
+    </a>
+
+    <a class="app-feature" href="森林拾叶.html" style="border-color: rgba(46, 125, 50, 0.45); background: linear-gradient(135deg, #e8f5e9 0%, #fff8e1 100%); margin-bottom: 18px;">
+      <div class="emoji">🍁</div>
+      <div>
+        <h2 style="color:#2e7d32;">森林拾叶</h2>
+        <p>在枫林、梧桐道、银杏谷里散步，捡起枫叶、梧桐叶等真实叶形。</p>
+      </div>
+      <span class="app-badge" style="background:#388e3c;">新游戏</span>
+    </a>
+
+    <p class="section-title">🎮 游戏</p>
+    <div class="games">
+      <a class="game-card" href="慢净.html">
+        <div class="emoji">🪟</div>
+        <h3>慢净</h3>
+        <p>擦去雾气，慢慢看见风景。12 关 + 隐藏彩蛋。</p>
+      </a>
+      <a class="game-card" href="花鱼小院.html">
+        <div class="emoji">🌸</div>
+        <h3>花鱼小院</h3>
+        <p>种花、养鱼、捉虫。慢慢经营的小院子。</p>
+      </a>
+      <a class="game-card" href="森林拾叶.html">
+        <div class="emoji">🍁</div>
+        <h3>森林拾叶</h3>
+        <p>在枫林、梧桐道、银杏谷里散步，捡起真实叶形的枫叶与梧桐叶。</p>
+      </a>
+      <a class="game-card" href="bubble-game.html">
+        <div class="emoji">🫧</div>
+        <h3>解压气泡</h3>
+        <p>点爆气泡，各种特殊泡和收集玩法。</p>
+      </a>
+      <a class="game-card" href="静沙.html">
+        <div class="emoji">🏜</div>
+        <h3>静沙</h3>
+        <p>像枯山水一样耙沙纹。不擦、不戳，慢慢划纹路。</p>
+      </a>
+      <a class="game-card" href="白菜对我笑.html">
+        <div class="emoji">🥬</div>
+        <h3>白菜对我笑</h3>
+        <p>热梗迷宫大逃杀！轮盘选方向跑，咧嘴白菜追着你笑。</p>
+      </a>
+      <a class="game-card" href="小小实验室.html">
+        <div class="emoji">🧪</div>
+        <h3>小小实验室</h3>
+        <p>自由实验台：醋+小苏打、石灰水验 CO₂、紫甘蓝指示剂……家庭安全级。</p>
+      </a>
+      <a class="game-card" href="找不同.html">
+        <div class="emoji">🔍</div>
+        <h3>找不同</h3>
+        <p>上下两图 almost 一样，点出不一样的地方。无计时，慢慢对。</p>
+      </a>
+      <a class="game-card" href="妙脆角猫山谷.html">
+        <div class="emoji">🐱</div>
+        <h3>妙脆角猫山谷</h3>
+        <p>圆滚滚妙脆角猫，耳朵天生是脆角。饿了喂小面包，继续探索山谷。</p>
+      </a>
+      <a class="game-card" href="脆果厨房.html">
+        <div class="emoji game-card-icon" aria-hidden="true">
+          <svg viewBox="0 0 64 64" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="28" width="48" height="26" rx="6" fill="#eceff1" stroke="#90a4ae" stroke-width="2"/>
+            <path fill="#ff9800" d="M12 28h40v6H12z"/>
+            <circle cx="32" cy="20" r="10" fill="#cfd8dc" stroke="#78909c" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3>脆果厨房</h3>
+        <p>按订单摆小面包、野果、脆脆果……无倒计时，10 关慢慢上菜。</p>
+      </a>
+      <a class="game-card" href="妙脆小猫按钮关.html">
+        <div class="emoji game-card-icon" aria-hidden="true">
+          <svg viewBox="0 0 64 64" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="32" cy="40" rx="22" ry="18" fill="#f7f7f7" stroke="#c27800" stroke-width="2"/>
+            <path fill="#f0a020" d="M32 14 L24 32 L40 32 Z"/>
+            <rect x="22" y="46" width="20" height="10" rx="4" fill="#ffc107" stroke="#e65100" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3>妙脆小猫 · 按钮关</h3>
+        <p>四关教程 + 正式十五关；逐关解锁，练完可切正式模式。</p>
+      </a>
+      <a class="game-card" href="弹弹球.html">
+        <div class="emoji" aria-hidden="true">🔮</div>
+        <h3>弹弹球</h3>
+        <p>玻璃珠：拖拽瞄准、松手弹出，撞散中间的珠球。</p>
+      </a>
+      <a class="game-card" href="小球棋.html">
+        <div class="emoji" aria-hidden="true">⚪</div>
+        <h3>小球棋</h3>
+        <p>不透明是我的球，透明是别人的；撞到了就归你。</p>
+      </a>
+      <a class="game-card" href="星座.html">
+        <div class="emoji" aria-hidden="true">✨</div>
+        <h3>星座连线</h3>
+        <p>按顺序点星星，连出北斗、仙后、猎户等星座。</p>
+      </a>
+      <a class="game-card" href="小蛇吃豆.html">
+        <div class="emoji" aria-hidden="true">🐍</div>
+        <h3>小蛇吃豆</h3>
+        <p>无限大地吃果实变长，不会撞墙，别咬到自己。</p>
+      </a>
+    </div>
+
+    <footer>
+      护盾只拦常见广告域名与可疑浮层，不影响游戏本身。<br>
+      右下角 🛡️ 按钮 · 点一下可临时关闭。
+    </footer>
+  </div>
+  <script>
+    function refreshStatus() {
+      const el = document.getElementById('shield-status');
+      if (!el || !window.AdShield) return;
+      el.textContent = AdShield.isOn()
+        ? `护盾：开${AdShield.blocked ? ' · 已拦 ' + AdShield.blocked : ''}`
+        : '护盾：关';
+    }
+    setInterval(refreshStatus, 800);
+    refreshStatus();
+  </script>
+</body>
+</html>

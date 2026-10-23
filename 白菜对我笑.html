@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="白菜对我笑.html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>白菜对我笑 · 迷宫大逃杀</title>
+  <link rel="stylesheet" href="hub-nav.css?v=5">
+  <link rel="stylesheet" href="cabbage-game/style.css">
+  <script src="anti-ad-shield.js"></script>
+</head>
+<body>
+  <nav class="hub-nav" aria-label="应用导航">
+    <span class="hub-label">去 →</span>
+    <a href="游戏大厅.html">🏠 大厅</a>
+    <a href="造语坊.html" class="hub-lang">🗣️ 造语坊</a>
+    <a href="慢净.html">🪟 慢净</a>
+    <a href="花鱼小院.html">🌸 花鱼小院</a>
+    <a href="bubble-game.html">🫧 解压气泡</a>
+    <a href="静沙.html">🏜 静沙</a>
+    <a href="白噪音台.html">🎧 白噪音</a>
+    <a href="白菜对我笑.html">🥬 白菜</a>
+    <a href="小小实验室.html">🧪 实验室</a>
+      <a href="找不同.html">🔍 找不同</a>
+    <a href="妙脆角猫山谷.html">🐱 猫山谷</a>
+    <a href="脆果厨房.html">脆果厨房</a>
+    <a href="妙脆小猫按钮关.html">按钮关</a>
+</nav>
+
+  <script src="hub-nav.js?v=5"></script>
+  <div id="app">
+    <header id="topbar">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true"></span>
+        <div>
+          <h1>白菜对我笑</h1>
+          <p>迷宫大逃杀 · 八方轮盘，绕开挡路白菜冲向出口</p>
+        </div>
+      </div>
+      <button type="button" class="btn-restart" id="btn-restart">重来</button>
+    </header>
+
+    <nav class="mode-tabs" id="mode-tabs" aria-label="游戏模式">
+      <button type="button" class="mode-tab active" data-mode="story">故事</button>
+      <button type="button" class="mode-tab" data-mode="endless">无尽</button>
+      <button type="button" class="mode-tab" data-mode="sprint">限时</button>
+    </nav>
+
+    <main class="stage card">
+      <p id="chapter-tag" class="chapter-tag" aria-live="polite"></p>
+      <p id="sprint-timer" class="sprint-timer" hidden aria-live="polite">⏱ 60s</p>
+      <p class="status" id="game-status">找黄色闪动的「门」 · 在圆盘上点方向走</p>
+      <div class="game-hud">
+        <span class="hud-item">步数 <strong id="step-count">0</strong></span>
+        <span class="hud-item" id="par-line">目标 ≤ <strong id="par-count">—</strong></span>
+        <span class="hud-item hud-buff" id="buff-hud" hidden><span id="buff-name">—</span> <strong id="buff-turns">0</strong> 步</span>
+      </div>
+      <p class="maze-legend">
+        <span class="legend-item"><span class="legend-icon" data-fig="player"></span>你</span>
+        <span class="legend-item"><span class="legend-icon" data-fig="cabbage"></span>白菜</span>
+        <span class="legend-item legend-pickups" id="pickup-legend"></span>
+        <span class="legend-item exit-tag"><span class="legend-icon" data-fig="exit"></span>出口</span>
+      </p>
+      <div class="maze-wrap">
+        <div id="cabbage-meme-bubble" class="cabbage-meme-bubble" hidden aria-live="assertive">白菜对我笑～</div>
+        <div class="maze" id="maze" role="grid" aria-label="迷宫"></div>
+      </div>
+
+      <div class="wheel-section">
+        <p class="wheel-label">在绿圆盘上<strong>点外圈方向</strong>就走 · 键盘 ↑↓←→ 也行</p>
+        <div class="wheel-dial" id="wheel" role="button" aria-label="方向轮盘，点一个方向走一步">
+          <div class="wheel-ring" aria-hidden="true"></div>
+          <div class="wheel-center" id="wheel-center" aria-hidden="true">点方向<br>走</div>
+        </div>
+      </div>
+
+      <p class="score-line">成功逃跑 <strong id="win-count">0</strong> 次 · 惊险逃脱 <strong id="thrill-count">0</strong> 次</p>
+    </main>
+
+    <div class="meme-overlay" id="meme-overlay" hidden>
+      <div class="meme-card">
+        <div class="meme-figure" id="meme-figure" aria-hidden="true"></div>
+        <p class="meme-stars" id="meme-stars" hidden aria-hidden="true">★★★</p>
+        <p class="meme-sub" id="meme-sub" hidden></p>
+        <p class="meme-text" id="meme-text">白菜对我笑～</p>
+        <button type="button" class="meme-btn" id="meme-btn">再逃一次</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="cabbage-game/figures.js"></script>
+  <script src="cabbage-game/app.js"></script>
+</body>
+</html>

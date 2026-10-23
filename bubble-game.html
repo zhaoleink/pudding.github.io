@@ -1,0 +1,2354 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="bubble-game.html">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>解压气泡游戏</title>
+<link rel="stylesheet" href="hub-nav.css?v=5">
+<link rel="stylesheet" href="bubble-game.css">
+</head>
+<body>
+
+<nav class="hub-nav" aria-label="应用导航">
+  <span class="hub-label">去 →</span>
+  <a href="游戏大厅.html">🏠 大厅</a>
+  <a href="造语坊.html" class="hub-lang">🗣️ 造语坊</a>
+  <a href="慢净.html">🪟 慢净</a>
+  <a href="花鱼小院.html">🌸 花鱼小院</a>
+  <a href="bubble-game.html">🫧 解压气泡</a>
+    <a href="静沙.html">🏜 静沙</a>
+    <a href="白噪音台.html">🎧 白噪音</a>
+    <a href="白菜对我笑.html">🥬 白菜</a>
+    <a href="小小实验室.html">🧪 实验室</a>
+      <a href="找不同.html">🔍 找不同</a>
+    <a href="妙脆角猫山谷.html">🐱 猫山谷</a>
+    <a href="脆果厨房.html">脆果厨房</a>
+    <a href="妙脆小猫按钮关.html">按钮关</a>
+</nav>
+
+  <script src="hub-nav.js?v=5"></script>
+<div id="panel-backdrop"></div>
+
+<button type="button" id="panel-toggle" aria-label="打开侧栏">☰</button>
+
+<div id="game-main">
+<div id="game-body">
+<!-- ══ LEFT SIDEBAR (game controls) ════════════════════════════════ -->
+<div id="game-sidebar">
+  <h1>解压气泡</h1>
+
+  <div class="stat-row">
+    <span>已戳破</span><span class="stat-val" id="stat-popped">0</span>
+  </div>
+  <div class="stat-row">
+    <span>分数</span><span class="stat-val" id="stat-score">0</span>
+  </div>
+  <div class="stat-row">
+    <span>金币</span><span class="stat-val" id="stat-coins" style="color:#ffd54f">0</span>
+  </div>
+  <div id="board-daily-challenge" class="board-daily-challenge" hidden aria-live="polite"></div>
+  <button type="button" class="btn" id="btn-zen-mode" style="width:100%;border-color:#a5d6a7;color:#a5d6a7;font-size:13px;font-weight:700;padding:7px 0;margin-bottom:6px" title="只戳泡，不计分不加币">🧘 禅模式</button>
+  <div id="panel-wallet">
+    <div class="pw-item"><span>🫧 泡珠</span><span class="pw-val" id="stat-pearls" style="color:#81d4fa">0</span></div>
+    <div class="pw-item"><span>✨ 虹芒</span><span class="pw-val" id="stat-glow" style="color:#f48fb1">0</span></div>
+    <div class="pw-item"><span>🌊 波瓣</span><span class="pw-val" id="stat-wave" style="color:#4db6ac">0</span></div>
+    <div class="pw-item"><span>🎣 钓鱼币</span><span class="pw-val" id="stat-fish" style="color:#4fc3f7">0</span></div>
+  </div>
+
+  <div style="display:flex;gap:6px">
+    <button class="btn" id="btn-shop" style="flex:1;border-color:#ffd54f;color:#ffd54f;font-size:22px;padding:6px 0;text-align:center">🏠</button>
+    <button class="btn" id="btn-backpack" style="flex:1;border-color:#81d4fa;color:#81d4fa;font-size:22px;padding:6px 0;text-align:center" title="背包 · 点一下用 · 长按连用">🎒<span id="backpack-badge" class="backpack-badge" aria-hidden="true"></span></button>
+    <button class="btn" id="btn-quest" style="flex:1;border-color:#ce93d8;color:#ce93d8;font-size:18px;padding:6px 0;text-align:center" title="每日泡计划">📅</button>
+    <button class="btn" id="btn-achievement" style="flex:1;border-color:#ffd54f;color:#ffd54f;font-size:18px;padding:6px 0;text-align:center" title="成就墙">🏆</button>
+    <button class="btn" id="btn-pass" style="flex:1;border-color:#00e5ff;color:#00e5ff;font-size:18px;padding:6px 0;text-align:center" title="挑战通行证">🎫</button>
+  </div>
+  <div id="continent-row">
+    <button type="button" id="btn-continent" title="泡泡大陆">
+      🫧 泡泡大陆
+      <span class="continent-en">泡泡大陆</span>
+    </button>
+    <button type="button" id="btn-paodou" title="泡豆漫游">泡豆</button>
+  </div>
+  <div id="season-row">
+    <button type="button" id="btn-season" title="泡季 · 每季 45–60 天">
+      🌸 <span id="btn-season-label">泡季</span>
+      <span class="season-en" id="btn-season-days">剩 — 天</span>
+    </button>
+  </div>
+  <button class="btn" id="btn-skin-gacha" style="width:100%;border-color:#ffb74d;color:#ffb74d;font-size:14px;font-weight:700;padding:8px 0;text-align:center;margin-bottom:6px" title="抽泡泡皮肤">🎲 抽泡泡皮肤</button>
+  <button class="btn" id="btn-restart" style="border-color:#ff5555;color:#ff5555;font-size:13px;font-weight:700;padding:7px 0;text-align:center;letter-spacing:.5px">🔄 重新开始</button>
+
+  <div id="level-panel">
+    <div id="lv-header">
+      <span id="lv-stage">🌱 第一阶段</span>
+      <span id="lv-nums">等级 <span id="lv-num">1</span><span id="lv-max">/200</span></span>
+    </div>
+    <div id="lv-bar-bg"><div id="lv-bar-fill"></div></div>
+    <div id="lv-meta">
+      <span id="lv-discount">商店9折</span>
+      <span style="font-size:9px;color:#666">道具在 🎒 背包</span>
+    </div>
+    <button id="lv-up-btn"><span id="lv-cost">200 💰 升级</span></button>
+  </div>
+
+  <hr class="sep">
+
+  <!-- BUBBLE SETTINGS -->
+  <div>
+    <div class="section-label">气泡形状</div>
+    <div class="ctrl-group">
+      <select id="bubble-shape">
+        <option value="circle">圆形</option>
+        <option value="star">星形</option>
+        <option value="heart">心形</option>
+        <option value="square">方形</option>
+        <option value="hexagon">六边形</option>
+        <option value="diamond">菱形</option>
+        <option value="mix">随机混合</option>
+      </select>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">气泡大小</div>
+    <input type="range" id="bubble-size" min="20" max="90" value="45">
+  </div>
+
+  <div>
+    <div class="section-label">生成速度</div>
+    <input type="range" id="spawn-rate" min="200" max="2000" value="800" step="100">
+  </div>
+
+  <hr class="sep">
+
+  <!-- BOARD SETTINGS -->
+  <div>
+    <div class="section-label">面板形状</div>
+    <select id="board-shape">
+      <option value="12px">圆角</option>
+      <option value="50%">椭圆 / 圆形</option>
+      <option value="0">矩形</option>
+      <option value="40px 0 40px 0">波浪</option>
+      <option value="0 40px 0 40px">波浪（交替）</option>
+      <option value="50% 0">上半圆</option>
+    </select>
+  </div>
+
+  <button class="btn" id="btn-clear">清空所有气泡</button>
+  <button class="btn danger" id="btn-reset">重置分数</button>
+
+  <hr class="sep">
+  <div class="section-label sidebar-pct-head">泡泡出现概率</div>
+<div>
+    <div class="section-label">水量 %</div>
+    <input type="range" id="water-pct" min="0" max="100" value="40">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#888">
+      <span>💧 +5 分</span><span id="water-pct-val">40%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">沙量 %</div>
+    <input type="range" id="sand-pct" min="0" max="100" value="20">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#888">
+      <span>🪨 +20 分</span><span id="sand-pct-val">20%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">钻石 %</div>
+    <input type="range" id="diamond-pct" min="0" max="100" value="2" step="0.1">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#888">
+      <span>💎 +25 分</span><span id="diamond-pct-val">2%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">金+钻 %</div>
+    <input type="range" id="golddiamond-pct" min="0" max="30" value="1" step="0.1">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#888">
+      <span>👑 +50 分</span><span id="golddiamond-pct-val">1%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">暗物质 %</div>
+    <input type="range" id="darkmatter-pct" min="0" max="20" value="0.8" step="0.1">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#888">
+      <span>🌑 +70 分</span><span id="darkmatter-pct-val">0.8%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">星系+暗 %</div>
+    <input type="range" id="galaxy-pct" min="0" max="15" value="0.6" step="0.1">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#888">
+      <span>🌌 +80 分</span><span id="galaxy-pct-val">0.6%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">黑洞 %</div>
+    <input type="range" id="blackhole-pct" min="0" max="10" value="0.4" step="0.1">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#888">
+      <span>⚫ +85 分</span><span id="blackhole-pct-val">0.4%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">中子星 %</div>
+    <input type="range" id="neutronstar-pct" min="0" max="10" value="0.4" step="0.1">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#888">
+      <span>✨ +90 分</span><span id="neutronstar-pct-val">0.4%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">白洞 %</div>
+    <input type="range" id="whitehole-pct" min="0" max="10" value="0.4" step="0.1">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#888">
+      <span>🌟 +95 分</span><span id="whitehole-pct-val">0.4%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">超星系团 %</div>
+    <input type="range" id="supercluster-pct" min="0" max="8" value="0.4" step="0.1">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#888">
+      <span>🔮 +100 分</span><span id="supercluster-pct-val">0.4%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">宇宙 %</div>
+    <input type="range" id="universe-pct" min="0" max="5" value="0.4" step="0.1">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#888">
+      <span>🌈 +110 分</span><span id="universe-pct-val">0.4%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">Super 宇宙 %</div>
+    <input type="range" id="superuniverse-pct" min="0" max="5" value="0.4" step="0.1">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#888">
+      <span>♾️ +115 分</span><span id="superuniverse-pct-val">0.4%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">🍉 西瓜 %</div>
+    <input type="range" id="watermelon-pct" min="0" max="5" step="0.1" value="0.8">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#2ab818">
+      <span>🍉 全场变西瓜 +25</span><span id="watermelon-pct-val">0.8%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">🍓 草莓 %</div>
+    <input type="range" id="strawberry-pct" min="0" max="20" step="0.5" value="2">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#e53935">
+      <span>🍓 甩酱上墙 +30</span><span id="strawberry-pct-val">2%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">🎆 烟花 %</div>
+    <input type="range" id="firework-pct" min="0" max="15" step="0.5" value="1.5">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#ff80ab">
+      <span>🎆 满屏火花 +40</span><span id="firework-pct-val">1.5%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">🍀 幸运 %</div>
+    <input type="range" id="lucky-pct" min="0" max="10" step="0.1" value="0.8">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#ffd54f">
+      <span>🍀 随机150–1000</span><span id="lucky-pct-val">0.8%</span>
+    </div>
+  </div>
+
+
+  <div>
+    <div class="section-label">🍇 葡萄 %</div>
+    <input type="range" id="grape-pct" min="0" max="20" step="0.5" value="3">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#9c27b0">
+      <span>🍇 裂成小葡萄 +35</span><span id="grape-pct-val">3%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">🫧 肥皂 %</div>
+    <input type="range" id="soap-pct" min="0" max="20" step="0.5" value="3">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#80deea">
+      <span>🫧 彩虹膜 +30</span><span id="soap-pct-val">3%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">❄️ 冰 %</div>
+    <input type="range" id="ice-pct" min="0" max="15" step="0.5" value="3">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#81d4fa">
+      <span>❄️ 冰冻周围 +40</span><span id="ice-pct-val">3%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">🍮 果冻 %</div>
+    <input type="range" id="jelly-pct" min="0" max="15" step="0.5" value="3">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#f48fb1">
+      <span>🍮 按2下 +45</span><span id="jelly-pct-val">3%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">🎈 气球 %</div>
+    <input type="range" id="balloon-pct" min="0" max="15" step="0.5" value="3">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#ef5350">
+      <span>🎈 鼓起再爆 +35</span><span id="balloon-pct-val">3%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">⚡ 雷电 %</div>
+    <input type="range" id="lightning-pct" min="0" max="15" step="0.5" value="3">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#ffee58">
+      <span>⚡ 劈附近 +50</span><span id="lightning-pct-val">3%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">🧲 磁铁 %</div>
+    <input type="range" id="magnet-pct" min="0" max="15" step="0.5" value="3">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#90a4ae">
+      <span>🧲 吸附附近 +45</span><span id="magnet-pct-val">3%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">⏰ 时钟 %</div>
+    <input type="range" id="clock-pct" min="0" max="15" step="0.5" value="3">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#a1887f">
+      <span>⏰ 全场变慢 +40</span><span id="clock-pct-val">3%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">🚀 加速 %</div>
+    <input type="range" id="speedbubble-pct" min="0" max="15" step="0.5" value="3">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#66bb6a">
+      <span>🚀 刷泡加速 +40</span><span id="speedbubble-pct-val">3%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">👻 隐形 %</div>
+    <input type="range" id="invisible-pct" min="0" max="15" step="0.5" value="3">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#b0bec5">
+      <span>👻 几乎看不见 +55</span><span id="invisible-pct-val">3%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">🫗 玻璃水球 %</div>
+    <input type="range" id="glasswater-pct" min="0" max="20" value="10">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#90d4f7">
+      <span>🫗 +15 分</span><span id="glasswater-pct-val">10%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">🧨 TNT %</div>
+    <input type="range" id="tnt-pct" min="0" max="10" step="0.1" value="1.5">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#ff4411">
+      <span>🧨 连锁全清!</span><span id="tnt-pct-val">1.5%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">🌈 彩虹烟 %</div>
+    <input type="range" id="rainbowsmoke-pct" min="0" max="15" value="8">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#dd88ff">
+      <span>🌈 +30 分</span><span id="rainbowsmoke-pct-val">8%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">💣 炸弹 %</div>
+    <input type="range" id="bomb-pct" min="0" max="10" value="5">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#f66">
+      <span>💣 链式爆炸!</span><span id="bomb-pct-val">5%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">🪿 教书鹅 %</div>
+    <input type="range" id="jiaoshuee-pct" min="0" max="10" value="5">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#d4b800">
+      <span>🪿 按3下 +50</span><span id="jiaoshuee-pct-val">5%</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">🪣 浇水 %</div>
+    <input type="range" id="jiaoshui-pct" min="0" max="10" value="5">
+    <div class="ctrl-row" style="margin-top:4px;font-size:11px;color:#42a5d5">
+      <span>🪣 按3下 +50</span><span id="jiaoshui-pct-val">5%</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ GAME BOARD ════════════════════════════════════════════════════ -->
+<div id="board-wrap">
+  <div id="main-currency-hud" aria-label="货币">
+    <div class="mch-chip mch-gold" id="hud-chip-coins" title="金币">
+      <span class="mch-icon">🪙</span>
+      <span class="mch-val" id="hud-coins">0</span>
+      <span class="mch-label">金币</span>
+    </div>
+    <div class="mch-chip mch-pearl" id="hud-chip-pearl" title="泡珠">
+      <span class="mch-icon">🫧</span>
+      <span class="mch-val" id="hud-pearls">0</span>
+      <span class="mch-label">泡珠</span>
+    </div>
+    <div class="mch-chip mch-glow" id="hud-chip-glow" title="虹芒">
+      <span class="mch-icon">✨</span>
+      <span class="mch-val" id="hud-glow">0</span>
+      <span class="mch-label">虹芒</span>
+    </div>
+    <div class="mch-chip mch-wave" id="hud-chip-wave" title="波瓣">
+      <span class="mch-icon">🌊</span>
+      <span class="mch-val" id="hud-wave">0</span>
+      <span class="mch-label">波瓣</span>
+    </div>
+    <div class="mch-chip mch-fish" id="hud-chip-fish" title="钓鱼币">
+      <span class="mch-icon">🎣</span>
+      <span class="mch-val" id="hud-fish-coins">0</span>
+      <span class="mch-label">钓鱼币</span>
+    </div>
+  </div>
+  <div id="board">
+    <div id="midautumn-moon" class="midautumn-moon" aria-hidden="true">
+      <div class="midautumn-moon-halo"></div>
+      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="">
+        <defs>
+          <clipPath id="moon-clip">
+            <circle cx="60" cy="60" r="34"/>
+          </clipPath>
+          <radialGradient id="moon-sphere" cx="34%" cy="30%" r="68%">
+            <stop offset="0%" stop-color="#fffef5"/>
+            <stop offset="38%" stop-color="#fff8c4"/>
+            <stop offset="72%" stop-color="#ffeb3b"/>
+            <stop offset="100%" stop-color="#ffc107"/>
+          </radialGradient>
+          <radialGradient id="moon-edge" cx="50%" cy="50%" r="50%">
+            <stop offset="68%" stop-color="transparent"/>
+            <stop offset="100%" stop-color="#b8860b" stop-opacity="0.22"/>
+          </radialGradient>
+          <radialGradient id="maria-soft" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#9a7b1a" stop-opacity="0.62"/>
+            <stop offset="55%" stop-color="#9a7b1a" stop-opacity="0.28"/>
+            <stop offset="100%" stop-color="#9a7b1a" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="ray-fade" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#fffde7" stop-opacity="0.95"/>
+            <stop offset="55%" stop-color="#fff59d" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="#ffecb3" stop-opacity="0"/>
+          </linearGradient>
+          <filter id="beam-blur" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="1.2"/>
+          </filter>
+          <filter id="moon-grain" x="-8%" y="-8%" width="116%" height="116%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" seed="8" result="noise"/>
+            <feColorMatrix in="noise" type="matrix"
+              values="0 0 0 0 0.72  0 0 0 0 0.62  0 0 0 0 0.38  0 0 0 0.14 0" result="grain"/>
+            <feBlend in="SourceGraphic" in2="grain" mode="multiply"/>
+          </filter>
+        </defs>
+        <!-- 月华 · 洒向夜空的辐射光束 -->
+        <g class="moon-sky-rays" filter="url(#beam-blur)">
+          <line x1="60" y1="60" x2="18" y2="22" stroke="url(#ray-fade)" stroke-width="3.5" opacity="0.55"/>
+          <line x1="60" y1="60" x2="8" y2="52" stroke="url(#ray-fade)" stroke-width="3" opacity="0.45"/>
+          <line x1="60" y1="60" x2="22" y2="98" stroke="url(#ray-fade)" stroke-width="2.8" opacity="0.4"/>
+          <line x1="60" y1="60" x2="52" y2="8" stroke="url(#ray-fade)" stroke-width="3.2" opacity="0.5"/>
+          <line x1="60" y1="60" x2="98" y2="18" stroke="url(#ray-fade)" stroke-width="3.8" opacity="0.58"/>
+          <line x1="60" y1="60" x2="112" y2="48" stroke="url(#ray-fade)" stroke-width="3" opacity="0.48"/>
+          <line x1="60" y1="60" x2="108" y2="88" stroke="url(#ray-fade)" stroke-width="2.6" opacity="0.38"/>
+          <line x1="60" y1="60" x2="72" y2="112" stroke="url(#ray-fade)" stroke-width="2.4" opacity="0.35"/>
+        </g>
+        <g clip-path="url(#moon-clip)" filter="url(#moon-grain)">
+          <circle cx="60" cy="60" r="34" fill="url(#moon-sphere)"/>
+          <!-- 月海 -->
+          <path d="M48 42 C54 38 62 39 66 44 C70 48 69 54 64 58 C60 62 54 61 50 57 C46 53 44 47 48 42 Z" fill="url(#maria-soft)" opacity="0.9"/>
+          <path d="M38 54 C42 50 48 51 52 55 C56 59 55 66 50 70 C45 74 38 72 36 66 C34 60 35 57 38 54 Z" fill="#8f7118" opacity="0.4"/>
+          <path d="M62 58 C68 56 74 60 76 66 C78 72 74 78 68 79 C62 80 58 75 58 69 C58 64 60 60 62 58 Z" fill="#8f7118" opacity="0.36"/>
+          <path d="M54 68 C58 66 64 68 66 72 C68 76 65 80 60 81 C55 82 51 78 52 73 C53 70 55 69 54 68 Z" fill="#7a6214" opacity="0.34"/>
+          <ellipse cx="72" cy="48" rx="9" ry="7" fill="#9a7b1a" opacity="0.3"/>
+          <ellipse cx="44" cy="46" rx="6" ry="5" fill="#9a7b1a" opacity="0.24"/>
+          <!-- 第谷式辐射纹 · 主爆发点 -->
+          <g stroke-linecap="round">
+            <line x1="74" y1="54" x2="92" y2="38" stroke="#fffde7" stroke-width="2.2" opacity="0.88"/>
+            <line x1="74" y1="54" x2="96" y2="54" stroke="#fff9c4" stroke-width="2.6" opacity="0.92"/>
+            <line x1="74" y1="54" x2="92" y2="70" stroke="#fffde7" stroke-width="2.2" opacity="0.85"/>
+            <line x1="74" y1="54" x2="84" y2="82" stroke="#fff59d" stroke-width="1.8" opacity="0.78"/>
+            <line x1="74" y1="54" x2="68" y2="86" stroke="#fff59d" stroke-width="1.7" opacity="0.75"/>
+            <line x1="74" y1="54" x2="54" y2="88" stroke="#ffecb3" stroke-width="1.6" opacity="0.72"/>
+            <line x1="74" y1="54" x2="42" y2="78" stroke="#fff59d" stroke-width="1.8" opacity="0.76"/>
+            <line x1="74" y1="54" x2="34" y2="66" stroke="#fffde7" stroke-width="2" opacity="0.82"/>
+            <line x1="74" y1="54" x2="30" y2="54" stroke="#fff9c4" stroke-width="2.4" opacity="0.9"/>
+            <line x1="74" y1="54" x2="34" y2="42" stroke="#fffde7" stroke-width="2" opacity="0.84"/>
+            <line x1="74" y1="54" x2="42" y2="32" stroke="#fff59d" stroke-width="1.8" opacity="0.8"/>
+            <line x1="74" y1="54" x2="54" y2="28" stroke="#ffecb3" stroke-width="1.7" opacity="0.74"/>
+            <line x1="74" y1="54" x2="66" y2="30" stroke="#fff59d" stroke-width="1.6" opacity="0.72"/>
+            <line x1="74" y1="54" x2="82" y2="32" stroke="#fffde7" stroke-width="1.9" opacity="0.8"/>
+            <line x1="74" y1="54" x2="88" y2="44" stroke="#fff9c4" stroke-width="2.1" opacity="0.86"/>
+            <line x1="74" y1="54" x2="88" y2="64" stroke="#fff9c4" stroke-width="2" opacity="0.84"/>
+          </g>
+          <!-- 副辐射点 -->
+          <g stroke-linecap="round" opacity="0.72">
+            <line x1="46" y1="48" x2="28" y2="36" stroke="#fff59d" stroke-width="1.4"/>
+            <line x1="46" y1="48" x2="26" y2="48" stroke="#ffecb3" stroke-width="1.3"/>
+            <line x1="46" y1="48" x2="30" y2="60" stroke="#fff59d" stroke-width="1.2"/>
+            <line x1="46" y1="48" x2="38" y2="68" stroke="#ffecb3" stroke-width="1.1"/>
+            <line x1="46" y1="48" x2="50" y2="70" stroke="#fff59d" stroke-width="1.1"/>
+            <line x1="46" y1="48" x2="58" y2="66" stroke="#ffecb3" stroke-width="1.2"/>
+            <line x1="46" y1="48" x2="62" y2="56" stroke="#fff59d" stroke-width="1.3"/>
+            <line x1="46" y1="48" x2="58" y2="40" stroke="#ffecb3" stroke-width="1.2"/>
+          </g>
+          <!-- 辐射源环形山 -->
+          <circle cx="74" cy="54" r="5.5" fill="none" stroke="#7a6214" stroke-width="1.4" opacity="0.8"/>
+          <circle cx="74" cy="54" r="3.2" fill="#fff8e1" opacity="0.55"/>
+          <circle cx="73.5" cy="53.5" r="1.5" fill="#8f7118" opacity="0.5"/>
+          <circle cx="46" cy="48" r="4" fill="none" stroke="#7a6214" stroke-width="1.1" opacity="0.65"/>
+          <circle cx="46" cy="48" r="2.2" fill="#fff8e1" opacity="0.4"/>
+          <circle cx="60" cy="72" r="3.5" fill="none" stroke="#7a6214" stroke-width="1" opacity="0.55"/>
+          <circle cx="60" cy="72" r="1.8" fill="#6d5610" opacity="0.35"/>
+          <circle cx="60" cy="60" r="34" fill="url(#moon-edge)"/>
+        </g>
+        <circle cx="60" cy="60" r="36" fill="none" stroke="#fff59d" stroke-width="1.5" opacity="0.45"/>
+        <circle cx="60" cy="60" r="40" fill="none" stroke="#ffeb3b" stroke-width="1" opacity="0.22"/>
+      </svg>
+    </div>
+    <div id="combo-display"></div>
+    <canvas id="game-canvas"></canvas>
+  </div>
+</div>
+</div><!-- /#game-body -->
+
+
+</div><!-- /#game-main -->
+
+<!-- ══ START SCREEN ══════════════════════════════════════════════════ -->
+<div id="start-screen">
+  <h2>解压气泡</h2>
+  <p>按住气泡直到爆开 · 赚金币 · 商店升级</p>
+  <button type="button" id="start-btn">开始泡泡游戏</button>
+  <div id="start-hint">点上面按钮开始玩</div>
+</div>
+
+<!-- ══ BUBBLE CONTINENT ═══════════════════════════════════════════════ -->
+<div id="continent-overlay">
+  <div id="continent-topbar">
+    <span>🫧 泡泡大陆</span>
+    <button type="button" id="continent-close">✕ 返回</button>
+  </div>
+  <div id="continent-map">
+    <button type="button" id="continent-farm-btn" title="泡泡农场">
+      <span class="cf-icon">🌾</span>
+      <span class="cf-label">泡泡农场</span>
+    </button>
+    <button type="button" id="continent-pet-btn" title="泡宠">
+      <span class="cp-icon"></span>
+      <span class="cp-label">泡宠</span>
+    </button>
+    <div id="continent-pet-companion" aria-hidden="true"></div>
+    <button type="button" id="continent-meet-btn" title="泡缘邂逅">
+      <span class="cm-icon"></span>
+      <span class="cm-label">泡缘邂逅</span>
+    </button>
+    <div class="cm-map-sheet">
+      <div class="cm-map-caption">✦ 泡泡大陆 ✦</div>
+      <svg class="cm-map-svg" viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="cmSea" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#a8cce4"/>
+            <stop offset="100%" stop-color="#7aadc8"/>
+          </linearGradient>
+          <radialGradient id="cmBubble" cx="36%" cy="28%" r="72%">
+            <stop offset="0%" stop-color="#fff8ec"/>
+            <stop offset="38%" stop-color="#efe0bc"/>
+            <stop offset="72%" stop-color="#dcc89a"/>
+            <stop offset="100%" stop-color="#c4ad78"/>
+          </radialGradient>
+          <clipPath id="cmBubbleClip">
+            <path d="M 505 176 Q 538 168 578 176 Q 622 188 658 212 Q 682 242 675 272 Q 658 298 638 312 Q 662 332 668 362 Q 658 398 622 428 Q 578 452 528 458 Q 478 455 432 432 Q 388 402 362 362 Q 342 318 348 272 Q 358 228 388 198 Q 428 172 472 168 Q 492 170 505 176 Z"/>
+          </clipPath>
+        </defs>
+        <rect width="1000" height="700" fill="url(#cmSea)"/>
+        <!-- 泡雾群岛 — 在海上，不在大陆上 -->
+        <g aria-hidden="true">
+          <ellipse cx="192" cy="292" rx="52" ry="22" fill="#fff" opacity="0.1"/>
+          <path d="M 172 282 Q 198 262 228 278 Q 238 296 212 302 Q 182 296 172 282 Z" fill="#b3e5fc" fill-opacity="0.58" stroke="#8b7355" stroke-width="1.3"/>
+          <path d="M 142 312 Q 158 298 178 312 Q 170 328 152 322 Q 132 314 142 312 Z" fill="#81d4fa" fill-opacity="0.48" stroke="#8b7355" stroke-width="1.1"/>
+          <path d="M 218 318 Q 238 304 258 322 Q 246 338 224 332 Q 206 326 218 318 Z" fill="#b3e5fc" fill-opacity="0.52" stroke="#8b7355" stroke-width="1.1"/>
+          <path d="M 155 278 Q 188 268 218 272" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-linecap="round"/>
+        </g>
+        <!-- 连体陆块 · 参考王者大陆轮廓：更饱满、更紧凑，仍保留泡膜边 -->
+        <path id="cm-bubble-body" d="
+          M 505 176 Q 538 168 578 176 Q 622 188 658 212 Q 682 242 675 272 Q 658 298 638 312 Q 662 332 668 362 Q 658 398 622 428 Q 578 452 528 458 Q 478 455 432 432 Q 388 402 362 362 Q 342 318 348 272 Q 358 228 388 198 Q 428 172 472 168 Q 492 170 505 176 Z
+        " fill="url(#cmBubble)" stroke="#8b7355" stroke-width="2.6" stroke-linejoin="round"/>
+        <ellipse cx="500" cy="248" rx="68" ry="38" fill="#fff" opacity="0.14" transform="rotate(-6 500 248)"/>
+        <path d="M 475 234 Q 500 222 528 234" fill="none" stroke="rgba(255,255,255,0.26)" stroke-width="2.5" stroke-linecap="round"/>
+        <g clip-path="url(#cmBubbleClip)">
+          <!-- 腹地 · 水晶雪原（北内陆，不贴北岸） -->
+          <path d="M 468 218 Q 500 205 532 218 Q 545 242 512 255 Q 478 248 468 218 Z" fill="#b2ebf2" opacity="0.44"/>
+          <!-- 腹地 · 深山雨林（西内陆，不贴西岸） -->
+          <path d="M 408 338 Q 378 328 382 358 Q 402 388 432 378 Q 448 358 408 338 Z" fill="#c8e6c9" opacity="0.44"/>
+          <!-- 腹地 · 金泡平原（南内陆，不贴南岸） -->
+          <path d="M 448 358 Q 500 348 552 362 Q 538 398 492 408 Q 445 398 448 358 Z" fill="#fff9c4" opacity="0.48"/>
+          <!-- 东侧 · 彩虹港湾（临海，合理） -->
+          <path d="M 648 262 Q 668 252 682 278 Q 668 308 648 302 Q 632 288 648 262 Z" fill="#e1bee7" fill-opacity="0.54"/>
+        </g>
+        <path d="M 878 492 L 912 486 L 924 528 L 906 572 L 864 582 L 834 554 L 846 512 L 862 498 Z" fill="#d1c4e9" fill-opacity="0.45" stroke="#8b7355" stroke-width="1.5" stroke-opacity="0.35" stroke-linejoin="round"/>
+        <path d="M 268 320 Q 198 300 172 292" fill="none" stroke="#8b7355" stroke-width="1.4" stroke-dasharray="6 7" opacity="0.32"/>
+        <path d="M 260 420 Q 420 400 580 410 Q 720 420 820 340" fill="none" stroke="#8b7355" stroke-width="1.6" stroke-dasharray="7 8" opacity="0.35"/>
+        <text x="118" y="348" fill="#6b5340" font-size="11" opacity="0.5" font-family="sans-serif">泡雾海</text>
+        <text x="860" y="660" fill="#6b5340" font-size="12" opacity="0.55" font-family="sans-serif">深泡洋</text>
+      </svg>
+      <div class="cm-zones">
+        <button type="button" class="cm-zone zone-btn c1" id="btn-mistisles-zone">
+          <span class="cm-pin"><i>🌫</i></span>
+          <span class="cm-label">泡雾群岛</span>
+        </button>
+        <button type="button" class="cm-zone zone-btn c2" id="btn-rainbowbay-zone">
+          <span class="cm-pin"><i>🌈</i></span>
+          <span class="cm-label">彩虹港湾</span>
+        </button>
+        <button type="button" class="cm-zone zone-btn c3" id="btn-crystalfrost-zone">
+          <span class="cm-pin"><i>❄️</i></span>
+          <span class="cm-label">水晶雪原</span>
+        </button>
+        <button type="button" class="cm-zone zone-btn c4" id="btn-goldplains-zone">
+          <span class="cm-pin"><i>✨</i></span>
+          <span class="cm-label">金泡平原</span>
+        </button>
+        <button type="button" class="cm-zone zone-btn c5" id="btn-deepbath-zone">
+          <span class="cm-pin"><i>🫧</i></span>
+          <span class="cm-label">深海泡域</span>
+        </button>
+        <button type="button" class="cm-zone zone-btn c6" id="btn-rainforest-zone">
+          <span class="cm-pin"><i>🌿</i></span>
+          <span class="cm-label">深山雨林</span>
+        </button>
+      </div>
+      <div class="cm-compass" aria-hidden="true"></div>
+    </div>
+    <div id="continent-hint">🗺 一张大陆地图 · 点图钉进入已开放区域 · 不计入每日任务</div>
+  </div>
+</div>
+
+<!-- ══ DEEP RAINFOREST ═══════════════════════════════════════════════ -->
+<div id="rainforest-overlay">
+  <div class="rf-enter-pass" aria-hidden="true">
+    <div class="rf-enter-mist"></div>
+  </div>
+  <div id="rainforest-topbar">
+    <span id="rainforest-title">🌿 深山雨林</span>
+    <span id="rainforest-collect-bar">泡珠 · 0</span>
+    <button type="button" id="rainforest-close">✕ 返回大陆</button>
+  </div>
+  <div id="rainforest-hint">轻触上面物件 · 或挂着看雾听雨 · 不计入每日任务</div>
+  <div id="rainforest-stage">
+    <div class="rf-sky-glow"></div>
+    <div class="rf-atmosphere"></div>
+    <div class="rf-mountains"></div>
+    <div id="rf-trees-back" class="rf-tree-layer"></div>
+    <div id="rf-trees-mid" class="rf-tree-layer"></div>
+    <div class="rf-mist rf-mist-a"></div>
+    <div class="rf-ground" id="rf-ground"></div>
+    <div class="rf-undergrowth" id="rf-undergrowth"></div>
+    <button type="button" class="rf-item rf-item-mist" data-rf="mist" title="雾泡"><span>雾泡</span>🫧</button>
+    <button type="button" class="rf-item rf-item-fern" data-rf="fern" title="蕨叶"><span>蕨叶</span>🌿</button>
+    <button type="button" class="rf-item rf-item-shroom" data-rf="mushroom" title="蘑菇泡"><span>蘑菇泡</span>🍄</button>
+    <button type="button" class="rf-item rf-item-hollow" data-rf="hollow" title="树洞"><span>树洞</span>🕳️</button>
+    <button type="button" class="rf-item rf-item-firefly" data-rf="firefly" title="萤泡"><span>萤泡</span>✨</button>
+    <div id="rf-trees-front" class="rf-tree-layer"></div>
+    <div class="rf-mist rf-mist-b"></div>
+    <div class="rf-canopy-light"></div>
+  </div>
+  <div id="rainforest-stages">
+    <div id="rainforest-stages-title">🎋 阶段 · 以后你想做时再开</div>
+    <div id="rainforest-stages-row">
+      <div class="rf-stage-card"><span>阶段 1</span><em>待开启</em></div>
+      <div class="rf-stage-card"><span>阶段 2</span><em>待开启</em></div>
+      <div class="rf-stage-card"><span>阶段 3</span><em>待开启</em></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MIST ISLES 泡雾群岛 ═══════════════════════════════════════════════ -->
+<div id="mistisles-overlay">
+  <div class="mi-enter-pass" aria-hidden="true">
+    <div class="mi-enter-fog"></div>
+  </div>
+  <div id="mistisles-topbar">
+    <span id="mistisles-title">🌫 泡雾群岛</span>
+    <span id="mistisles-collect-bar">岛珠 · 0</span>
+    <button type="button" id="mistisles-close">✕ 返回大陆</button>
+  </div>
+  <div id="mistisles-hint">轻触雾中物件收集岛珠 · 不计入每日任务</div>
+  <div id="mistisles-stage">
+    <div class="mi-sky"></div>
+    <div class="mi-sunlight" aria-hidden="true"></div>
+    <div class="mi-sea" id="mi-sea"></div>
+    <div class="mi-islands" id="mi-islands"></div>
+    <div class="mi-mist mi-mist-a"></div>
+    <div class="mi-mist mi-mist-b"></div>
+    <div class="mi-mist mi-mist-c"></div>
+    <button type="button" class="mi-item mi-item-bubble" data-mi="bubble" title="雾泡"><span>雾泡</span>🫧</button>
+    <button type="button" class="mi-item mi-item-reef" data-mi="reef" title="礁石"><span>礁石</span>🪨</button>
+    <button type="button" class="mi-item mi-item-shell" data-mi="shell" title="螺壳"><span>螺壳</span>🐚</button>
+    <button type="button" class="mi-item mi-item-fog" data-mi="fog" title="浓雾"><span>浓雾</span>🌫</button>
+    <button type="button" class="mi-item mi-item-tide" data-mi="tide" title="雾潮"><span>雾潮</span>🌊</button>
+    <div class="mi-horizon"></div>
+  </div>
+  <div id="mistisles-stages">
+    <div id="mistisles-stages-title">🏝 阶段 · 以后你想做时再开</div>
+    <div id="mistisles-stages-row">
+      <div class="mi-stage-card"><span>阶段 1</span><em>待开启</em></div>
+      <div class="mi-stage-card"><span>阶段 2</span><em>待开启</em></div>
+      <div class="mi-stage-card"><span>阶段 3</span><em>待开启</em></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RAINBOW HARBOR 彩虹港湾 ═══════════════════════════════════════════ -->
+<div id="rainbowbay-overlay">
+  <div class="rb-enter-pass" aria-hidden="true">
+    <div class="rb-enter-glow"></div>
+  </div>
+  <div id="rainbowbay-topbar">
+    <span id="rainbowbay-title">🌈 彩虹港湾</span>
+    <span id="rainbowbay-collect-bar">港珠 · 0</span>
+    <button type="button" id="rainbowbay-close">✕ 返回大陆</button>
+  </div>
+  <div id="rainbowbay-hint">轻触港边物件 · 或挂着看船听潮 · 不计入每日任务</div>
+  <div id="rainbowbay-stage">
+    <div class="rb-sky"></div>
+    <div class="rb-sea" id="rb-sea"></div>
+    <div class="rb-sea-waves" id="rb-sea-waves"></div>
+    <div class="rb-sea-surface"></div>
+    <div class="rb-ship-layer" id="rb-ship"></div>
+    <div class="rb-rope-layer" id="rb-rope"></div>
+    <div class="rb-wave-shim"></div>
+    <div class="rb-beach" id="rb-beach"></div>
+    <div class="rb-swash-zone" id="rb-swash"></div>
+    <div class="rb-harbor" id="rb-harbor"></div>
+    <div class="rb-arc" id="rb-arc"></div>
+    <button type="button" class="rb-item rb-item-bubble" data-rb="bubble" title="虹泡"><span>虹泡</span>🫧</button>
+    <button type="button" class="rb-item rb-item-shell" data-rb="shell" title="码头贝"><span>码头贝</span>🐚</button>
+    <button type="button" class="rb-item rb-item-tide" data-rb="tide" title="港潮"><span>港潮</span>🌊</button>
+    <button type="button" class="rb-item rb-item-glow" data-rb="glow" title="夕照斑"><span>夕照</span>✨</button>
+    <button type="button" class="rb-item rb-item-arc" data-rb="arc" title="港上虹"><span>港上虹</span>🌈</button>
+  </div>
+  <div id="rainbowbay-stages">
+    <div id="rainbowbay-stages-title">⚓ 阶段 · 以后你想做时再开</div>
+    <div id="rainbowbay-stages-row">
+      <div class="rb-stage-card"><span>阶段 1</span><em>待开启</em></div>
+      <div class="rb-stage-card"><span>阶段 2</span><em>待开启</em></div>
+      <div class="rb-stage-card"><span>阶段 3</span><em>待开启</em></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CRYSTAL FROST 水晶雪原 ═══════════════════════════════════════════ -->
+<div id="crystalfrost-overlay">
+  <div class="cf-enter-pass" aria-hidden="true">
+    <div class="cf-enter-snow"></div>
+  </div>
+  <div id="crystalfrost-topbar">
+    <span id="crystalfrost-title">❄️ 水晶雪原</span>
+    <span id="crystalfrost-collect-bar">雪珠 · 0</span>
+    <button type="button" id="crystalfrost-close">✕ 返回大陆</button>
+  </div>
+  <div id="crystalfrost-hint">轻触雪原物件 · 或挂着看雪听风 · 不计入每日任务</div>
+  <div id="crystalfrost-stage">
+    <div class="cf-sky-glow"></div>
+    <div class="cf-aurora"></div>
+    <div class="cf-mountains" id="cf-mountains"></div>
+    <div class="cf-snow-back" id="cf-snow-back"></div>
+    <div class="cf-crystals" id="cf-crystals"></div>
+    <div class="cf-snowfall" id="cf-snowfall"></div>
+    <div class="cf-snow-front" id="cf-snow-front"></div>
+    <div class="cf-sparkle"></div>
+    <button type="button" class="cf-item cf-item-ice" data-cf="ice" title="冰泡"><span>冰泡</span>🫧</button>
+    <button type="button" class="cf-item cf-item-crystal" data-cf="crystal" title="雪晶"><span>雪晶</span>💎</button>
+    <button type="button" class="cf-item cf-item-frost" data-cf="frost" title="霜花"><span>霜花</span>❄️</button>
+    <button type="button" class="cf-item cf-item-aurora" data-cf="aurora" title="极光"><span>极光</span>🌌</button>
+    <button type="button" class="cf-item cf-item-drift" data-cf="drift" title="雪团"><span>雪团</span>⛄</button>
+  </div>
+  <div id="crystalfrost-stages">
+    <div id="crystalfrost-stages-title">🏔 阶段 · 以后你想做时再开</div>
+    <div id="crystalfrost-stages-row">
+      <div class="cf-stage-card"><span>阶段 1</span><em>待开启</em></div>
+      <div class="cf-stage-card"><span>阶段 2</span><em>待开启</em></div>
+      <div class="cf-stage-card"><span>阶段 3</span><em>待开启</em></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ GOLD PLAINS 金泡平原 ═══════════════════════════════════════════════ -->
+<div id="goldplains-overlay">
+  <div class="gp-enter-pass" aria-hidden="true">
+    <div class="gp-enter-glow"></div>
+  </div>
+  <div id="goldplains-topbar">
+    <span id="goldplains-title">✨ 金泡平原</span>
+    <span id="goldplains-collect-bar">原珠 · 0</span>
+    <button type="button" id="goldplains-close">✕ 返回大陆</button>
+  </div>
+  <div id="goldplains-hint">轻触平原物件 · 或挂着看日风吹麦 · 不计入每日任务</div>
+  <div id="goldplains-stage">
+    <div class="gp-sky-glow"></div>
+    <div class="gp-sun" aria-hidden="true"></div>
+    <div class="gp-hills" id="gp-hills"></div>
+    <div class="gp-bubble-field" id="gp-bubble-field"></div>
+    <div class="gp-wind" id="gp-wind"></div>
+    <div class="gp-wheat" id="gp-wheat"></div>
+    <div class="gp-ground"></div>
+    <button type="button" class="gp-item gp-item-gold" data-gp="gold" title="金泡"><span>金泡</span>🫧</button>
+    <button type="button" class="gp-item gp-item-wheat" data-gp="wheat" title="麦穗"><span>麦穗</span>🌾</button>
+    <button type="button" class="gp-item gp-item-sun" data-gp="sun" title="日芒"><span>日芒</span>☀️</button>
+    <button type="button" class="gp-item gp-item-flower" data-gp="flower" title="野花"><span>野花</span>🌼</button>
+    <button type="button" class="gp-item gp-item-wind" data-gp="wind" title="风泡"><span>风泡</span>💨</button>
+  </div>
+  <div id="goldplains-stages">
+    <div id="goldplains-stages-title">🌾 阶段 · 以后你想做时再开</div>
+    <div id="goldplains-stages-row">
+      <div class="gp-stage-card"><span>阶段 1</span><em>待开启</em></div>
+      <div class="gp-stage-card"><span>阶段 2</span><em>待开启</em></div>
+      <div class="gp-stage-card"><span>阶段 3</span><em>待开启</em></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BUBBLE FARM 泡泡农场 ═══════════════════════════════════════════════ -->
+<div id="farm-overlay">
+  <div class="fm-enter-pass" aria-hidden="true">
+    <div class="fm-enter-glow"></div>
+  </div>
+  <div id="farm-topbar">
+    <span id="farm-title">🌾 泡泡农场</span>
+    <span id="farm-barn-bar">仓库 · 空</span>
+    <button type="button" id="farm-close">✕ 返回大陆</button>
+  </div>
+  <div id="farm-hint">种植收获 → 泡工坊加工 → 成品换成戳泡金币 · 不计入每日任务</div>
+  <div id="farm-stage">
+    <div class="fm-scenery" id="fm-scenery" aria-hidden="true"></div>
+    <div class="fm-barn-deco" aria-hidden="true">🏚️</div>
+    <div id="farm-grid"></div>
+    <div id="farm-seeds">
+      <button type="button" class="fm-seed-btn selected" data-fm-seed="wheat"><span class="fm-seed-icon">🌾</span>泡麦</button>
+      <button type="button" class="fm-seed-btn" data-fm-seed="melon"><span class="fm-seed-icon">🍉</span>泡瓜</button>
+      <button type="button" class="fm-seed-btn" data-fm-seed="blossom"><span class="fm-seed-icon">🌸</span>虹花</button>
+    </div>
+    <div id="farm-kitchen">
+      <div class="fm-kitchen-head">🍳 泡工坊 · 加工食物</div>
+      <div id="farm-recipes" class="fm-recipes"></div>
+      <div class="fm-pantry-row">
+        <span id="farm-pantry-bar">成品 · 空</span>
+        <button type="button" id="farm-sell-all" class="fm-sell-all-btn" title="把所有成品换成戳泡金币">💰 全部换金币</button>
+      </div>
+      <p class="fm-kitchen-note">加工后的食物会存起来，点「换金币」加到主游戏金币里</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BUBBLE PET 泡宠 ═══════════════════════════════════════════════════ -->
+<div id="pet-overlay">
+  <div class="pt-enter-pass" aria-hidden="true">
+    <div class="pt-enter-glow"></div>
+  </div>
+  <div id="pet-topbar">
+    <span id="pet-title">泡宠</span>
+    <span id="pet-status-bar">领养你的泡宠</span>
+    <button type="button" id="pet-close">✕ 返回大陆</button>
+  </div>
+  <div id="pet-hint">多只泡宠可一起养 · 图鉴里「带回家」或「切换照料」· 野外结缘去大陆「泡缘」</div>
+  <div id="pet-tab-row" class="pt-hidden">
+    <button type="button" class="pt-tab pt-care-only active" data-pt-tab="care">照料</button>
+    <button type="button" class="pt-tab" data-pt-tab="album">图鉴</button>
+  </div>
+  <div id="pet-stage">
+    <div id="pet-care-panel" class="pt-hidden">
+      <div class="pt-pet-wrap">
+        <div id="pet-bubble-home" title="点我摸摸"></div>
+        <div id="pet-name-tag">泡喵</div>
+        <div id="pet-level-tag">1</div>
+        <div id="pet-trait-tag">爱蹭人的小泡爪</div>
+      </div>
+      <div id="pet-stats">
+        <div class="pt-stat"><span>饱食</span><div class="pt-bar"><div id="pt-hunger-fill"></div></div></div>
+        <div class="pt-stat"><span>心情</span><div class="pt-bar"><div id="pt-mood-fill"></div></div></div>
+        <div class="pt-stat"><span>活力</span><div class="pt-bar"><div id="pt-energy-fill"></div></div></div>
+        <div class="pt-stat"><span>亲密</span><div class="pt-bar"><div id="pt-bond-fill"></div></div></div>
+      </div>
+      <div id="pet-actions">
+        <button type="button" class="pt-act-btn" data-pt-act="feed"><span class="pt-act-icon"></span>喂食</button>
+        <button type="button" class="pt-act-btn" data-pt-act="play"><span class="pt-act-icon"></span>玩耍</button>
+        <button type="button" class="pt-act-btn" data-pt-act="bath"><span class="pt-act-icon"></span>洗澡</button>
+        <button type="button" class="pt-act-btn" data-pt-act="sleep"><span class="pt-act-icon"></span>睡觉</button>
+      </div>
+      <div id="pet-speech">你好呀，我是泡宠！</div>
+    </div>
+    <div id="pet-album-panel" class="pt-hidden">
+      <div id="pet-album-title">泡宠图鉴</div>
+      <div id="pet-album-sub">已结缘可带回家一起养 · 点「切换照料」换当前泡宠 · 共 <span id="pet-home-count">0</span> 只在家</div>
+      <div id="pet-album-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PET MEET 泡缘邂逅（原创 · 谐振结缘，非对战抓捕）══════════════════ -->
+<div id="petmeet-overlay">
+  <div id="petmeet-topbar">
+    <span id="petmeet-title">泡缘邂逅</span>
+    <span id="petmeet-tokens">结缘符 ×0</span>
+    <button type="button" id="petmeet-close">✕ 返回</button>
+  </div>
+  <div id="petmeet-hint">野外结缘 · 看泡灵今日喜好什么颜色的泡 · 吹对了就共鸣 · 错了它只会躲，不会扣血</div>
+  <div id="petmeet-stage">
+    <div id="pm-start-panel">
+      <div id="pm-start-art"></div>
+      <div id="pm-start-heading">泡缘野地</div>
+      <div id="pm-start-desc">和家里「泡宠照料」不一样：这里是野外的慢结缘。野泡灵会露出今日喜欢的泡色，你吹同色泡给它，共鸣满了它才自愿跟你结缘——没有抓捕球，也没有扣血惩罚。</div>
+      <button type="button" id="pm-start-btn">进入泡缘野地</button>
+      <button type="button" id="pm-buy-token-btn">购买结缘符 · 3000 金币</button>
+    </div>
+    <div id="pm-encounter-panel" class="pm-hidden">
+      <div id="pm-field-bg" aria-hidden="true"></div>
+      <div id="pm-wild-zone">
+        <div id="pm-wild-bush" aria-hidden="true"></div>
+        <div id="pm-mood-orb" aria-hidden="true"></div>
+        <div id="pm-wild-art"></div>
+        <div id="pm-wild-name">???</div>
+      </div>
+      <div id="pm-trust-wrap">
+        <span>共鸣</span>
+        <div id="pm-trust-bar"><div id="pm-trust-fill"></div></div>
+      </div>
+      <div id="pm-mood-hint">它今天想要什么颜色的泡？</div>
+      <div id="pm-status">野生泡灵躲在草里…</div>
+      <div id="pm-color-row">
+        <button type="button" class="pm-color-btn" data-pm-color="pink"><span class="pm-color-dot pm-dot-pink"></span>粉泡</button>
+        <button type="button" class="pm-color-btn" data-pm-color="blue"><span class="pm-color-dot pm-dot-blue"></span>蓝泡</button>
+        <button type="button" class="pm-color-btn" data-pm-color="gold"><span class="pm-color-dot pm-dot-gold"></span>金泡</button>
+      </div>
+      <div id="pm-actions">
+        <button type="button" id="pm-hint-btn">示好泡 · 偷看今日喜好</button>
+        <button type="button" id="pm-leave-btn">轻轻离开</button>
+      </div>
+      <div id="pm-tries-left">剩余吹泡 8 次</div>
+    </div>
+    <div id="pm-result-panel" class="pm-hidden">
+      <div id="pm-result-art"></div>
+      <div id="pm-result-title">结缘成功</div>
+      <div id="pm-result-desc"></div>
+      <button type="button" id="pm-result-home-btn">带它回家</button>
+      <button type="button" id="pm-result-again-btn">继续邂逅</button>
+      <button type="button" id="pm-result-back-btn">返回</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DEEP BATH 深海泡浴 ═══════════════════════════════════════════════════ -->
+<div id="deepbath-overlay">
+  <div class="db-enter-pass" aria-hidden="true">
+    <div class="db-enter-glow"></div>
+  </div>
+  <div id="deepbath-topbar">
+    <span id="deepbath-title">🫧 深海泡浴</span>
+    <span id="deepbath-collect-bar">深珠 · 0</span>
+    <button type="button" id="deepbath-close">✕ 返回大陆</button>
+  </div>
+  <div id="deepbath-hint">海藻放氧 · 看泡从叶尖升起 · 或在泡池搓泡 · 不计入每日任务</div>
+  <div id="deepbath-stage">
+    <div class="db-rays"></div>
+    <div class="db-reef" id="db-reef"></div>
+    <div class="db-seaweed" id="db-seaweed" aria-hidden="true"></div>
+    <div class="db-rise" id="db-rise"></div>
+    <div class="db-seafloor"></div>
+    <div id="db-bath-pool" aria-label="深海泡池"></div>
+    <button type="button" class="db-item db-item-foam" data-db="foam" title="沫泡"><span>沫泡</span>🫧</button>
+    <button type="button" class="db-item db-item-coral" data-db="coral" title="珊瑚"><span>珊瑚</span>🪸</button>
+    <button type="button" class="db-item db-item-pearl" data-db="pearl" title="海珠"><span>海珠</span>💎</button>
+    <button type="button" class="db-item db-item-glow" data-db="glow" title="萤光"><span>萤光</span>✨</button>
+    <button type="button" class="db-item db-item-vent" data-db="vent" title="热泉"><span>热泉</span>♨️</button>
+  </div>
+  <div id="deepbath-stages">
+    <div id="deepbath-stages-title">🌊 阶段 · 以后你想做时再开</div>
+    <div id="deepbath-stages-row">
+      <div class="db-stage-card"><span>阶段 1</span><em>待开启</em></div>
+      <div class="db-stage-card"><span>阶段 2</span><em>待开启</em></div>
+      <div class="db-stage-card"><span>阶段 3</span><em>待开启</em></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SHOP MODAL ═════════════════════════════════════════════════════ -->
+<div id="shop-overlay">
+  <div id="shop-modal">
+    <div id="shop-header">
+      <div id="shop-header-top">
+        <span id="shop-title">商店</span>
+        <div id="shop-header-right">
+          <button type="button" id="shop-open-gacha" class="shop-gacha-link">🎲 抽皮肤</button>
+          <span id="shop-coins-display">0 金币</span>
+          <button type="button" id="shop-close">✕</button>
+        </div>
+      </div>
+      <div id="shop-wallet-strip" aria-label="钱包">
+        <span>🪙<b id="shop-w-coins">0</b></span>
+        <span>🫧<b id="shop-w-pearls">0</b></span>
+        <span>✨<b id="shop-w-glow">0</b></span>
+        <span>🌊<b id="shop-w-wave">0</b></span>
+        <span>🎣<b id="shop-w-fish">0</b></span>
+      </div>
+      <div id="shop-games-strip">
+        <div class="shop-games-zone shop-games-zone-bubble">
+          <div class="shop-games-zone-head">
+            <span class="shop-games-zone-label">🫧 泡泡专区</span>
+            <span class="shop-games-zone-hint">← → 横滑 · 全是泡</span>
+          </div>
+          <div class="shop-games-zone-track">
+            <div class="shop-games-scroll" id="shop-bubble-scroll" aria-label="泡泡小游戏">
+              <button type="button" id="btn-blow" title="吹泡">🫧</button>
+              <button type="button" id="btn-shoot" title="泡泡射击">🎯</button>
+              <button type="button" id="btn-match" title="配对消消">🃏</button>
+              <button type="button" id="btn-tower" title="泡泡塔">🗼</button>
+              <button type="button" id="btn-catch" title="接泡">🧺</button>
+              <button type="button" id="btn-rainbow" title="吹彩虹泡">🌈</button>
+              <button type="button" id="btn-maze" title="泡泡迷宫">🗺️</button>
+              <button type="button" id="btn-guard" title="护泡过河">🛡️</button>
+              <button type="button" id="btn-bath" title="泡泡浴">🛁</button>
+              <button type="button" id="btn-shadow" title="追泡影">👤</button>
+              <button type="button" id="btn-chain" title="串泡">🔗</button>
+              <button type="button" id="btn-workshop" title="泡车间">🧪</button>
+              <button type="button" id="btn-keepup" title="保泡">🎈</button>
+              <button type="button" id="btn-merge" title="泡合并">🔮</button>
+              <button type="button" id="btn-floatpop" title="点飘泡">💨</button>
+              <button type="button" id="btn-goal" title="泡射门">🥅</button>
+              <button type="button" id="btn-split" title="泡分裂">💥</button>
+              <button type="button" id="btn-simon" title="泡顺序">🎵</button>
+              <button type="button" id="btn-wipe" title="擦玻璃泡">🧽</button>
+              <button type="button" id="btn-pinball" title="泡弹珠">🎱</button>
+              <button type="button" id="btn-scale" title="泡称重">⚖️</button>
+              <button type="button" id="btn-bfish" title="泡钓鱼">🎏</button>
+              <button type="button" id="btn-jumprope" title="泡跳绳">⏭️</button>
+              <button type="button" id="btn-colortap" title="泡配色">🎨</button>
+              <button type="button" id="btn-rush30" title="泡连戳">⚡</button>
+              <button type="button" id="btn-balance" title="泡平衡">🌊</button>
+              <button type="button" id="btn-bigpick" title="泡猜大">📏</button>
+              <button type="button" id="btn-oddone" title="泡找不同">🔍</button>
+              <button type="button" id="btn-countpop" title="泡数数">🔢</button>
+              <button type="button" id="btn-inflate" title="吹爆泡">💢</button>
+            </div>
+          </div>
+        </div>
+        <div class="shop-games-zone shop-games-zone-other">
+          <div class="shop-games-zone-head">
+            <span class="shop-games-zone-label">🎮 其它小游戏</span>
+            <span class="shop-games-zone-hint">← → 横滑</span>
+          </div>
+          <div class="shop-games-zone-track">
+            <div class="shop-games-scroll" id="shop-other-scroll" aria-label="其它小游戏">
+              <button type="button" id="btn-playmode" title="玩法">🧩</button>
+              <button type="button" id="btn-fishing" title="钓鱼">🎣</button>
+              <button type="button" id="btn-beach" title="赶海">🏖️</button>
+              <button type="button" id="btn-tank" title="喂鱼">🐠</button>
+              <button type="button" id="btn-pond" title="捞金鱼">🐟</button>
+              <button type="button" id="btn-boat" title="放纸船">⛵</button>
+              <button type="button" id="btn-ice" title="敲冰块">🧊</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="shop-active-bar">当前生效：<span id="shop-active-name">普通（默认）</span></div>
+    <div style="padding:8px 16px 0;font-size:11px;color:#666">↑ ↓ 上下滑看全店 · 泡泡/其它区 ← → 横滑 · 购买升级后，可在已购项之间自由切换。</div>
+    <div id="shop-items"></div>
+  </div>
+</div>
+
+<!-- ══ BEACHCOMB PAGE ════════════════════════════════════════════════ -->
+<div id="beach-overlay">
+  <div id="beach-topbar">
+    <span id="beach-title">🏖️ 赶海挖沙</span>
+    <button type="button" id="beach-close">✕ 返回</button>
+  </div>
+  <div id="beach-hint">椭圆洞撒盐等蛏子 · 圆洞挖贝壳/螃蟹 · 沙包挖猫眼螺 · 平沙随缘</div>
+  <div id="beach-sky"></div>
+  <div id="beach-sea">
+    <div class="beach-wave w1"></div>
+    <div class="beach-wave w2"></div>
+    <div class="beach-rock r1"><span class="rock-star" style="left:18px;top:-6px">⭐</span></div>
+    <div class="beach-rock r2"><span class="rock-star" style="left:12px;top:-8px;font-size:12px">⭐</span></div>
+    <div class="beach-rock r3"><span class="rock-star" style="left:28px;top:-7px">⭐</span><span class="rock-star" style="left:48px;top:2px;font-size:11px">⭐</span></div>
+    <div class="beach-rock r4"><span class="rock-star" style="left:16px;top:-5px;font-size:12px">⭐</span></div>
+    <div class="beach-weed a"></div>
+    <div class="beach-weed b"></div>
+    <div class="beach-weed c"></div>
+    <div class="beach-fish f1" title="小鱼"></div>
+    <div class="beach-fish f2" title="小鱼"></div>
+    <div class="beach-fish f3" title="小鱼"></div>
+    <div class="beach-fish f4" title="小鱼"></div>
+  </div>
+  <div id="beach-sand" aria-label="沙滩">
+    <div class="wet-band"></div>
+  </div>
+</div>
+
+<!-- ══ AQUARIUM PAGE（喂鱼观赏雏形）══════════════════════════════════ -->
+<div id="tank-overlay">
+  <div id="tank-topbar">
+    <span id="tank-title">🐠 喂鱼观赏</span>
+    <button type="button" id="tank-close">✕ 返回</button>
+  </div>
+  <div id="tank-hint">点「喂食」撒饲料，鱼会游过来吃</div>
+  <div id="tank-frame">
+    <div id="tank-air" title="敞口透气"></div>
+    <div id="tank-rim"></div>
+    <div id="tank-water">
+      <div class="tank-plant p1"></div>
+      <div class="tank-plant p2"></div>
+      <div class="tank-plant p3"></div>
+      <div class="tank-plant p4"></div>
+      <div class="tank-reef rf1" title="礁石珊瑚">
+        <svg viewBox="0 0 90 70" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="28" cy="58" rx="22" ry="10" fill="#6d4c41"/>
+          <path d="M18 55 L14 28 Q16 18 24 22 L28 50 Z" fill="#ef5350"/>
+          <path d="M30 55 L34 20 Q38 12 44 20 L40 54 Z" fill="#ec407a"/>
+          <path d="M22 52 L20 34 Q26 28 30 36 L28 52 Z" fill="#ff8a65"/>
+          <circle cx="16" cy="30" r="4" fill="#ff7043"/><circle cx="36" cy="24" r="3.5" fill="#f48fb1"/>
+          <path d="M48 58 Q52 40 58 34 Q64 40 62 58 Z" fill="#78909c"/>
+          <path d="M56 58 Q60 44 68 38 Q72 48 70 58 Z" fill="#90a4ae"/>
+        </svg>
+      </div>
+      <div class="tank-reef rf2" title="礁石">
+        <svg viewBox="0 0 70 55" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="35" cy="48" rx="28" ry="8" fill="#5d4037"/>
+          <path d="M18 46 Q14 28 22 18 Q30 14 34 28 Q36 40 32 46 Z" fill="#8d6e63"/>
+          <path d="M34 46 Q38 22 48 16 Q56 22 54 46 Z" fill="#a1887f"/>
+          <path d="M28 30 Q32 18 38 28" fill="none" stroke="#ffe082" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="24" cy="26" r="2.5" fill="#26a69a"/><circle cx="46" cy="22" r="2" fill="#26c6da"/>
+        </svg>
+      </div>
+      <div class="tank-reef rf3" title="珊瑚">
+        <svg viewBox="0 0 80 65" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="40" cy="56" rx="24" ry="9" fill="#6d4c41"/>
+          <path d="M30 54 L26 26 Q22 16 30 14 Q36 18 34 28 L36 54 Z" fill="#ab47bc"/>
+          <path d="M38 54 L42 22 Q48 12 54 20 Q52 32 48 54 Z" fill="#7e57c2"/>
+          <path d="M44 50 L50 30 Q58 24 60 34 L54 52 Z" fill="#ce93d8"/>
+          <circle cx="28" cy="20" r="3" fill="#ea80fc"/><circle cx="48" cy="16" r="3.5" fill="#b39ddb"/>
+        </svg>
+      </div>
+      <div class="tank-bubble" style="left:18%;animation-duration:4.2s;animation-delay:0s"></div>
+      <div class="tank-bubble" style="left:42%;animation-duration:5.1s;animation-delay:-1.2s;width:6px;height:6px"></div>
+      <div class="tank-bubble" style="left:68%;animation-duration:3.8s;animation-delay:-2s"></div>
+      <div class="tank-bubble" style="left:82%;animation-duration:4.6s;animation-delay:-0.6s;width:5px;height:5px"></div>
+    </div>
+    <div id="tank-gravel"></div>
+  </div>
+  <button type="button" id="tank-feed-btn">喂食</button>
+</div>
+
+<!-- ══ BLOW BUBBLE PAGE（吹泡比赛雏形）══════════════════════════════ -->
+<div id="blow-overlay">
+  <div id="blow-topbar">
+    <span id="blow-title">🫧 吹泡比赛</span>
+    <button type="button" id="blow-close">✕ 返回</button>
+  </div>
+  <div id="blow-hint">按住「吹」蓄力 · 松手留下大泡 · 吹太大就会破</div>
+  <div id="blow-stage">
+    <div id="blow-active"></div>
+    <div id="blow-wand"></div>
+  </div>
+  <div id="blow-meter" aria-hidden="true"><i id="blow-meter-fill"></i></div>
+  <button type="button" id="blow-btn">按住吹</button>
+  <div id="blow-status"></div>
+</div>
+
+<!-- ══ POND 捞金鱼 PAGE（池塘版雏形）════════════════════════════════ -->
+<div id="pond-overlay">
+  <div id="pond-topbar">
+    <span id="pond-title">🐟 捞金鱼</span>
+    <button type="button" id="pond-close">✕ 返回</button>
+  </div>
+  <div id="pond-hint">拖着网慢慢捞 · 小鱼一下 · 大鱼多捞几下 · 太猛会扑空</div>
+  <div id="pond-water">
+    <div class="pond-pad p1"></div>
+    <div class="pond-pad p2"></div>
+    <div class="pond-pad p3"></div>
+    <div id="pond-net" aria-hidden="true">
+      <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="30" cy="30" r="22" fill="none" stroke="#fff8e1" stroke-width="2.2" opacity="0.9"/>
+        <circle cx="30" cy="30" r="22" fill="rgba(255,255,255,0.08)"/>
+        <path d="M12 30 H48 M30 12 V48 M16 16 L44 44 M44 16 L16 44" stroke="#e0f7fa" stroke-width="1" opacity="0.55"/>
+        <path d="M48 36 L66 58" stroke="#8d6e63" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="66" cy="58" r="3" fill="#5d4037"/>
+      </svg>
+    </div>
+  </div>
+  <div id="pond-count">碗里：0</div>
+  <div id="pond-bowl" title="小碗">
+    <div id="pond-bowl-fish"></div>
+    <div class="pb-rim"></div>
+    <div class="pb-bowl"></div>
+  </div>
+</div>
+
+<!-- ══ SHOOT 泡泡射击 PAGE（雏形）════════════════════════════════════ -->
+<div id="shoot-overlay">
+  <div id="shoot-topbar">
+    <span id="shoot-title">🎯 泡泡射击</span>
+    <button type="button" id="shoot-close">✕ 返回</button>
+  </div>
+  <div id="shoot-hint">←→ 或拖发射器移动 · 按住「发射」/空格连发（可边移边射）</div>
+  <div id="shoot-stage">
+    <div id="shoot-pad">
+      <div id="shoot-cannon">
+        <div class="sc-barrel"></div>
+        <div class="sc-tip"></div>
+        <div class="sc-body"></div>
+      </div>
+    </div>
+    <button type="button" id="shoot-fire">按住发射</button>
+    <div id="shoot-popped">破了：0</div>
+  </div>
+</div>
+
+<!-- ══ MATCH 配对消消 PAGE ═══════════════════════════════════════════ -->
+<div id="match-overlay">
+  <div id="match-topbar">
+    <span id="match-title">🃏 配对消消</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="match-refresh">🔄 重开</button>
+      <button type="button" id="match-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="match-hint">点牌翻开 · 两张同色配对消除</div>
+  <div id="match-board"></div>
+  <div id="match-status">配对：0 / 8</div>
+</div>
+
+<!-- ══ BOAT 放纸船 PAGE ══════════════════════════════════════════════ -->
+<div id="boat-overlay">
+  <div id="boat-topbar">
+    <span id="boat-title">⛵ 放纸船</span>
+    <button type="button" id="boat-close">✕ 返回</button>
+  </div>
+  <div id="boat-hint">调角度力度后点放船 · 漂到黄岸即通关（停在对岸，有星星）</div>
+  <div id="boat-stage">
+    <div id="boat-near"></div>
+    <div id="boat-far"></div>
+    <div id="boat-aim"></div>
+    <div id="paper-boat">
+      <svg viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 28 L32 8 L60 28 L48 28 L32 18 L16 28 Z" fill="#fff8e1" stroke="#8d6e63" stroke-width="1.5"/>
+        <path d="M16 28 L32 34 L48 28" fill="#ffe0b2" stroke="#8d6e63" stroke-width="1.2"/>
+      </svg>
+    </div>
+    <div id="boat-win" aria-label="通关">
+      <div class="bw-card">
+        <div class="bw-title">通关！</div>
+        <div class="bw-stars" id="boat-win-stars">⭐⭐⭐</div>
+        <div style="font-size:12px;color:#bf360c;margin-bottom:12px">船已停在对岸</div>
+        <button type="button" class="bw-btn" id="boat-win-again">再玩一次</button>
+      </div>
+    </div>
+  </div>
+  <div id="boat-controls">
+    <label>角度 <input type="range" id="boat-angle" min="-25" max="40" value="10"> <span id="boat-angle-val">10°</span></label>
+    <label>力度 <input type="range" id="boat-power" min="35" max="90" value="58"> <span id="boat-power-val">58</span></label>
+    <button type="button" id="boat-launch">放船</button>
+    <div id="boat-status">调好后点「放船」· 到黄岸通关</div>
+  </div>
+</div>
+
+<!-- ══ ICE 敲冰块 PAGE ═══════════════════════════════════════════════ -->
+<div id="ice-overlay">
+  <div id="ice-topbar">
+    <span id="ice-title">🧊 敲冰块</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="ice-refresh">🔄 重开</button>
+      <button type="button" id="ice-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="ice-hint">点冰块敲裂 · 敲两三下取出里面的东西</div>
+  <div id="ice-board"></div>
+  <div id="ice-status">取出：0 / 9</div>
+</div>
+
+<!-- ══ TOWER 泡泡塔 PAGE ═════════════════════════════════════════════ -->
+<div id="tower-overlay">
+  <div id="tower-topbar">
+    <span id="tower-title">🗼 泡泡塔</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="tower-refresh">🔄 重开</button>
+      <button type="button" id="tower-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="tower-hint">左右移动瞄准 · 点「放下」叠泡，歪了会倒</div>
+  <div id="tower-stage">
+    <div id="tower-next"></div>
+    <div id="tower-base"></div>
+  </div>
+  <button type="button" id="tower-drop">放下</button>
+  <div id="tower-status">高度：0</div>
+</div>
+
+<!-- ══ CATCH 接泡 PAGE ═══════════════════════════════════════════════ -->
+<div id="catch-overlay">
+  <div id="catch-topbar">
+    <span id="catch-title">🧺 接泡</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="catch-refresh">🔄 重开</button>
+      <button type="button" id="catch-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="catch-hint">←→ 或拖篮子 · 接住好泡，躲开炸弹泡</div>
+  <div id="catch-stage">
+    <div id="catch-basket"></div>
+  </div>
+  <div id="catch-status">接到：0 · 命：3</div>
+</div>
+
+<!-- ══ RAINBOW 吹彩虹泡 PAGE ═════════════════════════════════════════ -->
+<div id="rainbow-overlay">
+  <div id="rainbow-topbar">
+    <span id="rainbow-title">🌈 吹彩虹泡</span>
+    <button type="button" id="rainbow-close">✕ 返回</button>
+  </div>
+  <div id="rainbow-hint">按住吹大 · 松手时落在虚线圈内就变彩虹</div>
+  <div id="rainbow-status">按住「吹」试试</div>
+  <div id="rainbow-stage">
+    <div id="rainbow-zone"></div>
+    <div id="rainbow-bubble"></div>
+  </div>
+  <div id="rainbow-meter"><i id="rainbow-meter-fill"></i></div>
+  <button type="button" id="rainbow-btn">按住吹</button>
+</div>
+
+<!-- ══ MAZE 泡泡迷宫 PAGE ════════════════════════════════════════════ -->
+<div id="maze-overlay">
+  <div id="maze-topbar">
+    <span id="maze-title">🗺️ 泡泡迷宫</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="maze-refresh">🔄 重开</button>
+      <button type="button" id="maze-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="maze-hint">方向键 / 按钮推动泡泡 · 到黄格出口 · 每次重开换新迷宫</div>
+  <div id="maze-status">找到出口！</div>
+  <div id="maze-board"></div>
+  <div id="maze-pad">
+    <button type="button" class="u" data-dir="u">↑</button>
+    <button type="button" class="l" data-dir="l">←</button>
+    <button type="button" class="r" data-dir="r">→</button>
+    <button type="button" class="d" data-dir="d">↓</button>
+  </div>
+</div>
+
+<!-- ══ GUARD 护泡过河 PAGE ═══════════════════════════════════════════ -->
+<div id="guard-overlay">
+  <div id="guard-topbar">
+    <span id="guard-title">🛡️ 护泡过河</span>
+    <button type="button" id="guard-close">✕ 返回</button>
+  </div>
+  <div id="guard-hint">上下躲开尖刺 · 中段有刺，站中间不动会被扎</div>
+  <div id="guard-stage">
+    <div id="guard-near"></div>
+    <div id="guard-far"></div>
+    <div id="guard-bubble"></div>
+    <button type="button" id="guard-refresh">🔄 重开</button>
+    <div id="guard-win"><div class="gw-card"><div style="font-size:20px;font-weight:800;color:#e65100">过河成功！</div><div style="margin:6px 0">⭐⭐⭐</div><button type="button" id="guard-again">再玩一次</button></div></div>
+  </div>
+  <div id="guard-status">护航中…</div>
+</div>
+
+<!-- ══ BATH 泡泡浴 PAGE ══════════════════════════════════════════════ -->
+<div id="bath-overlay">
+  <div id="bath-topbar">
+    <span id="bath-title">🛁 泡泡浴</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="bath-refresh">🔄 重开</button>
+      <button type="button" id="bath-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="bath-hint">在浴缸里拖/点来搓泡 · 泡沫越多越解压</div>
+  <div id="bath-tub"></div>
+  <div id="bath-status">泡沫：0</div>
+</div>
+
+<!-- ══ SHADOW 追泡影 PAGE ════════════════════════════════════════════ -->
+<div id="shadow-overlay">
+  <div id="shadow-topbar">
+    <span id="shadow-title">👤 追泡影</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="shadow-refresh">🔄 重开</button>
+      <button type="button" id="shadow-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="shadow-hint">先看影子飘哪 · 再点对应颜色的真泡（别点错）</div>
+  <div id="shadow-stage"></div>
+  <div id="shadow-status">看影子…</div>
+</div>
+
+<!-- ══ CHAIN 串泡 PAGE ═══════════════════════════════════════════════ -->
+<div id="chain-overlay">
+  <div id="chain-topbar">
+    <span id="chain-title">🔗 串泡</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="chain-refresh">🔄 重开</button>
+      <button type="button" id="chain-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="chain-hint">点同色相邻泡连成串（至少 2 个）消除</div>
+  <div id="chain-board"></div>
+  <div id="chain-status">消除：0</div>
+</div>
+
+<!-- ══ WORKSHOP 泡车间 PAGE ══════════════════════════════════════════ -->
+<div id="workshop-overlay">
+  <div id="workshop-topbar">
+    <span id="workshop-title">🧪 泡车间</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="workshop-refresh">🔄 新订单</button>
+      <button type="button" id="workshop-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="workshop-hint">对照左边目标 · 调颜色和形状 · 点「做出」</div>
+  <div id="workshop-stage">
+    <div style="display:flex;gap:36px;align-items:center">
+      <div id="workshop-target"><div class="ws-bubble circle" id="ws-target-bubble"></div></div>
+      <div id="workshop-preview"><div class="ws-bubble circle" id="ws-preview-bubble"></div></div>
+    </div>
+    <div id="workshop-labels"><span>目标</span><span>你的配方</span></div>
+  </div>
+  <div id="workshop-controls">
+    <div class="ws-row" id="ws-colors"></div>
+    <div class="ws-row" id="ws-shapes"></div>
+    <button type="button" id="workshop-make">做出</button>
+    <div id="workshop-status">调好配方再提交</div>
+  </div>
+</div>
+
+<!-- ══ KEEPUP 保泡 PAGE ══════════════════════════════════════════════ -->
+<div id="keepup-overlay">
+  <div id="keepup-topbar">
+    <span id="keepup-title">🎈 保泡</span>
+    <button type="button" id="keepup-close">✕ 返回</button>
+  </div>
+  <div id="keepup-hint">点屏幕把泡泡顶上去 · 别让它落地</div>
+  <div id="keepup-stage">
+    <div id="keepup-bubble"></div>
+    <div id="keepup-floor"></div>
+    <button type="button" id="keepup-refresh">🔄 重开</button>
+  </div>
+  <div id="keepup-status">连顶：0</div>
+</div>
+
+<!-- ══ MERGE 泡合并 PAGE ═══════════════════════════════════════════════ -->
+<div id="merge-overlay">
+  <div id="merge-topbar">
+    <span id="merge-title">🔮 泡合并</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="merge-refresh">🔄 重开</button>
+      <button type="button" id="merge-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="merge-hint">点两个相邻同色同级泡 · 合成更大泡 · 目标：巨型泡</div>
+  <div id="merge-board"></div>
+  <div id="merge-status">最大：1 级 · 合并：0</div>
+</div>
+
+<!-- ══ FLOATPOP 点飘泡 PAGE ═══════════════════════════════════════════ -->
+<div id="floatpop-overlay">
+  <div id="floatpop-topbar">
+    <span id="floatpop-title">💨 点飘泡</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="floatpop-refresh">🔄 重开</button>
+      <button type="button" id="floatpop-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="floatpop-hint">往上飘的泡快点戳 · 漏掉 5 个就结束</div>
+  <div id="floatpop-stage"></div>
+  <div id="floatpop-status">戳破：0 · 漏泡：0 / 5</div>
+</div>
+
+<!-- ══ GOAL 泡射门 PAGE ═══════════════════════════════════════════════ -->
+<div id="goal-overlay">
+  <div id="goal-topbar">
+    <span id="goal-title">🥅 泡射门</span>
+    <button type="button" id="goal-close">✕ 返回</button>
+  </div>
+  <div id="goal-hint">按住拖拽瞄准 · 松手射门 · 穿过金环得分</div>
+  <div id="goal-stage">
+    <div id="goal-ring"></div>
+    <div id="goal-shooter"></div>
+    <div id="goal-aim"></div>
+    <div id="goal-ball"></div>
+    <button type="button" id="goal-refresh">🔄 重开</button>
+  </div>
+  <div id="goal-status">进球：0</div>
+</div>
+
+<!-- ══ SPLIT 泡分裂 PAGE ═══════════════════════════════════════════════ -->
+<div id="split-overlay">
+  <div id="split-topbar">
+    <span id="split-title">💥 泡分裂</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="split-refresh">🔄 重开</button>
+      <button type="button" id="split-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="split-hint">点大泡分裂成小泡 · 最小泡再点会戳破得分</div>
+  <div id="split-stage"></div>
+  <div id="split-status">戳破：0 · 第 1 波</div>
+</div>
+
+<!-- ══ SIMON 泡顺序 PAGE ═══════════════════════════════════════════════ -->
+<div id="simon-overlay">
+  <div id="simon-topbar">
+    <span id="simon-title">🎵 泡顺序</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="simon-refresh">🔄 重开</button>
+      <button type="button" id="simon-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="simon-hint">记住亮泡顺序 · 按同样顺序点回来</div>
+  <div id="simon-board"></div>
+  <div id="simon-status">看好了…</div>
+</div>
+
+<!-- ══ WIPE 擦玻璃泡 PAGE ══════════════════════════════════════════════ -->
+<div id="wipe-overlay">
+  <div id="wipe-topbar">
+    <span id="wipe-title">🧽 擦玻璃泡</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="wipe-refresh">🔄 重开</button>
+      <button type="button" id="wipe-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="wipe-hint">按住拖动擦玻璃 · 把泡全擦掉 · 45 秒内清完</div>
+  <div id="wipe-stage">
+    <div id="wipe-cursor"></div>
+  </div>
+  <div id="wipe-status">剩余：0 泡 · 时间：45 秒</div>
+</div>
+
+<!-- ══ PINBALL 泡弹珠 PAGE ═══════════════════════════════════════════ -->
+<div id="pinball-overlay">
+  <div id="pinball-topbar">
+    <span id="pinball-title">🎱 泡弹珠</span>
+    <button type="button" id="pinball-close">✕ 返回</button>
+  </div>
+  <div id="pinball-hint">移动挡板弹泡 · 撞钉得分 · 别漏下去</div>
+  <div id="pinball-stage">
+    <div id="pinball-ball"></div>
+    <div id="pinball-paddle"></div>
+    <button type="button" id="pinball-refresh">🔄 重开</button>
+  </div>
+  <div id="pinball-status">得分：0 · 命：3</div>
+</div>
+
+<!-- ══ SCALE 泡称重 PAGE ═══════════════════════════════════════════════ -->
+<div id="scale-overlay">
+  <div id="scale-topbar">
+    <span id="scale-title">⚖️ 泡称重</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="scale-refresh">🔄 重开</button>
+      <button type="button" id="scale-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="scale-hint">往左盘加泡 · 重量对准右边目标 · 点「称重」</div>
+  <div id="scale-stage">
+    <div id="scale-target">目标：5</div>
+    <div id="scale-beam-wrap">
+      <div id="scale-beam">
+        <div class="scale-pan" id="scale-pan-left"></div>
+        <div class="scale-pan" id="scale-pan-right"><div class="scale-ghost" id="scale-ghost-w">5</div></div>
+      </div>
+    </div>
+    <div id="scale-tray">
+      <button type="button" data-w="1">+小泡 1</button>
+      <button type="button" data-w="2">+中泡 2</button>
+      <button type="button" data-w="3">+大泡 3</button>
+    </div>
+  </div>
+  <button type="button" id="scale-check">称重</button>
+  <div id="scale-status">当前左盘：0</div>
+</div>
+
+<!-- ══ BFISH 泡钓鱼 PAGE ═════════════════════════════════════════════ -->
+<div id="bfish-overlay">
+  <div id="bfish-topbar">
+    <span id="bfish-title">🎏 泡钓鱼</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="bfish-refresh">🔄 重开</button>
+      <button type="button" id="bfish-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="bfish-hint">把鱼钩移到泡上方 · 点「下钩」经过就能捞到</div>
+  <div id="bfish-sea">
+    <div id="bfish-line"></div>
+    <div id="bfish-hook">🪝</div>
+  </div>
+  <button type="button" id="bfish-cast">下钩</button>
+  <div id="bfish-status">捞到：0 分</div>
+</div>
+
+<!-- ══ JUMPROPE 泡跳绳 PAGE ═══════════════════════════════════════════ -->
+<div id="jumprope-overlay">
+  <div id="jumprope-topbar">
+    <span id="jumprope-title">⏭️ 泡跳绳</span>
+    <button type="button" id="jumprope-close">✕ 返回</button>
+  </div>
+  <div id="jumprope-hint">等「跳！」按钮闪亮再按 · 早一点按也行</div>
+  <div id="jumprope-stage">
+    <div id="jumprope-ground"></div>
+    <div id="jumprope-zone"></div>
+    <div id="jumprope-rope"></div>
+    <div id="jumprope-bubble"></div>
+    <div id="jumprope-cue">跳！</div>
+    <button type="button" id="jumprope-refresh">🔄 重开</button>
+  </div>
+  <button type="button" id="jumprope-jump-btn">跳！</button>
+  <div id="jumprope-status">跳过：0</div>
+</div>
+
+<!-- ══ COLORTAP 泡配色 PAGE ═══════════════════════════════════════════ -->
+<div id="colortap-overlay">
+  <div id="colortap-topbar">
+    <span id="colortap-title">🎨 泡配色</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="colortap-refresh">🔄 重开</button>
+      <button type="button" id="colortap-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="colortap-hint">只戳和目标一样颜色的泡 · 戳错扣命</div>
+  <div id="colortap-target">戳这个色：<span id="colortap-target-dot"></span></div>
+  <div id="colortap-stage"></div>
+  <div id="colortap-status">得分：0 · 命：3</div>
+</div>
+
+<!-- ══ RUSH30 泡连戳 PAGE ═════════════════════════════════════════════ -->
+<div id="rush30-overlay">
+  <div id="rush30-topbar">
+    <span id="rush30-title">⚡ 泡连戳</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="rush30-refresh">🔄 重开</button>
+      <button type="button" id="rush30-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="rush30-hint">30 秒内尽量多戳泡 · 冒哪儿戳哪儿</div>
+  <div id="rush30-stage"></div>
+  <div id="rush30-status">戳破：0 · 时间：30 秒</div>
+</div>
+
+<!-- ══ PAODOU 泡豆漫游 PAGE ═══════════════════════════════════════════ -->
+<div id="paodou-overlay">
+  <div id="paodou-topbar">
+    <span id="paodou-title">🫧 泡豆漫游</span>
+    <button type="button" id="paodou-close">✕ 返回</button>
+  </div>
+  <div id="paodou-hint">选层 · 泡电梯停准 · 进本层寻三颗泡豆</div>
+  <div id="paodou-playfield">
+    <div id="paodou-stage">
+      <div id="pd-camera-rig">
+        <div id="pd-world">
+          <div id="pd-world-scenery"></div>
+        </div>
+      </div>
+    </div>
+    <div id="pd-view-arrow" aria-hidden="true"></div>
+    <div id="pd-tower-guide" aria-hidden="true">🏙 泡豆大楼</div>
+    <div id="pd-buddy-layer">
+      <div id="pd-buddy" class="pd-buddy" title="点我打招呼">
+        <div class="pd-buddy-shadow" aria-hidden="true"></div>
+        <div class="pd-buddy-body">
+          <div class="pd-buddy-shine" aria-hidden="true"></div>
+          <div class="pd-party-cap" aria-hidden="true">
+            <span class="pd-cap-cone"></span>
+            <span class="pd-cap-pom"></span>
+          </div>
+          <div class="pd-buddy-face">
+            <span class="pd-buddy-blush pd-blush-l" aria-hidden="true"></span>
+            <span class="pd-buddy-blush pd-blush-r" aria-hidden="true"></span>
+            <div class="pd-face-eyes">
+              <span class="pd-buddy-eye"><i class="pd-eye-shine"></i></span>
+              <span class="pd-buddy-eye"><i class="pd-eye-shine"></i></span>
+            </div>
+            <span class="pd-buddy-mouth"><i class="pd-mouth-tongue"></i></span>
+          </div>
+        </div>
+        <div class="pd-buddy-speech" aria-live="polite"></div>
+        <button type="button" id="pd-buddy-tower-badge" class="pd-buddy-tower-badge" hidden title="进大楼" aria-label="进大楼">
+          <span aria-hidden="true">🏙</span>
+        </button>
+      </div>
+    </div>
+    <div id="pd-walkpad" aria-label="泡豆移动">
+      <button type="button" class="pd-walk-btn pd-walk-up" data-pd-walk="up" aria-label="上">▲</button>
+      <button type="button" class="pd-walk-btn pd-walk-left" data-pd-walk="left" aria-label="左">◀</button>
+      <button type="button" class="pd-walk-btn pd-walk-down" data-pd-walk="down" aria-label="下">▼</button>
+      <button type="button" class="pd-walk-btn pd-walk-right" data-pd-walk="right" aria-label="右">▶</button>
+    </div>
+    <button type="button" id="pd-tower-enter-btn" hidden aria-hidden="true">🏙 进大楼</button>
+    <div id="pd-tower-interior" aria-hidden="true">
+      <button type="button" id="pd-tower-enter-floor-btn" class="pd-tower-enter-floor-btn" hidden title="进入本层" aria-label="进入本层">
+        <span class="pd-enter-floor-num">1F · 大厅</span>
+        <span class="pd-enter-floor-action">进入本层</span>
+      </button>
+      <div id="pd-tower-floor-room" class="pd-tower-floor-room" hidden aria-hidden="true">
+        <div id="pd-tower-floor-room-stage" class="pd-tower-floor-room-stage"></div>
+      </div>
+      <div id="pd-tower-interior-viewport">
+        <div id="pd-tower-interior-rig">
+          <div id="pd-buddy-floor-picker" class="pd-buddy-floor-picker pd-tower-interior-floor-picker" hidden aria-label="选层"></div>
+          <svg id="pd-tower-interior-svg" class="pd-tower-interior-svg" viewBox="0 0 520 720" role="img" aria-label="泡豆大楼内景剖面"></svg>
+          <button type="button" id="pd-tower-npc" class="pd-tower-npc" title="点我聊天">
+            <span class="pd-tower-npc-body" aria-hidden="true">🫧</span>
+            <span class="pd-tower-npc-tag" id="pd-tower-npc-tag">前台</span>
+            <span class="pd-tower-npc-speech" id="pd-tower-npc-speech" aria-live="polite"></span>
+          </button>
+        </div>
+      </div>
+      <aside id="pd-tower-elevator" aria-label="大楼电梯">
+        <div class="pd-elev-head">🛗 选层 · 共 54 层</div>
+        <div id="pd-tower-floor-list" class="pd-elev-list"></div>
+        <button type="button" id="pd-elev-game-btn" class="pd-elev-game-btn" title="停准目标楼层">🛗 泡电梯</button>
+        <p class="pd-elev-note">1–10 · 34–35 · 54 顶层 已开放<br>其余楼层装修中</p>
+      </aside>
+      <div id="pd-elev-game" class="pd-elev-game" hidden aria-hidden="true">
+        <div class="pd-elev-game-card" role="dialog" aria-label="泡电梯">
+          <div class="pd-elev-game-head">🛗 泡电梯</div>
+          <p class="pd-elev-game-target">目标：<strong id="pd-elev-game-target">1 层</strong></p>
+          <div class="pd-elev-game-shaft" id="pd-elev-game-shaft">
+            <div class="pd-elev-game-mark" id="pd-elev-game-mark" aria-hidden="true"></div>
+            <div class="pd-elev-game-car" id="pd-elev-game-car" aria-hidden="true">🛗</div>
+          </div>
+          <p class="pd-elev-game-cur" id="pd-elev-game-cur">当前：1 层</p>
+          <button type="button" id="pd-elev-game-stop" class="pd-elev-game-stop">停！</button>
+          <p class="pd-elev-game-msg" id="pd-elev-game-msg"></p>
+          <div class="pd-elev-game-actions">
+            <button type="button" id="pd-elev-game-retry" class="pd-elev-game-retry" hidden>再试</button>
+            <button type="button" id="pd-elev-game-close" class="pd-elev-game-close">关闭</button>
+          </div>
+        </div>
+      </div>
+      <div id="pd-tower-interior-hud">
+        <span id="pd-tower-floor-label">1F · 大厅</span>
+        <button type="button" id="pd-tower-lobby-exit">🚪 出大楼</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BALANCE 泡平衡 PAGE ═════════════════════════════════════════════ -->
+<div id="balance-overlay">
+  <div id="balance-topbar">
+    <span id="balance-title">🌊 泡平衡</span>
+    <button type="button" id="balance-close">✕ 返回</button>
+  </div>
+  <div id="balance-hint">风往左吹就按 → · 风往右吹就按 ← · 按住别松</div>
+  <div id="balance-stage">
+    <div id="balance-wind"><span class="bw-wind-label">风</span><span class="bw-wind-arrow" id="balance-wind-arrow">·</span></div>
+    <div id="balance-beam"></div>
+    <div id="balance-bubble"></div>
+    <button type="button" id="balance-refresh">🔄 重开</button>
+  </div>
+  <div id="balance-pad">
+    <button type="button" id="balance-left">←</button>
+    <button type="button" id="balance-right">→</button>
+  </div>
+  <div id="balance-status">坚持：0 秒</div>
+</div>
+
+<!-- ══ BIGPICK 泡猜大 PAGE ═══════════════════════════════════════════ -->
+<div id="bigpick-overlay">
+  <div id="bigpick-topbar">
+    <span id="bigpick-title">📏 泡猜大</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="bigpick-refresh">🔄 重开</button>
+      <button type="button" id="bigpick-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="bigpick-hint">两个泡 · 点比较大的那个</div>
+  <div id="bigpick-stage"></div>
+  <div id="bigpick-status">连对：0</div>
+</div>
+
+<!-- ══ ODDONE 泡找不同 PAGE ═══════════════════════════════════════════ -->
+<div id="oddone-overlay">
+  <div id="oddone-topbar">
+    <span id="oddone-title">🔍 泡找不同</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="oddone-refresh">🔄 重开</button>
+      <button type="button" id="oddone-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="oddone-hint">颜色几乎一样的泡 · 有一个稍微深一点点 · 找出来</div>
+  <div id="oddone-board"></div>
+  <div id="oddone-status">找到：0</div>
+</div>
+
+<!-- ══ COUNTPOP 泡数数 PAGE ═══════════════════════════════════════════ -->
+<div id="countpop-overlay">
+  <div id="countpop-topbar">
+    <span id="countpop-title">🔢 泡数数</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="countpop-refresh">🔄 重开</button>
+      <button type="button" id="countpop-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="countpop-hint">先看清楚有几个泡 · 消失后点下面的数字</div>
+  <div id="countpop-status">记住数量…</div>
+  <div id="countpop-stage"></div>
+  <div id="countpop-pick"></div>
+</div>
+
+<!-- ══ INFLATE 吹爆泡 PAGE ════════════════════════════════════════════ -->
+<div id="inflate-overlay">
+  <div id="inflate-topbar">
+    <span id="inflate-title">💢 吹爆泡</span>
+    <div style="display:flex;gap:8px">
+      <button type="button" id="inflate-refresh">🔄 重开</button>
+      <button type="button" id="inflate-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="inflate-hint">按住吹大 · 绿区松手刚好 · 太大就爆</div>
+  <div id="inflate-status">按住「吹」</div>
+  <div id="inflate-stage"><div id="inflate-bubble"></div></div>
+  <div id="inflate-meter"><span class="sweet"></span><i id="inflate-meter-fill"></i></div>
+  <button type="button" id="inflate-btn">按住吹</button>
+</div>
+
+<!-- ══ FISHING PAGE ══════════════════════════════════════════════════ -->
+<div id="fishing-overlay">
+  <div id="fishing-topbar">
+    <span id="fishing-title">🎣 钓鱼</span>
+    <div class="fishing-actions">
+      <button type="button" id="fishing-coin-badge" title="查看钓鱼币">
+        <span class="fcb-icon">🎣</span>
+        <span class="fcb-label">钓鱼币</span>
+        <span class="fcb-amt" id="fishing-coin-amt">0</span>
+      </button>
+      <button type="button" id="fishing-gear-btn" title="渔具">渔具</button>
+      <button type="button" id="fishing-catalog-btn" title="图鉴">图鉴</button>
+      <button type="button" id="fishing-close">✕ 返回</button>
+    </div>
+  </div>
+  <div id="fishing-coin-modal" aria-label="钓鱼币说明">
+    <div class="fcm-card">
+      <div class="fcm-coin">🎣</div>
+      <div class="fcm-title">钓鱼币</div>
+      <div class="fcm-desc">钓鱼专用货币，和游戏主金币分开。<br>在图鉴里把鱼兑换成钓鱼币。<br>灰5 · 粉10 · 蓝20 · 金40</div>
+      <button type="button" class="fcm-close" id="fishing-coin-modal-close">知道了</button>
+    </div>
+  </div>
+  <div id="fishing-gear" aria-label="渔具背包">
+    <div class="fg-title">渔具 · 背包</div>
+    <div class="fg-sec" id="fishing-gear-shop"></div>
+    <div class="fg-sec" id="fishing-gear-bait"></div>
+    <div class="fg-sec" id="fishing-gear-speed"></div>
+    <div class="fg-sec" id="fishing-gear-hooks"></div>
+  </div>
+  <div id="fishing-catalog" aria-label="鱼类图鉴">
+    <div class="fc-title">鱼类图鉴</div>
+    <div class="fc-grid" id="fishing-catalog-grid"></div>
+  </div>
+  <div id="fishing-side-dismiss" aria-hidden="true"></div>
+  <div id="fishing-sky"></div>
+  <div id="fishing-horizon"></div>
+  <div id="fishing-sea">
+    <div id="fishing-shadows"></div>
+    <div id="fishing-catches"></div>
+  </div>
+  <div id="fishing-raft">
+    <div class="fishing-tackle" aria-hidden="true">
+      <div class="ft-line"></div>
+      <div class="ft-float" title="鱼漂"></div>
+      <div class="ft-sinker"></div>
+    </div>
+    <div class="raft-people">
+      <!-- 铅笔简笔：1 钓鱼 + 2 坐着；鱼线垂向海底 -->
+      <div class="raft-person p-fish">
+        <svg viewBox="0 0 56 54" fill="none" stroke="#3a3a3a" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+          <!-- 竿尖朝左，线从竿尖垂直下沉（由 .fishing-tackle 承接） -->
+          <path d="M34 18 L8 10"/>
+          <circle cx="36" cy="10" r="4.2"/>
+          <path d="M36 14.2 L36 28"/>
+          <path d="M36 18 L28 14"/>
+          <path d="M36 18 L42 24"/>
+          <path d="M36 28 L32 40"/>
+          <path d="M36 28 L40 40"/>
+        </svg>
+      </div>
+      <div class="raft-person p-sit1">
+        <svg viewBox="0 0 30 36" fill="none" stroke="#3a3a3a" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="15" cy="7" r="4"/>
+          <path d="M15 11 L15 20"/>
+          <path d="M15 14 L8 18"/>
+          <path d="M15 14 L22 17"/>
+          <path d="M15 20 L8 22 L8 28"/>
+          <path d="M15 20 L22 22 L24 28"/>
+          <path d="M8 28 L12 28"/>
+          <path d="M22 28 L26 28"/>
+        </svg>
+      </div>
+      <div class="raft-person p-sit2">
+        <svg viewBox="0 0 30 36" fill="none" stroke="#3a3a3a" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="15" cy="7" r="4"/>
+          <path d="M15 11 L15 19"/>
+          <path d="M15 14 L9 12"/>
+          <path d="M15 14 L21 18"/>
+          <path d="M15 19 L9 21 L7 27"/>
+          <path d="M15 19 L21 21 L23 27"/>
+          <path d="M7 27 L11 27"/>
+          <path d="M21 27 L25 27"/>
+        </svg>
+      </div>
+    </div>
+    <div class="fish-basket" id="fish-basket" title="鱼篓（最近几条）">
+      <div class="fb-handle"></div>
+      <div class="fb-rim"></div>
+      <div class="fb-body"></div>
+      <div class="fb-fish" id="fish-basket-fish"></div>
+    </div>
+    <button type="button" id="fishing-cast-btn" title="钓鱼">钓鱼</button>
+    <div class="raft-deck"></div>
+    <div class="raft-log l1"></div>
+    <div class="raft-log l2"></div>
+    <div class="raft-log l3"></div>
+  </div>
+</div>
+
+<!-- ══ PLAYMODE PAGE ═════════════════════════════════════════════════ -->
+<div id="playmode-overlay">
+  <div id="playmode-ocean" aria-hidden="true">
+    <div class="pm-sand"></div>
+    <div class="pm-caustic"></div>
+    <div class="pm-ray ray1"></div>
+    <div class="pm-ray ray2"></div>
+    <div class="pm-ray ray3"></div>
+    <div class="pm-ray ray4"></div>
+    <div class="pm-mote m1"></div>
+    <div class="pm-mote m2"></div>
+    <div class="pm-mote m3"></div>
+    <div class="pm-mote m4"></div>
+    <div class="pm-mote m5"></div>
+    <div class="pm-air a1"></div>
+    <div class="pm-air a2"></div>
+    <div class="pm-air a3"></div>
+    <div class="pm-air a4"></div>
+    <div class="pm-air a5"></div>
+    <div class="pm-rock r1"></div>
+    <div class="pm-rock r2"></div>
+    <div class="pm-rock r3"></div>
+    <div class="pm-rock r4"></div>
+    <div class="pm-rock r5"></div>
+    <div class="pm-bulge b1"></div>
+    <div class="pm-bulge b2"></div>
+    <div class="pm-bulge b3"></div>
+    <div class="pm-bulge b4"></div>
+    <div class="pm-bulge b5"></div>
+    <div class="pm-bulge b6"></div>
+    <div class="pm-coral c1">🪸</div>
+    <div class="pm-coral c2">🪸</div>
+    <div class="pm-coral c3">🪸</div>
+    <div class="pm-coral c4">🪸</div>
+    <div class="pm-coral c5">🪸</div>
+    <!-- 参考图绘制（立体高光，眼睛圆完整不裁） -->
+    <div class="pm-fish f1" title="灯科鱼">
+      <svg viewBox="0 0 100 36" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="dkBody" cx="35%" cy="35%" r="65%"><stop offset="0%" stop-color="#fff"/><stop offset="35%" stop-color="#e3f2fd"/><stop offset="100%" stop-color="#90a4ae"/></radialGradient>
+          <linearGradient id="dkBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#84ffff"/><stop offset="50%" stop-color="#00e5ff"/><stop offset="100%" stop-color="#00acc1"/></linearGradient>
+          <linearGradient id="dkRed" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#ef5350"/><stop offset="100%" stop-color="#b71c1c"/></linearGradient>
+          <filter id="fishSoft"><feGaussianBlur stdDeviation=".3"/></filter>
+        </defs>
+        <ellipse cx="50" cy="30" rx="28" ry="3.5" fill="#000" opacity=".18"/>
+        <path d="M78 10 C90 14 98 18 100 18 C98 18 90 22 78 26Z" fill="#c62828"/>
+        <path d="M78 13 C88 16 94 18 96 18 C94 18 88 20 78 23Z" fill="#ef9a9a" opacity=".45"/>
+        <ellipse cx="42" cy="18" rx="34" ry="11" fill="url(#dkBody)"/>
+        <path d="M18 12 C40 8 70 10 82 16 L82 20 C70 26 40 28 18 24Z" fill="url(#dkBlue)"/>
+        <path d="M22 13 C40 10 65 11 78 15" fill="none" stroke="#e0ffff" stroke-width="1.2" opacity=".55"/>
+        <path d="M48 20 C62 22 76 22 84 18 L84 24 C70 28 55 28 42 24Z" fill="url(#dkRed)"/>
+        <ellipse cx="30" cy="22" rx="10" ry="3" fill="#fff" opacity=".22"/>
+        <circle cx="20" cy="16" r="2.6" fill="#1a1a1a"/>
+        <circle cx="20" cy="16" r="2.6" fill="none" stroke="#455a64" stroke-width=".4"/>
+        <circle cx="19.2" cy="15.2" r=".85" fill="#fff"/>
+        <path d="M8 18 C4 16 2 18 4 20 C6 21 9 20 10 18" fill="#78909c"/>
+      </svg>
+    </div>
+    <div class="pm-fish f2" title="孔雀鱼">
+      <svg viewBox="0 0 90 70" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="kqTail" cx="30%" cy="40%" r="70%"><stop offset="0%" stop-color="#ff8a65"/><stop offset="45%" stop-color="#e53935"/><stop offset="100%" stop-color="#8e0000"/></radialGradient>
+          <radialGradient id="kqBody" cx="30%" cy="30%" r="65%"><stop offset="0%" stop-color="#ffccbc"/><stop offset="50%" stop-color="#ff8a65"/><stop offset="100%" stop-color="#e64a19"/></radialGradient>
+        </defs>
+        <ellipse cx="55" cy="52" rx="22" ry="4" fill="#000" opacity=".16"/>
+        <path d="M48 28 C62 10 88 8 88 35 C88 60 62 58 48 42Z" fill="url(#kqTail)"/>
+        <path d="M52 32 C64 20 78 18 82 35 C78 50 64 48 52 40Z" fill="#ffab91" opacity=".35"/>
+        <ellipse cx="28" cy="35" rx="22" ry="10" fill="url(#kqBody)"/>
+        <ellipse cx="22" cy="32" rx="8" ry="4" fill="#fff" opacity=".28"/>
+        <path d="M30 26 L36 18 L40 28" fill="#ef5350"/>
+        <circle cx="16" cy="33" r="2.5" fill="#1a1a1a"/>
+        <circle cx="16" cy="33" r="2.5" fill="none" stroke="#5d4037" stroke-width=".35"/>
+        <circle cx="15.3" cy="32.3" r=".8" fill="#fff"/>
+      </svg>
+    </div>
+    <div class="pm-fish f3" title="丽丽鱼">
+      <svg viewBox="0 0 100 48" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="llBody" cx="32%" cy="30%" r="70%"><stop offset="0%" stop-color="#ffab91"/><stop offset="40%" stop-color="#ff7043"/><stop offset="100%" stop-color="#bf360c"/></radialGradient>
+          <linearGradient id="llFin" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#42a5f5"/><stop offset="100%" stop-color="#0d47a1"/></linearGradient>
+        </defs>
+        <ellipse cx="48" cy="40" rx="26" ry="3.2" fill="#000" opacity=".16"/>
+        <path d="M78 14 C90 18 98 24 100 24 C98 24 90 30 78 34Z" fill="#b71c1c"/>
+        <path d="M78 17 C88 20 94 24 96 24 C94 24 88 27 78 30Z" fill="#ef9a9a" opacity=".35"/>
+        <ellipse cx="42" cy="24" rx="34" ry="16" fill="url(#llBody)"/>
+        <path d="M28 12 C40 4 58 4 70 12" fill="url(#llFin)"/>
+        <path d="M24 14 V34 M32 12 V36 M40 11 V37 M48 11 V37 M56 12 V36 M64 14 V34" stroke="#b3e5fc" stroke-width="2" opacity=".9"/>
+        <ellipse cx="28" cy="20" rx="9" ry="4" fill="#fff" opacity=".25"/>
+        <path d="M10 24 C5 20 3 24 6 28 C8 30 12 28 14 24" fill="#ef5350"/>
+        <path d="M34 36 C38 44 30 46 26 40" fill="#1565c0" opacity=".85"/>
+        <circle cx="20" cy="22" r="2.7" fill="#1a1a1a"/>
+        <circle cx="20" cy="22" r="2.7" fill="none" stroke="#4e342e" stroke-width=".35"/>
+        <circle cx="19.2" cy="21.2" r=".85" fill="#fff"/>
+      </svg>
+    </div>
+    <div class="pm-fish f4" title="燕鱼">
+      <svg viewBox="0 0 80 90" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="yyBody" cx="35%" cy="40%" r="60%"><stop offset="0%" stop-color="#fff"/><stop offset="55%" stop-color="#eceff1"/><stop offset="100%" stop-color="#90a4ae"/></radialGradient>
+        </defs>
+        <ellipse cx="40" cy="78" rx="14" ry="3" fill="#000" opacity=".15"/>
+        <path d="M40 10 L70 4 L52 40Z" fill="#cfd8dc"/>
+        <path d="M40 10 L66 6 L50 38Z" fill="#fff" opacity=".25"/>
+        <path d="M40 80 L68 88 L50 48Z" fill="#b0bec5"/>
+        <path d="M40 40 L78 42 L52 50Z" fill="#90a4ae"/>
+        <ellipse cx="34" cy="45" rx="16" ry="22" fill="url(#yyBody)"/>
+        <ellipse cx="28" cy="38" rx="6" ry="8" fill="#fff" opacity=".3"/>
+        <path d="M22 28 V62 M34 22 V68 M46 30 V60" stroke="#212121" stroke-width="3.2" stroke-linecap="round"/>
+        <circle cx="24" cy="40" r="2.6" fill="#1a1a1a"/>
+        <circle cx="24" cy="40" r="2.6" fill="none" stroke="#616161" stroke-width=".35"/>
+        <circle cx="23.3" cy="39.3" r=".8" fill="#fff"/>
+        <path d="M18 45 C12 42 10 46 14 49" fill="#bdbdbd"/>
+      </svg>
+    </div>
+    <div class="pm-fish f5" title="斑马鱼">
+      <svg viewBox="0 0 100 36" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="bmBody" cx="30%" cy="30%" r="70%"><stop offset="0%" stop-color="#fffde7"/><stop offset="40%" stop-color="#ffee58"/><stop offset="100%" stop-color="#f9a825"/></radialGradient>
+        </defs>
+        <ellipse cx="50" cy="30" rx="26" ry="3" fill="#000" opacity=".15"/>
+        <path d="M80 10 C92 14 100 18 100 18 C100 18 92 22 80 26Z" fill="#f57f17"/>
+        <path d="M80 13 C90 16 95 18 97 18 C95 18 90 20 80 23Z" fill="#ffe082" opacity=".4"/>
+        <ellipse cx="44" cy="18" rx="36" ry="10" fill="url(#bmBody)"/>
+        <ellipse cx="30" cy="15" rx="10" ry="4" fill="#fff" opacity=".3"/>
+        <path d="M28 10 C40 6 60 6 74 12" fill="none" stroke="#fff59d" stroke-width="1.3" opacity=".6"/>
+        <circle cx="18" cy="16" r="2.5" fill="#1a1a1a"/>
+        <circle cx="18" cy="16" r="2.5" fill="none" stroke="#6d4c41" stroke-width=".35"/>
+        <circle cx="17.3" cy="15.3" r=".8" fill="#fff"/>
+        <path d="M8 18 C4 16 2 18 4 20 C6 21 9 20 10 18" fill="#fbc02d"/>
+      </svg>
+    </div>
+    <div class="pm-fish f6" title="虎皮鱼">
+      <svg viewBox="0 0 100 44" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="hpBody" cx="32%" cy="30%" r="70%"><stop offset="0%" stop-color="#fff8e1"/><stop offset="40%" stop-color="#ffca28"/><stop offset="100%" stop-color="#f57f17"/></radialGradient>
+        </defs>
+        <ellipse cx="48" cy="38" rx="24" ry="3" fill="#000" opacity=".16"/>
+        <path d="M78 12 C90 16 98 22 100 22 C98 22 90 28 78 32Z" fill="#e65100"/>
+        <ellipse cx="42" cy="22" rx="34" ry="14" fill="url(#hpBody)"/>
+        <ellipse cx="28" cy="18" rx="9" ry="4" fill="#fff" opacity=".28"/>
+        <path d="M26 10 V34 M38 8 V36 M50 8 V36 M62 10 V34" stroke="#212121" stroke-width="4" stroke-linecap="round"/>
+        <path d="M34 10 L40 2 L44 12" fill="#e53935"/>
+        <path d="M30 32 L36 42 L24 36" fill="#e53935"/>
+        <circle cx="18" cy="20" r="2.7" fill="#1a1a1a"/>
+        <circle cx="18" cy="20" r="2.7" fill="none" stroke="#5d4037" stroke-width=".35"/>
+        <circle cx="17.2" cy="19.2" r=".85" fill="#fff"/>
+        <path d="M8 22 C4 19 2 22 5 25 C7 26 11 25 12 22" fill="#ffb300"/>
+      </svg>
+    </div>
+    <div class="pm-fish f7" title="曼龙鱼">
+      <svg viewBox="0 0 110 44" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="mlBody" cx="30%" cy="30%" r="70%"><stop offset="0%" stop-color="#e3f2fd"/><stop offset="40%" stop-color="#64b5f6"/><stop offset="100%" stop-color="#0d47a1"/></radialGradient>
+        </defs>
+        <ellipse cx="52" cy="38" rx="28" ry="3" fill="#000" opacity=".15"/>
+        <path d="M82 12 C94 16 106 22 108 22 C106 22 94 28 82 32Z" fill="#0d47a1"/>
+        <ellipse cx="44" cy="22" rx="36" ry="14" fill="url(#mlBody)"/>
+        <ellipse cx="30" cy="18" rx="10" ry="4" fill="#fff" opacity=".28"/>
+        <circle cx="30" cy="16" r="3" fill="#0d47a1" opacity=".4"/>
+        <circle cx="48" cy="26" r="4" fill="#0d47a1" opacity=".35"/>
+        <circle cx="58" cy="18" r="2.5" fill="#0d47a1" opacity=".3"/>
+        <path d="M36 34 C28 48 18 50 14 40" stroke="#bbdefb" stroke-width="1.6" fill="none"/>
+        <path d="M42 34 C38 52 24 54 20 42" stroke="#90caf9" stroke-width="1.4" fill="none"/>
+        <circle cx="18" cy="20" r="2.6" fill="#1a1a1a"/>
+        <circle cx="18" cy="20" r="2.6" fill="none" stroke="#37474f" stroke-width=".35"/>
+        <circle cx="17.3" cy="19.3" r=".8" fill="#fff"/>
+      </svg>
+    </div>
+    <div class="pm-fish f8" title="月光鱼">
+      <svg viewBox="0 0 100 42" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="ygHead" cx="35%" cy="30%" r="65%"><stop offset="0%" stop-color="#fff59d"/><stop offset="55%" stop-color="#ffca28"/><stop offset="100%" stop-color="#f9a825"/></radialGradient>
+          <radialGradient id="ygMid" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#546e7a"/><stop offset="40%" stop-color="#212121"/><stop offset="100%" stop-color="#000"/></radialGradient>
+          <radialGradient id="ygTail" cx="20%" cy="40%" r="70%"><stop offset="0%" stop-color="#ffab91"/><stop offset="100%" stop-color="#e64a19"/></radialGradient>
+        </defs>
+        <ellipse cx="50" cy="36" rx="24" ry="3" fill="#000" opacity=".16"/>
+        <path d="M72 10 C88 8 100 14 100 21 C100 28 88 34 72 32Z" fill="url(#ygTail)"/>
+        <ellipse cx="48" cy="21" rx="22" ry="13" fill="url(#ygMid)"/>
+        <ellipse cx="42" cy="16" rx="8" ry="4" fill="#64b5f6" opacity=".25"/>
+        <ellipse cx="24" cy="21" rx="16" ry="11" fill="url(#ygHead)"/>
+        <ellipse cx="20" cy="17" rx="6" ry="3" fill="#fff" opacity=".3"/>
+        <circle cx="16" cy="19" r="2.6" fill="#1a1a1a"/>
+        <circle cx="16" cy="19" r="2.6" fill="none" stroke="#5d4037" stroke-width=".35"/>
+        <circle cx="15.3" cy="18.3" r=".8" fill="#fff"/>
+        <path d="M8 21 C4 18 2 21 5 24 C7 25 10 24 12 21" fill="#f9a825"/>
+        <path d="M40 12 L48 4 L52 14" fill="#ffb74d"/>
+      </svg>
+    </div>
+  </div>
+  <div id="playmode-topbar">
+    <span id="playmode-title">🧩 划泡玩法</span>
+    <button type="button" id="playmode-refresh">🔄 刷新泡泡</button>
+    <button type="button" id="playmode-close">✕ 返回</button>
+  </div>
+  <div id="playmode-board"></div>
+  <div id="playmode-hint">按住鼠标，滑过泡泡才会爆</div>
+</div>
+
+<!-- ══ PASS MODAL ═══════════════════════════════════════════════════ -->
+<div id="pass-overlay">
+  <div id="pass-modal">
+    <div id="pass-header">
+      <span>🎫 挑战通行证</span>
+      <button id="pass-close">✕</button>
+    </div>
+
+    <!-- 等级徽章 -->
+    <div id="pass-levels">
+      <div class="pass-level-card" id="pass-card-1">
+        <div class="pass-level-icon">🥉</div>
+        <div class="pass-level-title">1 级通行证</div>
+        <div class="pass-level-req">1分钟内爆破 <b>50</b> 个气泡</div>
+        <div class="pass-level-reward">奖励: +500 💰 &amp; +2 🚀</div>
+        <div class="pass-level-status" id="pass-status-1">未完成</div>
+      </div>
+      <div class="pass-level-card" id="pass-card-2">
+        <div class="pass-level-icon">🥈</div>
+        <div class="pass-level-title">2 级通行证</div>
+        <div class="pass-level-req">1分钟内爆破 <b>60</b> 个气泡</div>
+        <div class="pass-level-reward">奖励: +1500 💰 &amp; +4 🚀</div>
+        <div class="pass-level-status" id="pass-status-2">未完成</div>
+      </div>
+      <div class="pass-level-card" id="pass-card-3">
+        <div class="pass-level-icon">🥇</div>
+        <div class="pass-level-title">3 级通行证</div>
+        <div class="pass-level-req">1分钟内爆破 <b>65</b> 个气泡</div>
+        <div class="pass-level-reward">奖励: +3000 💰 &amp; +7 🚀</div>
+        <div class="pass-level-status" id="pass-status-3">未完成</div>
+      </div>
+      <div class="pass-level-card" id="pass-card-4">
+        <div class="pass-level-icon">⚡</div>
+        <div class="pass-level-title">4 级通行证</div>
+        <div class="pass-level-req">90秒内达成 <b>18</b> 连击</div>
+        <div class="pass-level-reward">奖励: +4500 💰 &amp; +8 🚀</div>
+        <div class="pass-level-status" id="pass-status-4">未完成</div>
+      </div>
+      <div class="pass-level-card" id="pass-card-5">
+        <div class="pass-level-icon">💰</div>
+        <div class="pass-level-title">5 级通行证</div>
+        <div class="pass-level-req">90秒内获得 <b>700</b> 金币</div>
+        <div class="pass-level-reward">奖励: +6000 💰 &amp; +9 🚀</div>
+        <div class="pass-level-status" id="pass-status-5">未完成</div>
+      </div>
+      <div class="pass-level-card" id="pass-card-6">
+        <div class="pass-level-icon">🌟</div>
+        <div class="pass-level-title">6 级通行证</div>
+        <div class="pass-level-req">不限时累计戳破 <b>100</b> 个</div>
+        <div class="pass-level-reward">奖励: +8000 💰 &amp; +10 🚀</div>
+        <div class="pass-level-status" id="pass-status-6">未完成</div>
+      </div>
+    </div>
+
+    <!-- Challenge area -->
+    <div id="pass-challenge-area">
+      <div id="pass-challenge-info">点击下方按钮开始挑战，60秒内完成目标！</div>
+      <div id="pass-timer-row">
+        <div id="pass-timer">60</div>
+        <div id="pass-progress-wrap">
+          <div id="pass-progress-bar"></div>
+        </div>
+        <div id="pass-pop-count">0 / —</div>
+      </div>
+      <button id="pass-start-btn">▶ 开始挑战 1 级</button>
+      <button id="pass-open-shop-btn">🏠 打开商店（挑战期间可购买道具）</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SKIN GACHA ════════════════════════════════════════════════════ -->
+<div id="skin-gacha-overlay">
+  <div id="skin-gacha-modal">
+    <div id="gacha-header">
+      <span>🎲 泡泡皮肤机</span>
+      <button type="button" id="gacha-close">✕</button>
+    </div>
+    <div id="gacha-body">
+      <p class="gacha-hint">用泡珠抽泡泡肤 · 蓝皮最常见 · 紫 → 彩色 → 五彩越来越珍贵 · 重复退还泡珠</p>
+      <div class="gacha-wallet">当前泡珠：<b id="gacha-pearls">0</b> 🫧 · 金币：<b id="gacha-coins">0</b> 💰</div>
+      <div id="gacha-result">
+        <div class="gacha-result-placeholder">?</div>
+        <div class="gacha-result-name">点下面抽一发</div>
+        <div class="gacha-result-meta">蓝色 → 紫色 → 彩色 → 五彩 · 越往后越珍贵</div>
+      </div>
+      <div class="gacha-actions">
+        <button type="button" id="gacha-draw-1" class="gacha-draw-btn">抽 1 次 · 25🫧</button>
+        <button type="button" id="gacha-draw-10" class="gacha-draw-btn gacha-draw-btn-10">抽 10 次 · 110🫧 + 1万💰</button>
+      </div>
+      <div id="gacha-owned-title">我的皮肤 · 点一下换上</div>
+      <div id="gacha-owned"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DAILY BUBBLE QUEST ════════════════════════════════════════════ -->
+<div id="quest-overlay">
+  <div id="quest-modal">
+    <div id="quest-header">
+      <span>📅 每日泡计划</span>
+      <button type="button" id="quest-close">✕</button>
+    </div>
+    <div id="quest-body">
+      <div id="quest-streak-row">
+        <span>长期动力 · 连续完成</span>
+        <span id="quest-streak-val">🔥 0 天</span>
+      </div>
+      <div id="quest-task-card">
+        <div id="quest-task-title">皮肤任务：玩 3 种不同小游戏</div>
+        <div id="quest-task-desc">泡币礼包每天免费领，不用做任务。完成 3 种小游戏可额外领皮肤/主题（每月随机几天才有）。</div>
+        <div id="quest-progress-dots">
+          <div class="quest-dot" id="quest-dot-1"></div>
+          <div class="quest-dot" id="quest-dot-2"></div>
+          <div class="quest-dot" id="quest-dot-3"></div>
+        </div>
+        <div id="quest-played-list"></div>
+      </div>
+      <div id="quest-reward-card">
+        <div id="quest-reward-label">泡币礼包每天免费 · 皮肤/主题需完成 3 种小游戏</div>
+        <div id="quest-pending-hint" class="quest-pending-hint">泡币礼包免费领 · 皮肤任务 0/3</div>
+        <div class="quest-reward-dual">
+          <div class="quest-reward-slot">
+            <div class="quest-reward-slot-label">① 泡币礼包（免费）</div>
+            <div class="quest-reward-slot-preview">
+              <div id="quest-currency-icon" class="quest-reward-icon">🪙</div>
+              <div>
+                <div id="quest-currency-name" class="quest-reward-name">—</div>
+                <div id="quest-currency-desc" class="quest-reward-desc">—</div>
+              </div>
+            </div>
+          </div>
+          <div class="quest-reward-slot">
+            <div class="quest-reward-slot-label">② 皮肤 / 主题（需任务）</div>
+            <div class="quest-reward-slot-preview">
+              <div id="quest-bonus-icon" class="quest-reward-icon">—</div>
+              <div>
+                <div id="quest-bonus-name" class="quest-reward-name">—</div>
+                <div id="quest-bonus-desc" class="quest-reward-desc">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="quest-featured"></div>
+      </div>
+      <button type="button" id="quest-claim-btn" disabled>免费领取泡币</button>
+      <div id="quest-collection-title">我的收藏 · 泡泡肤 / 节日主题</div>
+      <div id="quest-collection"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SEASON (泡季) ═════════════════════════════════════════════════ -->
+<div id="season-overlay">
+  <div id="season-modal">
+    <div id="season-header">
+      <span id="season-header-title">🌸 泡季</span>
+      <button type="button" id="season-close">✕</button>
+    </div>
+    <div id="season-body">
+      <div id="season-intro">每季 45–60 天 · 攒泡季经验领阶梯奖励 · 每季送精细玻璃泡泡肤</div>
+      <div id="season-skin-card" class="season-skin-card" aria-live="polite"></div>
+      <div id="season-meta-row">
+        <span id="season-name">—</span>
+        <span id="season-days-left">剩余 — 天</span>
+      </div>
+      <div id="season-xp-card">
+        <div id="season-xp-top">
+          <span id="season-tier-label">泡季等级 0</span>
+          <span id="season-xp-num">0 / — XP</span>
+        </div>
+        <div id="season-xp-bar-bg"><div id="season-xp-bar-fill"></div></div>
+      </div>
+      <div id="season-xp-guide-title">如何获得泡季经验</div>
+      <div id="season-xp-guide"></div>
+      <div id="season-tiers-title">阶梯奖励（达成自动发放）</div>
+      <div id="season-tiers"></div>
+      <div id="season-tasks-title">赛季任务（完成额外泡季经验）</div>
+      <div id="season-tasks"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ACHIEVEMENT WALL ═════════════════════════════════════════════ -->
+<div id="achievement-overlay">
+  <div id="achievement-modal">
+    <div id="achievement-header">
+      <span>🏆 成就墙</span>
+      <button type="button" id="achievement-close">✕</button>
+    </div>
+    <div id="achievement-body">
+      <div id="achievement-intro">长期动力 · 达成后右上角提示并自动发放奖励</div>
+      <div id="achievement-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BACKPACK ══════════════════════════════════════════════════════ -->
+<div id="backpack-overlay">
+  <div id="backpack-modal">
+    <div id="backpack-header">
+      <span>🎒 背包</span>
+      <button type="button" id="backpack-close">✕</button>
+    </div>
+    <div id="backpack-hint">点一下使用 · 长按连用</div>
+    <div id="backpack-grid">
+      <button type="button" class="bp-use-item" data-bp="rocket" disabled title="火箭筒：清空全场">🚀<span class="bp-name">火箭筒</span><em id="bp-rocket">0</em></button>
+      <button type="button" class="bp-use-item" data-bp="slowclock" disabled title="慢时沙漏">⏰<span class="bp-name">慢时沙漏</span><em id="bp-slowclock">0</em></button>
+      <button type="button" class="bp-use-item" data-bp="magnet" disabled title="磁力石">🧲<span class="bp-name">磁力石</span><em id="bp-magnet">0</em></button>
+      <button type="button" class="bp-use-item" data-bp="watermelon" disabled title="西瓜包">🍉<span class="bp-name">西瓜包</span><em id="bp-watermelon">0</em></button>
+      <button type="button" class="bp-use-item" data-bp="lucky" disabled title="幸运券">🍀<span class="bp-name">幸运券</span><em id="bp-lucky">0</em></button>
+      <button type="button" class="bp-use-item" data-bp="spawner" disabled title="刷泡器">💨<span class="bp-name">刷泡器</span><em id="bp-spawner">0</em></button>
+      <button type="button" class="bp-use-item" data-bp="coinbag" disabled title="金币袋">💰<span class="bp-name">金币袋</span><em id="bp-coinbag">0</em></button>
+      <button type="button" class="bp-use-item bp-premium" data-bp="megacoin" disabled title="万金财箱">💎<span class="bp-name">万金财箱</span><em id="bp-megacoin">0</em></button>
+    </div>
+  </div>
+</div>
+
+<script src="anti-ad-shield.js"></script>
+<script src="bubble-game.js" defer></script>
+</body>
+</html>
