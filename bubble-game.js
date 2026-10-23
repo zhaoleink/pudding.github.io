@@ -3452,7 +3452,20 @@ function playBathFoamSound() {
 // ══════════════════════════════════════════════════════════════════
 const board  = document.getElementById('board');
 const canvas = document.getElementById('game-canvas');
+if (!board || !canvas) {
+  const err = document.getElementById('bubble-boot-error');
+  const sub = document.getElementById('bubble-boot-sub');
+  if (sub) sub.hidden = true;
+  if (err) {
+    err.style.display = 'block';
+    err.textContent = '游戏界面加载失败，请强刷页面或换 WiFi 后重试。';
+  }
+  throw new Error('bubble-game: missing board/canvas');
+}
 const ctx2d  = canvas.getContext('2d');
+if (!ctx2d) {
+  throw new Error('bubble-game: canvas 2d unavailable');
+}
 
 let canvasScale = 1;
 
@@ -3475,7 +3488,11 @@ function resizeCanvas() {
   ctx2d.setTransform(canvasScale, 0, 0, canvasScale, 0, 0);
 }
 resizeCanvas();
-new ResizeObserver(resizeCanvas).observe(board);
+if (typeof ResizeObserver !== 'undefined') {
+  new ResizeObserver(resizeCanvas).observe(board);
+} else {
+  window.addEventListener('resize', resizeCanvas);
+}
 
 // ══════════════════════════════════════════════════════════════════
 //  BUBBLE FACTORY
@@ -21711,7 +21728,10 @@ document.getElementById('shop-overlay').addEventListener('click', e => {
 // ══════════════════════════════════════════════════════════════════
 bindPdBuddyControls();
 
-document.getElementById('start-btn').addEventListener('click', () => {
+const startBtnEl = document.getElementById('start-btn');
+if (startBtnEl) {
+  startBtnEl.addEventListener('click', () => {
+  hideBubbleBootLoader();
   const screen = document.getElementById('start-screen');
   screen.style.transition = 'opacity .4s';
   screen.style.opacity = '0';
@@ -21728,7 +21748,8 @@ document.getElementById('start-btn').addEventListener('click', () => {
   for (let i = 0; i < 12; i++) state.bubbles.push(createBubble());
   startSpawnLoop();
   tick();
-});
+  });
+}
 
 (() => {
   const sidebar = document.getElementById('game-sidebar');
@@ -21841,54 +21862,86 @@ document.getElementById('pass-open-shop-btn').addEventListener('click', () => {
   document.getElementById('shop-overlay').classList.add('open');
 });
 
-// Daily bubble quest
-loadDailyQuest();
-loadBoardDaily();
-refreshBoardDailyUI();
 document.getElementById('btn-zen-mode')?.addEventListener('click', toggleZenMode);
-loadRainforest();
-refreshRainforestUI();
-bindRainforestControls();
-bindMistIslesControls();
-bindRainbowBayControls();
-bindCrystalFrostControls();
-bindGoldPlainsControls();
-bindFarmControls();
-bindPetControls();
-bindPetMeetControls();
-bindDeepBathControls();
-loadRainbowBay();
-refreshRainbowBayUI();
-loadMistIsles();
-refreshMistIslesUI();
-loadCrystalFrost();
-refreshCrystalFrostUI();
-loadCoins();
-loadWallet();
-loadLevel();
-loadInventory();
-loadShop();
-loadShopDailyBuys();
-ensureShopDailyDay();
-ensureStarterWallet();
-loadFishingCoins();
-syncCoinUI();
-syncMainCurrencyHUD();
-refreshItemBarUI();
-loadGoldPlains();
-refreshGoldPlainsUI();
-loadBubbleFarm();
-refreshFarmUI();
-loadBubblePet();
-loadAchievementStats();
-loadSeason();
-ensureSeasonExclusiveSkinOwned();
-refreshPetUI();
-refreshPetMeetUI();
-loadDeepBath();
-refreshDeepBathUI();
-refreshLevelUI();
-refreshShopItems();
+
+function hideBubbleBootLoader() {
+  document.getElementById('bubble-boot-loader')?.classList.add('hidden');
+}
+
+function runDeferredBubbleBoot() {
+  loadDailyQuest();
+  loadBoardDaily();
+  refreshBoardDailyUI();
+  loadRainforest();
+  refreshRainforestUI();
+  bindRainforestControls();
+  bindMistIslesControls();
+  bindRainbowBayControls();
+  bindCrystalFrostControls();
+  bindGoldPlainsControls();
+  bindFarmControls();
+  bindPetControls();
+  bindPetMeetControls();
+  bindDeepBathControls();
+  loadRainbowBay();
+  refreshRainbowBayUI();
+  loadMistIsles();
+  refreshMistIslesUI();
+  loadCrystalFrost();
+  refreshCrystalFrostUI();
+  loadCoins();
+  loadWallet();
+  loadLevel();
+  loadInventory();
+  loadShop();
+  loadShopDailyBuys();
+  ensureShopDailyDay();
+  ensureStarterWallet();
+  loadFishingCoins();
+  syncCoinUI();
+  syncMainCurrencyHUD();
+  refreshItemBarUI();
+  loadGoldPlains();
+  refreshGoldPlainsUI();
+  loadBubbleFarm();
+  refreshFarmUI();
+  loadBubblePet();
+  loadAchievementStats();
+  loadSeason();
+  ensureSeasonExclusiveSkinOwned();
+  refreshPetUI();
+  refreshPetMeetUI();
+  loadDeepBath();
+  refreshDeepBathUI();
+  refreshLevelUI();
+  refreshShopItems();
+}
+
+function scheduleDeferredBubbleBoot() {
+  const run = () => {
+    try {
+      runDeferredBubbleBoot();
+    } catch (e) {
+      console.error('[bubble-game boot]', e);
+      const err = document.getElementById('bubble-boot-error');
+      const sub = document.getElementById('bubble-boot-sub');
+      if (sub) sub.hidden = true;
+      if (err) {
+        err.style.display = 'block';
+        err.textContent = '初始化未完成，请刷新重试。';
+      }
+    } finally {
+      hideBubbleBootLoader();
+    }
+  };
+  if (typeof requestIdleCallback === 'function') {
+    requestIdleCallback(run, { timeout: 1800 });
+  } else {
+    setTimeout(run, 32);
+  }
+}
+
+scheduleDeferredBubbleBoot();
 document.getElementById('btn-quest').addEventListener('click', openQuestModal);
 document.getElementById('btn-season').addEventListener('click', openSeasonModal);
 document.getElementById('season-close').addEventListener('click', closeSeasonModal);

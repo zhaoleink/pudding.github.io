@@ -2,12 +2,39 @@
 <html lang="zh-CN" data-page="bubble-game.html">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>解压气泡游戏</title>
 <link rel="stylesheet" href="hub-nav.css?v=5">
-<link rel="stylesheet" href="bubble-game.css">
+<link rel="stylesheet" href="bubble-game.css?v=31">
+<style>
+  #bubble-boot-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 200001;
+    background: #0d0d20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    color: #4fc3f7;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 24px;
+    text-align: center;
+  }
+  #bubble-boot-loader.hidden { display: none; }
+  #bubble-boot-sub { font-size: 13px; font-weight: 500; color: #888; max-width: 280px; line-height: 1.6; }
+  #bubble-boot-error { font-size: 13px; color: #ff8a80; display: none; max-width: 300px; }
+</style>
 </head>
 <body>
+
+<div id="bubble-boot-loader" aria-live="polite">
+  <div>解压气泡加载中…</div>
+  <div id="bubble-boot-sub">首次在手机打开可能要等十几秒，别关页面</div>
+  <div id="bubble-boot-error"></div>
+</div>
 
 <nav class="hub-nav" aria-label="应用导航">
   <span class="hub-label">去 →</span>
@@ -2349,6 +2376,6 @@
 </div>
 
 <script src="anti-ad-shield.js"></script>
-<script src="bubble-game.js" defer></script>
+<script src="bubble-game.js?v=31" defer></script>
 </body>
 </html>

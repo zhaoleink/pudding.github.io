@@ -567,6 +567,9 @@
     font-size: 32px;
     font-weight: 800;
     padding: 24px 80px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
     cursor: pointer;
     letter-spacing: 4px;
     transition: transform .15s, filter .15s;
