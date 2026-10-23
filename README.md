@@ -18,7 +18,7 @@ python3 -m http.server 8080
 2. 仓库 **Settings → Pages → Build and deployment**：
    - **Source**：Deploy from a branch
    - **Branch**：`main`，文件夹 **`/ (root)`**
-3. 保存后等 1～3 分钟，Actions / Pages 里出现绿色勾即生效。
+3. 保存后等 1～3 分钟，Pages 里出现绿色勾即生效。
 
 **访问地址**（项目站，路径带仓库名）：
 
