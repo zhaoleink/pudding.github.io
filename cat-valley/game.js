@@ -2495,16 +2495,24 @@ function bindUI() {
   if (!state.introSeen && intro) {
     intro.hidden = false;
     document.getElementById('btn-start')?.addEventListener('click', () => {
+      requestValleyLandscapeLock();
       intro.hidden = true;
       state.introSeen = true;
       save();
+      syncValleyOrientationUI();
+      resize();
     });
   } else if (intro) intro.hidden = true;
 
   window.addEventListener('resize', () => {
     clearTimeout(bindUI._rz);
-    bindUI._rz = setTimeout(resize, 100);
+    bindUI._rz = setTimeout(() => {
+      syncValleyOrientationUI();
+      resize();
+    }, 100);
   });
+
+  bindValleyOrientation();
 }
 
 function updateBackpackStash() {
@@ -2536,6 +2544,67 @@ function updateUI() {
   const weatherEl = document.getElementById('stat-weather');
   if (weatherEl) weatherEl.textContent = weatherEmoji();
   updateBackpackStash();
+}
+
+function valleyIsLandscape() {
+  return window.matchMedia('(orientation: landscape)').matches;
+}
+
+function requestValleyLandscapeLock() {
+  try {
+    const o = screen.orientation;
+    if (o && typeof o.lock === 'function') {
+      o.lock('landscape').catch(() => {});
+    }
+  } catch (_) {}
+}
+
+function syncValleyOrientationUI() {
+  if (!document.body.classList.contains('is-cat-valley')) return;
+  const landscape = valleyIsLandscape();
+  document.body.classList.toggle('valley-landscape', landscape);
+  document.body.classList.toggle('valley-portrait', !landscape);
+  const hint = document.getElementById('valley-orient-hint');
+  if (!hint) return;
+  const coarse = document.body.classList.contains('valley-coarse');
+  const dismissed = document.body.classList.contains('valley-orient-dismissed');
+  const show = coarse && !landscape && !dismissed;
+  hint.hidden = !show;
+}
+
+function bindValleyOrientation() {
+  if (!document.body.classList.contains('is-cat-valley')) return;
+  if (window.matchMedia('(pointer: coarse)').matches) {
+    document.body.classList.add('valley-coarse');
+  }
+  syncValleyOrientationUI();
+
+  document.getElementById('valley-orient-try')?.addEventListener('click', () => {
+    requestValleyLandscapeLock();
+    showToast('请把手机转横屏（部分浏览器需全屏才锁得住）');
+  });
+  document.getElementById('valley-orient-dismiss')?.addEventListener('click', () => {
+    document.body.classList.add('valley-orient-dismissed');
+    syncValleyOrientationUI();
+  });
+
+  let hubPeekTimer = null;
+  document.querySelector('.hub-nav')?.addEventListener('click', () => {
+    if (!valleyIsLandscape()) return;
+    document.body.classList.add('valley-hub-peek');
+    clearTimeout(hubPeekTimer);
+    hubPeekTimer = setTimeout(() => {
+      document.body.classList.remove('valley-hub-peek');
+    }, 4500);
+  });
+
+  const onOrient = () => {
+    syncValleyOrientationUI();
+    resize();
+    syncJoystickKnobVisual();
+  };
+  window.addEventListener('orientationchange', onOrient);
+  window.matchMedia('(orientation: landscape)').addEventListener?.('change', onOrient);
 }
 
 function resize() {

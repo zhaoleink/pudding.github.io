@@ -2,11 +2,11 @@
 <html lang="zh-CN" data-page="妙脆角猫山谷.html">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <title>妙脆角猫山谷</title>
   <link rel="stylesheet" href="hub-nav.css?v=5">
-  <link rel="stylesheet" href="cat-valley/style.css?v=39">
+  <link rel="stylesheet" href="cat-valley/style.css?v=49">
   <script src="anti-ad-shield.js"></script>
 </head>
 <body class="is-cat-valley">
@@ -27,6 +27,15 @@
     <a href="妙脆小猫按钮关.html">按钮关</a>
   </nav>
   <script src="hub-nav.js?v=5"></script>
+  <div id="valley-orient-hint" hidden aria-live="polite">
+    <div class="valley-orient-card">
+      <div class="valley-orient-icon" aria-hidden="true">📱</div>
+      <h2>请横屏玩猫山谷</h2>
+      <p>左下是摇杆，右下是蹦跳 · 竖屏很难操作</p>
+      <button type="button" id="valley-orient-try">尝试锁定横屏</button>
+      <button type="button" id="valley-orient-dismiss" class="valley-orient-muted">仍用竖屏</button>
+    </div>
+  </div>
   <div id="app">
     <div id="game-stage">
       <canvas id="valley-canvas" aria-label="雪山谷里的妙脆角猫"></canvas>
@@ -199,6 +208,6 @@
   <script src="cat-valley/codex.js?v=40"></script>
   <script src="cat-valley/backpack.js?v=39"></script>
   <script src="cat-valley/paradise.js?v=39"></script>
-  <script src="cat-valley/game.js?v=48"></script>
+  <script src="cat-valley/game.js?v=49"></script>
 </body>
 </html>
