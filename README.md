@@ -16,9 +16,9 @@ python3 -m http.server 8080
 
 1. 将本仓库推送到 GitHub 的 **main** 分支（根目录含 `index.html`）。
 2. 仓库 **Settings → Pages → Build and deployment**：
-   - **Source**：Deploy from a branch
-   - **Branch**：`main`，文件夹 **`/ (root)`**
-3. 保存后等 1～3 分钟，Pages 里出现绿色勾即生效。
+   - **Source** 选 **GitHub Actions**（推荐，仓库已含 `.github/workflows/deploy-pages.yml`）
+   - 或选 **Deploy from a branch** → 分支 **`main`**，目录 **`/ (root)`**
+3. 打开 **Actions**，等 **Deploy to GitHub Pages** 跑绿；Pages 设置页会出现站点 URL。
 
 **访问地址**（项目站，路径带仓库名）：
 
